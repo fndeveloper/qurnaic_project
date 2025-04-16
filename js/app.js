@@ -21,11 +21,14 @@ fetch("header.html")
 document.getElementById("header").innerHTML=`${data}`   
 })
 //   HEADER COMPONTENT CODE END
+// SURAH ALL START
 fetch("https://api.alquran.cloud/v1/surah")
   .then(response => response.json())
   .then(data => {
     const container = document.getElementById("surahContainer");
-
+if(container) 
+    console.log(data.data);
+    
     data.data.forEach(surah => {
       const surahCard = `
         <div class="col-md-4 mb-3">
@@ -53,8 +56,7 @@ fetch("https://api.alquran.cloud/v1/surah")
         e.preventDefault(); // Stop default navigation
         const surahId = this.getAttribute("data-id");
         console.log("Surah clicked ID:", surahId);
-        // optional: redirect if needed
-        // window.location.href = `/surah/${surahId}`;
+      
       });
     });
   })
@@ -62,4 +64,46 @@ fetch("https://api.alquran.cloud/v1/surah")
     console.error("Error fetching Surahs:", error);
   });
 
+// SURAH ALL END
+
+//   SINGLE SURAH START;
+
+Promise.all([
+    fetch("https://api.alquran.cloud/v1/quran/en.sahih"),
+    fetch("http://api.alquran.cloud/v1/quran/ar.alafasy")
+  ])
+  .then(res => Promise.all(res.map(ress => ress.json())))
+  .then(e => {
+    console.log(e[1].data.surahs);
+    
+    const arabicAyahs = e[1].data.surahs[location.search.split("=")[1]].ayahs;
+    const englishAyahs = e[0].data.surahs[location.search.split("=")[1]].ayahs;
+  
+    let combinedAyahsHTML = '';
+  
+    for (let i = 0; i < arabicAyahs.length; i++ ) {
+   
+      combinedAyahsHTML += `
+        <div class="mb-3 single_surah_div">
+         <span class="fs-6 text-center">${i}</span><br>
+          <h6 class="arabi float-end">${arabicAyahs[i].text} </h6> 
+          <br><br>
+          <h6 class="english">${englishAyahs[i].text}</h6>
+        </div>
+      `;
+    }
+  
+    var singlesurahContainer = document.getElementById("singlesurahContainer");
+    singlesurahContainer.innerHTML = `
+      <h2 class="text-center ayah_name">${e[0].data.surahs[location.search.split("=")[1]].name} ${parseInt(location.search.split("=")[1]) + 1}
+ </h2>
+      <div class="col-lg-8 col-11 mx-auto  ">
+        <div class=" ">
+          ${combinedAyahsHTML}
+        </div>
+      </div>
+    `;
+  });
+  
+//   SINGLE SURAH END
   

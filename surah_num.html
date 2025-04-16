@@ -1,76 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Surah Detail</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <style>
-    .ayah-box {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-      background: #f9f9f9;
-    }
-    .ayah-box p {
-      margin: 0;
-      line-height: 1.6;
-    }
-    .ayah-arabic {
-      font-size: 1.3rem;
-      font-weight: bold;
-      text-align: right;
-    }
-    .ayah-english, .ayah-translit {
-      font-style: italic;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+ <!-- FAVICON -->
+  <link rel="shortcut icon" href="assets/images/logo/quranic_logo.jpg" type="image/x-icon">
+  <!-- TITLE  -->
+  <title>The Subject OF Quran | Surah </title>
+
+  <!-- BOOTSTRAP 5 CDN CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <!-- EXTERNEL FILE CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- FONT AWESOME (ICONS) CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
+
 <body>
+  <!-- HEADER START -->
+<div id="header"></div>
+  <!-- HEADER END -->
 
-<div class="container mt-5">
-  <h2 id="surah-title"></h2>
-  <p id="surah-info" class="text-muted mb-4"></p>
-  <div id="ayahs-container"></div>
-</div>
+  <!-- HERO SECTION START  -->
+  <main class="m-0 p-0">
+    <div id="carouselExampleFade" class="carousel slide carousel-fade m-0 p-0" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item sinle_car active">
+          <img
+            src="assets/images/banners/9017039a6d284a81b5cc48a839f2053c.png"
+            class="d-block w-100" alt="...">
+        </div>
+        <!-- <div class="carousel-item">
+          <img
+            src="https://media.istockphoto.com/id/1320158142/photo/on-cyber-gaming-championship-empty-gaming-station-with-players-computer-screen-showing-video.jpg?s=612x612&w=0&k=20&c=KXr3ahTOrPkQSbafrU6e93jMxjFDSNrD0ogJF_u0lEE="
+            class="d-block w-100" alt="...">
+        </div>
+        <div class="carousel-item">
+          <img
+            src="https://media.istockphoto.com/id/2181018992/photo/computer-in-home-with-colorful-gpu-and-cpu-parts-panning-shot.jpg?s=612x612&w=0&k=20&c=COKpysPdADHww15xVXM7kp7ZRDe5m4sUZD7CCQOmGyI="
+            class="d-block w-100" alt="...">
+        </div> -->
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </main>
+  <!-- HERO SECTION END -->
+ <!-- nothing div start -->
+  <main>
+    <div class="container mt-4 py-5">
+      <div class="row" id="singlesurahContainer">
+        <h2 class="text-center">Surah Fatah</h2>
+        <div class="col-5 mx-auto pt-5">
+            <h6 class="arabi float-end">hi</h6><br><br>
+            <h6 class="eng_trans float-start">hi</h6>
+            
+        </div>
+    </div>
+    </div>
+    
+  </main>
+<!-- nothing div end -->
+ <!-- FOOTER START -->
+  <footer class="m-0 p-0 bg-dark text-white py-5 ">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Logo and Description -->
+        <div class="col-md-3 mb-4">
+          <h4 class="mb-3">YourLogo</h4>
+          <p>Short description about your website or company goes here.</p>
+        </div>
 
-<script>
-    async function loadSurah(surahId) {
-  try {
-    const arabicRes = await fetch(`https://api.quran.com/v4/quran/verses/uthmani?chapter_number=${surahId}`);
-    const englishRes = await fetch(`https://api.quran.com/v4/quran/translations?chapter_number=${surahId}&translations=131`);
-    const translitRes = await fetch(`https://api.quran.com/v4/quran/translations?chapter_number=${surahId}&translations=38`);
+        <!-- Navigation Links 1 -->
+        <div class="col-md-3 mb-4">
+          <h5 class="mb-3">Quick Links</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">About</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">Services</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">Contact</a></li>
+          </ul>
+        </div>
 
-    const arabicData = await arabicRes.json();
-    const englishData = await englishRes.json();
-    const translitData = await translitRes.json();
+        <!-- Navigation Links 2 -->
+        <div class="col-md-3 mb-4">
+          <h5 class="mb-3">Useful Links</h5>
+          <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">Privacy Policy</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">Terms of Service</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">FAQ</a></li>
+            <li class="nav-item"><a href="#" class="nav-link text-white p-0 mb-2">Support</a></li>
+          </ul>
+        </div>
 
-    const arabicAyahs = arabicData.verses;
-    const englishAyahs = englishData.translations;
-    const translitAyahs = translitData.translations;
+        <!-- Newsletter -->
+        <div class="col-md-3 mb-4">
+          <h5 class="mb-3">Subscribe to our Newsletter</h5>
+          <form>
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Your Email">
+              <button class="btn btn-primary" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-    document.getElementById("surah-title").textContent = `Surah ${surahId}`;
-    document.getElementById("surah-info").textContent = "Arabic + English Translation + Transliteration";
+  <!-- FOOTER END -->
 
-    const container = document.getElementById("ayahs-container");
-    arabicAyahs.forEach((ayah, index) => {
-      const div = document.createElement("div");
-      div.className = "ayah-box";
-      div.innerHTML = `
-        <p class="ayah-arabic">${ayah.text}</p>
-        <p class="ayah-english">🔹 ${englishAyahs[index].text}</p>
-        <p class="ayah-translit">🔸 ${translitAyahs[index].text}</p>
-      `;
-      container.appendChild(div);
-    });
-
-  } catch (err) {
-    console.error("Error loading Ayahs:", err);
-  }
-}
-
-</script>
+  <!-- BOOTSTRAP 5 CDN  JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <!-- EXTERNAL JS  -->
+  <script src="js/app.js"></script>
 
 </body>
+
 </html>
