@@ -1,12 +1,15 @@
+/* poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+/* Figtree */
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 :root{
     --font_family_poppins:"Poppins", sans-serif;
+   --font_family_Figtree: "Figtree", sans-serif;
 }
 body{
     margin: 0%;
     padding: 0%;
-    font-family: var(--font_family_poppins);
+    font-family: var(--font_family_Figtree);
 }
 
 /* NAVBAR LARGE CSS START */
@@ -23,10 +26,18 @@ visibility: visible;
 .lg_navbar .dropdown-menu  .dropdown-item{
     border: 0 !important;
 }
-.carousel-item{
+.lg_navbar .nav-item .nav-link{
+font-size: 18px;
+font-weight: 500;
+padding: 0px 10px;
+}
+.carousel-item img{
     height: 100vh ;
     object-fit: cover;
     background-size: cover;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-position:center !important;
 }
 .scroll_top_btn{
     position: fixed;
