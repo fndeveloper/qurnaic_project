@@ -27,7 +27,6 @@ fetch("https://api.alquran.cloud/v1/surah")
   .then(data => {
     const container = document.getElementById("surahContainer");
 if(container) 
-    console.log(data.data);
     
     data.data.forEach(surah => {
       const surahCard = `
@@ -66,6 +65,57 @@ if(container)
 
 // SURAH ALL END
 
+// JUZ ALL START
+// API FOR SINGLE SURAH
+// https://api.alquran.cloud/v1/juz/1 
+
+
+const container = document.getElementById("juzContainer");
+
+  for (let index = 0; index < 30; index++) {
+    const juzNumber = index + 1;
+
+    fetch(`https://api.alquran.cloud/v1/juz/${juzNumber}`)
+      .then(response => response.json())
+      .then(data => {
+        const juzData = data.data;
+        const surahs = Object.values(juzData.surahs);
+
+        // Create wrapper for each Juz
+        const juzDiv = document.createElement("div");
+        juzDiv.className = "mb-4 p-3 border rounded shadow-sm";
+
+        // Juz Title
+        const juzTitle = document.createElement("h4");
+        juzTitle.textContent = `📖 Juz ${juzNumber}`;
+        juzDiv.appendChild(juzTitle);
+
+        // Add all Surahs inside this Juz
+        surahs.forEach(surah => {
+          const surahHTML = `
+            <div class="border-bottom py-2">
+              <a href="surah_num.html?surah=${surah.number}" class="text-decoration-none text-dark">
+                <strong>${surah.number}. ${surah.englishName}</strong> 
+                (${surah.englishNameTranslation}) 
+                - <span class="text-muted">${surah.numberOfAyahs} Ayahs</span>
+                <div class="text-end fs-4">${surah.name}</div>
+              </a>
+            </div>
+          `;
+          juzDiv.innerHTML += surahHTML;
+        });
+
+        // Append the whole Juz block to container
+        container.appendChild(juzDiv);
+      })
+      .catch(error => {
+        console.error(`Error fetching Juz ${juzNumber}:`, error);
+      });
+  }
+
+
+// JUZ ALL END
+
 //   SINGLE SURAH START;
 
 Promise.all([
@@ -74,7 +124,7 @@ Promise.all([
   ])
   .then(res => Promise.all(res.map(ress => ress.json())))
   .then(e => {
-    console.log(e[1].data.surahs);
+    // console.log(e[1].data.surahs);
     
     const arabicAyahs = e[1].data.surahs[location.search.split("=")[1]].ayahs;
     const englishAyahs = e[0].data.surahs[location.search.split("=")[1]].ayahs;
@@ -107,3 +157,35 @@ Promise.all([
   
 //   SINGLE SURAH END
   
+
+// ORDER DIV START
+const ordercontainer = document.getElementById("orderContainer");
+console.log();
+
+fetch("https://api.quran.com/api/v4/chapters?language=en")
+    .then(res => res.json())
+    .then(data => {
+      const chapters = data.chapters;
+
+      // Sort by revelation order
+      chapters.sort((a, b) => a.revelation_order - b.revelation_order);
+
+      chapters.forEach(surah => {
+        const surahCard = `
+          <div class="col-4">
+           <div class="mx-auto  p-2 border border-1 shadow my-3">
+            <strong>${surah.revelation_order}. ${surah.name_simple}</strong>
+            (${surah.name_arabic}) - 
+            <span class="text-muted">${surah.revelation_place}</span>
+        
+           </div>
+             </div>
+        `;
+        ordercontainer.innerHTML += surahCard;
+      });
+    })
+    .catch(err => {
+      container.innerHTML = `<p class="text-danger">Error loading data</p>`;
+      console.error(err);
+    });
+// ORDER DIV END
