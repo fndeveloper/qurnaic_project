@@ -159,19 +159,26 @@
 </div>
 <!-- QURAN OFFCANS END -->
 <!-- SURAH OFFCANVAS START -->
-<div class="offcanvas offcanvas-start slider_canvas" tabindex="-1" id="surahOffcanvas" aria-labelledby="surahOffcanvasLabel" data-bs-backdrop="false" data-bs-scroll="false">
+<!-- SURAH OFFCANVAS START -->
+<div class="offcanvas offcanvas-start slider_canvas" tabindex="-1" id="surahOffcanvas" aria-labelledby="surahOffcanvasLabel" data-bs-backdrop="false" data-bs-scroll="true">
   <div class="offcanvas-header border border-bottom-1">
-    <h6 class="offcanvas-title" id="mainOffcanvasLabel">The Subject Of Quran</h6>
+    <h6 class="offcanvas-title" id="surahOffcanvasLabel">The Subject Of Quran</h6>
     <i class="fa-solid fa-xmark bg-transparent text-dark" data-bs-dismiss="offcanvas" aria-label="Close"></i>
   </div>
-  <h3 class="ps-2 mt-3">Surah</h3>
+
   <div class="offcanvas-body d-flex flex-column justify-content-center">
-    <input type="search" class="form-control my-2" placeholder="Search Surah" name="" id="search_surah">
+    <h3 class="ps-2 mt-3">Surah</h3>
+    <form>
+      <input type="search" class=" form-control my-2" placeholder="Search Surah" id="search_surah">
+    </form>
+
     <ul class="navbar-nav overflow-scroll" id="surah_ul">
-  
+      <!-- Surah list yahan aaegi -->
     </ul>
   </div>
 </div>
+<!-- SURAH OFFCANVAS END -->
+
 <!-- SURAH OFFCANS END -->
 
 </header>
@@ -211,6 +218,7 @@
   <!-- HERO SECTION END -->
  <!-- nothing div start -->
   <main>
+    
     <div class="container mt-4">
       <nav class="ayah_name">
         <div class="nav nav-tabs ayah_name" id="nav-tab" role="tablist">

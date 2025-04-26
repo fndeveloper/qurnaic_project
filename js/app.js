@@ -74,12 +74,10 @@ fetch("https://api.alquran.cloud/v1/surah")
   .then(data => {
     const container = document.getElementById("surahContainer");
     var surah_ul=document.getElementById("surah_ul")
-console.log(data.data);
+
 
     if(surah_ul){
   data.data.forEach(e=>{
-    var search_surah=document.getElementById("search_surah")
-    console.log(search_surah.values);
     
 surah_ul.innerHTML+=`
   <!-- ============= NAV-LINK START =================== -->
