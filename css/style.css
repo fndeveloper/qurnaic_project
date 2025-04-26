@@ -53,7 +53,7 @@ padding: 0px 10px;
     border-radius:50px ;
 }
 .offcanvas{
-    width: 75%;
+    /* width: 75%; */
     transition: 0.5s ease;
 }
 /* NAVBAR LARGE CSS END */
@@ -77,3 +77,16 @@ padding: 0px 10px;
     background-color: white !important;
     position: sticky;
 }
+
+
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+    margin-top: 0; /* dropdown button ke bilkul sath rahe */
+  }
+  .dropdown-menu {
+    top: 0;
+    position: absolute;
+    left: 40%
+  }
+  

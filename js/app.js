@@ -1,3 +1,18 @@
+// //   HEADER COMPONTENT CODE START
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   // Fetch the header.html from the same directory as index.html
+//   fetch('header.html')  // Directly referencing header.html in the same folder as index.html
+//     .then(response => response.text()) // Get the text content of the header.html file
+//     .then(data => {
+      
+      
+//       // Insert the fetched HTML content into the #header div
+//       document.getElementById('header').innerHTML = data;
+//     })
+//     });
+  
+    //   HEADER COMPONTENT CODE END
 document.addEventListener("scroll", () => {
     const scrollTop = window.scrollY;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -13,14 +28,29 @@ document.addEventListener("scroll", () => {
     }
   });
 
-//   HEADER COMPONTENT CODE START
 
-fetch("header.html")
-.then(res => res.text())
-.then(data=>{
-document.getElementById("header").innerHTML=`${data}`   
-})
-//   HEADER COMPONTENT CODE END
+    
+// QURAN OFFCANS CODE START
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('openQuranOffcanvas').addEventListener('click', function (e) {
+    e.preventDefault();
+
+    // Close the main offcanvas if it's open
+    var mainCanvas = bootstrap.Offcanvas.getInstance(document.getElementById('mainOffcanvas'));
+    
+    if (mainCanvas) {
+      mainCanvas.hide();  // Hide the main offcanvas
+    }
+
+    // After a short delay, open the Quran offcanvas
+    setTimeout(function () {
+      var quranCanvas = new bootstrap.Offcanvas(document.getElementById('quranOffcanvas'));
+      quranCanvas.show();  // Show the Quran offcanvas
+    }, 300);  // 300ms delay
+  });
+});
+
+// QURAN OFFCANS CODE END
 // SURAH ALL START
 fetch("https://api.alquran.cloud/v1/surah")
   .then(response => response.json())
@@ -189,3 +219,6 @@ fetch("https://api.quran.com/api/v4/chapters?language=en")
       console.error(err);
     });
 // ORDER DIV END
+
+
+
