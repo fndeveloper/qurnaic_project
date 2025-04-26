@@ -75,6 +75,11 @@ fetch("https://api.alquran.cloud/v1/surah")
     const container = document.getElementById("surahContainer");
     var surah_ul=document.getElementById("surah_ul")
 
+    document.addEventListener("input",()=>{
+      var search_surah=document.getElementById("search_surah")
+      console.log(search_surah.values);
+
+    })
 
     if(surah_ul){
   data.data.forEach(e=>{
