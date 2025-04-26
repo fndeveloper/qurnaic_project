@@ -18,13 +18,22 @@ document.addEventListener("scroll", () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   
     const scrollPercent = (scrollTop / docHeight) * 100;
-  
-    const topBtn = document.querySelector(".top_btn_1");
-  
+  var topbar=document.getElementById("topbar");
+
+      const topBtn = document.querySelector(".top_btn");
     if (scrollPercent >= 100) {
       topBtn.innerHTML = `<i class="fa-solid fa-arrow-up"></i>`; // Font Awesome icon
     } else {
       topBtn.innerHTML = `${scrollPercent.toFixed(0)}`;
+    }
+    if(window.scrollY > 400){
+     topbar.classList.add("topbar_fix")
+    
+     
+    }
+    else{
+     topbar.classList.remove("topbar_fix")
+    
     }
   });
 
@@ -32,23 +41,31 @@ document.addEventListener("scroll", () => {
     
 // QURAN OFFCANS CODE START
 document.addEventListener('DOMContentLoaded', function () {
+
+  // Quran open karne ka code
   document.getElementById('openQuranOffcanvas').addEventListener('click', function (e) {
     e.preventDefault();
 
-    // Close the main offcanvas if it's open
     var mainCanvas = bootstrap.Offcanvas.getInstance(document.getElementById('mainOffcanvas'));
-    
     if (mainCanvas) {
-      mainCanvas.hide();  // Hide the main offcanvas
+      mainCanvas.hide();
     }
 
-    // After a short delay, open the Quran offcanvas
     setTimeout(function () {
       var quranCanvas = new bootstrap.Offcanvas(document.getElementById('quranOffcanvas'));
-      quranCanvas.show();  // Show the Quran offcanvas
-    }, 300);  // 300ms delay
+      quranCanvas.show();
+    }, 100);
   });
+
+  // Jab Quran Offcanvas band hoga, main offcanvas ko wapas show karna
+  var quranOffcanvasElement = document.getElementById('quranOffcanvas');
+  quranOffcanvasElement.addEventListener('hidden.bs.offcanvas', function () {
+    var mainCanvas = new bootstrap.Offcanvas(document.getElementById('mainOffcanvas'));
+    mainCanvas.show();
+  });
+
 });
+
 
 // QURAN OFFCANS CODE END
 // SURAH ALL START
@@ -56,13 +73,32 @@ fetch("https://api.alquran.cloud/v1/surah")
   .then(response => response.json())
   .then(data => {
     const container = document.getElementById("surahContainer");
-if(container) 
+    var surah_ul=document.getElementById("surah_ul")
+console.log(data.data);
+
+    if(surah_ul){
+  data.data.forEach(e=>{
+    var search_surah=document.getElementById("search_surah")
+    console.log(search_surah.values);
+    
+surah_ul.innerHTML+=`
+  <!-- ============= NAV-LINK START =================== -->
+
+      <li class="nav-item px-1">
+        <a class="nav-link" href="surah_num.html?surah=${e.number-1}"> <span class="fs-6">${e.number}</span> ${e.englishName}</a>
+      </li>
+      <!-- ============= NAV-LINK END =================== -->
+`
+    
+  })
+}
+    if(container) 
     
     data.data.forEach(surah => {
       const surahCard = `
         <div class="col-md-4 mb-3">
 
-<a href="surah_num.html?surah=${surah.number}" class="text-decoration-none text-dark">
+<a href="surah_num.html?surah=${surah.number-1}" class="text-decoration-none text-dark">
 
             <div class="border rounded p-3 d-flex justify-content-between align-items-center shadow-sm">
               <div>

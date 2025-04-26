@@ -72,10 +72,8 @@ padding: 0px 10px;
     font-size: 32px !important;
 }
 .ayah_name{
-    top: 0%;
-    padding: 10px;
     background-color: white !important;
-    position: sticky;
+
 }
 
 
@@ -89,4 +87,52 @@ padding: 0px 10px;
     position: absolute;
     left: 40%
   }
-  
+  .slider_canvas{
+    transition: 0.5s ease-in-out !important;
+    width: 25vw;
+}
+@media (max-width:992px) {
+    
+  .slider_canvas{
+    transition: 0.5s ease-in-out !important;
+    width: 85vw;
+}
+}
+  .menu_icon_o{
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 400;
+    transform: rotate(90deg);
+  }
+  .logo_of_navbar{
+    height: 60px;
+  }
+ 
+  .topbar_fix{
+    transition: 0.6s ease-in-out;
+    background-color: rgb(255, 255, 255);
+    position: fixed !important;
+    top: 0%;
+    width: 100%;
+ 
+    box-shadow: rgba(100, 100, 111, 0.082) 0px 7px 59px 0px;
+  }
+
+  .offcanvas-body .nav-item {
+    margin: 3px 0px;
+    padding: 3px 0px;
+    border-bottom: 1px  solid rgb(235, 235, 235);
+    transition: 0.2s ease-in-out !important;
+}
+.offcanvas-body .nav-item .nav-link{
+    font-size: 17px;
+    color: rgb(48, 48, 48);
+    transition: 0.2s ease-in-out !important;
+}
+.offcanvas-body .nav-item .nav-link:hover{
+    color: rgb(255, 255, 255);
+}
+.offcanvas-body .nav-item:hover{
+    color: white;
+    background-color: rgb(218, 188, 23);
+}
