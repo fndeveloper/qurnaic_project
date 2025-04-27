@@ -32,12 +32,12 @@ font-weight: 500;
 padding: 0px 10px;
 }
 .carousel-item img{
-    height: 70vh ;
+    height: 90vh ;
     object-fit: cover;
     background-size: cover;
     object-fit: cover;
     background-repeat: no-repeat;
-    background-position:center !important;
+    background-position:top!important;
 }
 .scroll_top_btn{
     position: fixed;
@@ -89,7 +89,7 @@ padding: 0px 10px;
   }
   .slider_canvas{
     transition: 0.5s ease-in-out !important;
-    width: 25vw;
+    width: 15vw;
 }
 @media (max-width:992px) {
     
