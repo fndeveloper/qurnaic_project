@@ -106,13 +106,39 @@ body{
   .logo_of_navbar{
     height: 60px;
   }
+  .home_banner{
+    height: 100vh !important;
+    background-size: cover !important;
+    object-fit: cover;
+    background-position: center;
+  }
+  .shelft{
+      height: 40px !important;
+      width: 100% !important;
+      z-index: 1;
+      bottom: 2% !important;
+      background-color: rebeccapurple !important;
+      transform: rotateX(10deg) !important;
+
+    }
+    
+    .z_2{
+    z-index: 2 !important;
+  }
  .col_11_div a{
-    font-size: 15px;
+    padding: 5px !important;
+    font-size: 14px;
  }
  .blur_bg{
     background-color: rgba(170, 169, 169, 0.041) !important;
     
     backdrop-filter: blur(10px);
+ }
+ .book_div img{
+    transition: 0.6s ease-in-out;
+ }
+ .book_div:hover img{
+    transform: scale(1.1)  !important;
  }
   .topbar_fix{
     transition: 0.6s ease-in-out;
