@@ -13,24 +13,8 @@ body{
 }
 
 /* NAVBAR LARGE CSS START */
-.lg_navbar  .dropdown-menu{
-transition: 0.5s ease-in-out !important;
-display: block;
-opacity: 0;
-visibility: hidden;
-}
-.lg_navbar .dropdown:hover .dropdown-menu{
-opacity: 1;
-visibility: visible;
-}
-.lg_navbar .dropdown-menu  .dropdown-item{
-    border: 0 !important;
-}
-.lg_navbar .nav-item .nav-link{
-font-size: 18px;
-font-weight: 500;
-padding: 0px 10px;
-}
+
+
 .carousel-item img{
     height: 90vh ;
     width: 100% !important;
@@ -84,17 +68,24 @@ padding: 0px 10px;
 
 }
 
+.bg{
+    background-color: red;
+}
+.top_header_1 a{
+    text-decoration: none;
+    color: white !important;
+    padding: 10px 10px;
+}
+.social_cion i{
+    color: white !important;
+}
 
-
-.dropdown:hover > .dropdown-menu {
-    display: block;
-    margin-top: 0; /* dropdown button ke bilkul sath rahe */
-  }
-  .dropdown-menu {
-    top: 0;
-    position: absolute;
-    left: 40%
-  }
+.top_header{
+    position: absolute !important;
+    top: 0%;
+    background-color: rebeccapurple !important;
+    background-color: transparent !important;
+}
   .slider_canvas{
     transition: 0.5s ease-in-out !important;
     width: 15vw;
