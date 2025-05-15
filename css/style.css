@@ -67,9 +67,30 @@ body{
     background-color: white !important;
 
 }
+.share_div{
+    position: sticky;
+    bottom:  3% !important;
+    
+}
+.share_div button{
+    background-color: rgb(206, 205, 205) ;
+padding: 5px 10px;
+border: none !important;
+}
+.tab_s{
+    position: sticky !important;
+top: 1% !important;
+height: max-content !important;
 
+}
+.active{
+    background-color: rgb(129, 127, 127);
+    width: 100%;
+    border-radius: 5px;
+    color: white !important;
+}
 .bg{
-    background-color: red;
+    background-color: rgb(235, 235, 235);
 }
 .top_header_1 a{
     text-decoration: none;
@@ -107,7 +128,7 @@ body{
     height: 60px;
   }
   .home_banner{
-    height: 100vh !important;
+    height: 80vh !important;
     background-size: cover !important;
     object-fit: cover;
     background-position: center;
@@ -139,6 +160,9 @@ body{
  }
  .book_div:hover img{
     transform: scale(1.1)  !important;
+ }
+ .home_banner{
+    background-color: rgb(102, 36, 5);
  }
   .topbar_fix{
     transition: 0.6s ease-in-out;

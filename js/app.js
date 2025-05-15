@@ -26,6 +26,19 @@ fetch("footer.html")
 
   })
 }
+
+// ========================= share =====================
+var share=document.getElementById("share");
+if(share){
+  share.addEventListener("click",()=>{
+    navigator.share({
+      url:window.location.href
+    })
+  })
+}
+
+// ========================= share =====================
+
 // ========================== FOOTER FETCH END ======================================
 // //  QURAN OFFCANS CODE START
 // document.addEventListener('DOMContentLoaded', function () {
