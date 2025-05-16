@@ -5,7 +5,9 @@
 :root{
     --font_family_poppins:"Poppins", sans-serif;
    --font_family_Figtree: "Figtree", sans-serif;
+   /* rgb(219 194 107) */
 }
+
 body{
     margin: 0%;
     padding: 0%;
@@ -132,7 +134,13 @@ height: max-content !important;
     background-size: cover !important;
     object-fit: cover;
     background-position: center;
-  }
+  /* background: #020024;
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 
+)  */
+background: #020024;
+background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+
+}
   .shelft{
       height: 40px !important;
       width: 100% !important;
