@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
 // ========================== HEADER FETCH END ======================================
 // ========================== FOOTER FETCH START ======================================
 var footer = document.getElementById("footer")
-console.log(footer);
 
 if(footer){
 fetch("footer.html")

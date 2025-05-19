@@ -47,8 +47,10 @@ body{
     border-radius:50px ;
 }
 .offcanvas{
-    /* width: 75%; */
-    transition: 0.5s ease;
+    width: 70%;
+
+    z-index: 1212 !important;
+    transition: 0.9s ease;
 }
 /* NAVBAR LARGE CSS END */
 .single_surah_div {
@@ -180,24 +182,7 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
     width: 100%;
   }
 
-  .offcanvas_body .nav-item {
-    margin: 3px 0px;
-    padding: 3px 0px;
-    border-bottom: 1px  solid rgb(235, 235, 235);
-    transition: 0.2s ease-in-out !important;
-}
-.offcanvas_body .nav-item .nav-link{
-    font-size: 17px;
-    color: rgb(48, 48, 48);
-    transition: 0.2s ease-in-out !important;
-}
-.offcanvas_body .nav-item .nav-link:hover{
-    color: rgb(255, 255, 255);
-}
-.offcanvas_body .nav-item:hover{
-    color: white;
-    background-color: rgb(218, 188, 23);
-}
+  
 
 .col_2_fix{
     background-color: white !important;
