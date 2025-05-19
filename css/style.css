@@ -50,7 +50,11 @@ body{
     width: 70%;
 
     z-index: 1212 !important;
-    transition: 0.9s ease;
+    transition: 0.9s ease-in-out !important;
+}
+.navbar{
+    transition: 0.9s ease-in-out !important;
+
 }
 /* NAVBAR LARGE CSS END */
 .single_surah_div {
