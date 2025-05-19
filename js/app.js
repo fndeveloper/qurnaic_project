@@ -48,7 +48,7 @@ document.addEventListener("input", () => {
     if (head) {
       const text = head.textContent.toLowerCase();
       const matches = text.includes(searchValue);
-      console.log(matches);
+     
       
       // Optional: show/hide based on match
       div.style.display = matches ? "block" : "none";
