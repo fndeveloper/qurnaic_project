@@ -101,11 +101,7 @@ height: 100vh !important;
 }
 }
  
-     .custom-active{
-      color: #5c5b5b !important;
-    background-color: #f1f1f1 !important; /* Dark background */
 
-     }
 
   .nav-tabs .nav-link {
     color: #6d94bb; /* Normal tab color */
