@@ -2,45 +2,125 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tabs Example</title>
+  <title>Subjects Panel</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="bg-light py-5">
+<body class="p-4 bg-light">
 
   <div class="container">
-    <!-- Horizontal Tabs -->
-    <ul class="nav nav-tabs justify-content-center mb-4" id="myTab" role="tablist">
+    <h2 class="mb-4">Quran Subject Navigation</h2>
+
+    <!-- Language Switcher -->
+    <div class="mb-3">
+      <label for="languageSelect" class="form-label">Choose Language:</label>
+      <select class="form-select w-auto d-inline-block" id="languageSelect">
+        <option value="en">English</option>
+        <option value="ar">Arabic</option>
+        <option value="ur">Urdu</option>
+        <option value="fr">French</option>
+      </select>
+    </div>
+
+    <!-- Tabs -->
+    <ul class="nav nav-tabs" id="subjectTabs" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab">Home</button>
+        <button class="nav-link active" id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab">List of Subjects</button>
       </li>
       <li class="nav-item" role="presentation">
-        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab">Profile</button>
+        <button class="nav-link" id="index-tab" data-bs-toggle="tab" data-bs-target="#index" type="button" role="tab">Index (1:1)</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="ebooks-tab" data-bs-toggle="tab" data-bs-target="#ebooks" type="button" role="tab">Subjects E-Books (PDF)</button>
       </li>
     </ul>
 
-    <!-- Tab Content -->
-    <div class="tab-content shadow p-4 bg-white rounded" id="myTabContent">
-      <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel">
-        <form>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <input type="email" class="form-control" placeholder="Your Email" required>
-            </div>
-            <div class="col-md-6">
-              <input type="password" class="form-control" placeholder="Password" required>
-            </div>
-            <div class="col-12 d-grid">
-              <button type="submit" class="btn btn-primary">Login</button>
-            </div>
-          </div>
-        </form>
+    <div class="tab-content border border-top-0 p-3 bg-white" id="subjectTabsContent">
+
+      <!-- Subjects Tab -->
+      <div class="tab-pane fade show active" id="subjects" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5>List of Subjects</h5>
+          <select class="form-select w-auto" onchange="sortItems('subjects', this.value)">
+            <option disabled selected>Sort by</option>
+            <option value="name">Name</option>
+            <option value="serial">Serial No.</option>
+            <option value="alpha">Alphabetically</option>
+            <option value="size">Size</option>
+          </select>
+        </div>
+        <ul id="subjects-list" class="list-group">
+          <li class="list-group-item">Clouds (Serial 3)</li>
+          <li class="list-group-item">Agriculture (Serial 1)</li>
+          <li class="list-group-item">Animals (Serial 2)</li>
+        </ul>
       </div>
-      <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel">
-        <p>This is the Profile tab content.</p>
+
+      <!-- Index Tab -->
+      <div class="tab-pane fade" id="index" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5>Index (1:1)</h5>
+          <select class="form-select w-auto" onchange="sortItems('index', this.value)">
+            <option disabled selected>Sort by</option>
+            <option value="name">Name</option>
+            <option value="serial">Serial No.</option>
+            <option value="alpha">Alphabetically</option>
+            <option value="size">Size</option>
+          </select>
+        </div>
+        <ul id="index-list" class="list-group">
+          <li class="list-group-item">1:1 - Opening</li>
+          <li class="list-group-item">2:1 - Al-Baqara</li>
+          <li class="list-group-item">3:1 - Aal-Imran</li>
+        </ul>
+      </div>
+
+      <!-- E-books Tab -->
+      <div class="tab-pane fade" id="ebooks" role="tabpanel">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5>Subjects E-Books (PDF)</h5>
+          <select class="form-select w-auto" onchange="sortItems('ebooks', this.value)">
+            <option disabled selected>Sort by</option>
+            <option value="name">Name</option>
+            <option value="serial">Serial No.</option>
+            <option value="alpha">Alphabetically</option>
+            <option value="size">Size</option>
+          </select>
+        </div>
+        <ul id="ebooks-list" class="list-group">
+          <li class="list-group-item">Agriculture.pdf (1MB)</li>
+          <li class="list-group-item">Animals.pdf (2MB)</li>
+          <li class="list-group-item">Clouds.pdf (0.8MB)</li>
+        </ul>
       </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Simple alphabetical sorting example
+    function sortItems(listId, method) {
+      const list = document.getElementById(`${listId}-list`);
+      let items = Array.from(list.querySelectorAll('li'));
+
+      if (method === 'alpha' || method === 'name') {
+        items.sort((a, b) => a.textContent.localeCompare(b.textContent));
+      } else if (method === 'serial') {
+        items.sort((a, b) => {
+          const numA = parseInt(a.textContent.match(/\d+/));
+          const numB = parseInt(b.textContent.match(/\d+/));
+          return numA - numB;
+        });
+      } else if (method === 'size') {
+        items.sort((a, b) => {
+          const sizeA = parseFloat(a.textContent.match(/(\d+(\.\d+)?)MB/));
+          const sizeB = parseFloat(b.textContent.match(/(\d+(\.\d+)?)MB/));
+          return sizeA - sizeB;
+        });
+      }
+
+      list.innerHTML = '';
+      items.forEach(item => list.appendChild(item));
+    }
+  </script>
 </body>
 </html>
