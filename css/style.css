@@ -86,11 +86,11 @@ padding: 5px 10px;
 border: none !important;
 }
 
-.active{
-    background-color: rgb(129, 127, 127);
-    width: 100%;
-    border-radius: 5px;
-    color: white !important;
+.login_singup_form input{
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: var(--font_family_Figtree) !important;
+  border:1px solid rgb(233, 231, 231) ;
 }
 @media (min-width:992px) {
     .tab_s{
@@ -99,6 +99,20 @@ top: 1% !important;
 height: 100vh !important;
 
 }
+}
+ 
+     .custom-active{
+      color: #5c5b5b !important;
+    background-color: #f1f1f1 !important; /* Dark background */
+
+     }
+
+  .nav-tabs .nav-link {
+    color: #6d94bb; /* Normal tab color */
+  }
+.custom-select{
+ max-height: 200px;      /* Controls dropdown height */
+  overflow-y: auto;
 }
 .bg{
     background-color: rgb(235, 235, 235);
