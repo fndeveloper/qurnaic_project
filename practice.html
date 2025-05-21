@@ -18,6 +18,10 @@
         <option value="ar">Arabic</option>
         <option value="ur">Urdu</option>
         <option value="fr">French</option>
+        <option value="ge">German</option>
+        <option value="ch">Chinese</option>
+        <option value="sp">Spanish</option>
+
       </select>
     </div>
 
@@ -40,18 +44,25 @@
       <div class="tab-pane fade show active" id="subjects" role="tabpanel">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5>List of Subjects</h5>
-          <select class="form-select w-auto" onchange="sortItems('subjects', this.value)">
-            <option disabled selected>Sort by</option>
-            <option value="name">Name</option>
-            <option value="serial">Serial No.</option>
-            <option value="alpha">Alphabetically</option>
-            <option value="size">Size</option>
-          </select>
+          
         </div>
         <ul id="subjects-list" class="list-group">
-          <li class="list-group-item">Clouds (Serial 3)</li>
-          <li class="list-group-item">Agriculture (Serial 1)</li>
-          <li class="list-group-item">Animals (Serial 2)</li>
+   <li class="list-group-item">ALLAH KI TARIF AUR SIFAAT</li>
+<li class="list-group-item">QIYAMAT, AKHIRAT, HASHAR</li>
+<li class="list-group-item">IBADAT, NUSKI, NABUD</li>
+<li class="list-group-item">ALLAH KI MADAD</li>
+<li class="list-group-item">SIDHA RASTA, HIDAYAT, SIRAT-E-MUSTAQEEM</li>
+<li class="list-group-item">KITAB, QURAN, WAHI, NOOR</li>
+<li class="list-group-item">MUTTAQEEN, TAQWA, DERNE WALAY</li>
+<li class="list-group-item">GHAIB, UNKNOWABLE, HIDDEN MOST, BLACK MIRROR</li>
+<li class="list-group-item">EMAN, MOMIN, MOMINEEN</li>
+<li class="list-group-item">NAMAZ, SALAH, SALAT</li>
+<li class="list-group-item">NUFQ, KHARCH KERNA ALLAH K LIYE</li>
+<li class="list-group-item">ZAKAT, TAZKIA, PAK KERNA, PURIFY</li>
+<li class="list-group-item">YAQEEN, YUQINOON, TOQINOON</li>
+<li class="list-group-item">KAFIR, KUFR</li>
+<li class="list-group-item">DIL, QALB, QALOOB, QALOBHM</li>
+
         </ul>
       </div>
 
@@ -59,13 +70,7 @@
       <div class="tab-pane fade" id="index" role="tabpanel">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5>Index (1:1)</h5>
-          <select class="form-select w-auto" onchange="sortItems('index', this.value)">
-            <option disabled selected>Sort by</option>
-            <option value="name">Name</option>
-            <option value="serial">Serial No.</option>
-            <option value="alpha">Alphabetically</option>
-            <option value="size">Size</option>
-          </select>
+          
         </div>
         <ul id="index-list" class="list-group">
           <li class="list-group-item">1:1 - Opening</li>
@@ -78,13 +83,7 @@
       <div class="tab-pane fade" id="ebooks" role="tabpanel">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h5>Subjects E-Books (PDF)</h5>
-          <select class="form-select w-auto" onchange="sortItems('ebooks', this.value)">
-            <option disabled selected>Sort by</option>
-            <option value="name">Name</option>
-            <option value="serial">Serial No.</option>
-            <option value="alpha">Alphabetically</option>
-            <option value="size">Size</option>
-          </select>
+          
         </div>
         <ul id="ebooks-list" class="list-group">
           <li class="list-group-item">Agriculture.pdf (1MB)</li>
@@ -97,30 +96,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Simple alphabetical sorting example
-    function sortItems(listId, method) {
-      const list = document.getElementById(`${listId}-list`);
-      let items = Array.from(list.querySelectorAll('li'));
-
-      if (method === 'alpha' || method === 'name') {
-        items.sort((a, b) => a.textContent.localeCompare(b.textContent));
-      } else if (method === 'serial') {
-        items.sort((a, b) => {
-          const numA = parseInt(a.textContent.match(/\d+/));
-          const numB = parseInt(b.textContent.match(/\d+/));
-          return numA - numB;
-        });
-      } else if (method === 'size') {
-        items.sort((a, b) => {
-          const sizeA = parseFloat(a.textContent.match(/(\d+(\.\d+)?)MB/));
-          const sizeB = parseFloat(b.textContent.match(/(\d+(\.\d+)?)MB/));
-          return sizeA - sizeB;
-        });
-      }
-
-      list.innerHTML = '';
-      items.forEach(item => list.appendChild(item));
-    }
-  </script>
+   
+     </script>
 </body>
 </html>

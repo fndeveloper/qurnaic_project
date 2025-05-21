@@ -96,7 +96,7 @@ border: none !important;
     .tab_s{
     position: sticky !important;
 top: 1% !important;
-height: 100vh !important;
+height: max-content !important;
 
 }
 }

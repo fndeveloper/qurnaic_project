@@ -41,21 +41,54 @@ if(share){
 // ======================== SEARCH LIBRARAY START ===================
 document.addEventListener("input", () => {
   const libraryDivs = document.querySelectorAll(".library_div");
-  const searchValue = document.getElementById("search_lib").value.toLowerCase();
-
+  const searchValue = document.getElementById("search_lib");
+if(libraryDivs && searchValue) {
   libraryDivs.forEach((div) => {
     const head = div.querySelector(".div_library_head");
     if (head) {
       const text = head.textContent.toLowerCase();
-      const matches = text.includes(searchValue);
+      const matches = text.includes(searchValue.value.toLowerCase());
      
       
       // Optional: show/hide based on match
       div.style.display = matches ? "block" : "none";
     }
-  });
+  });}
 });
+// =============== LANGUAGE ==================
+function sortlanguage(lang) {
+  const allLangs = ["english", "arabic", "urdu", "french", "german", "chinese", "spanish"];
+  allLangs.forEach(l => {
+    const ul = document.getElementById(l);
+    if (ul) ul.style.display = (l === lang) ? "block" : "none";
+  });
+}
+function sortItems(id, type) {
+  const ul = document.getElementById(id);
+  const items = Array.from(ul.querySelectorAll('li'));
 
+  let sortedItems;
+
+  if (type === "alpha" || type === "name") {
+    // Alphabetically sort
+    sortedItems = [...items].sort((a, b) => a.textContent.localeCompare(b.textContent));
+  } else if (type === "size") {
+    // Sort by length of text
+    sortedItems = [...items].sort((a, b) => a.textContent.length - b.textContent.length);
+  } else if (type === "serial") {
+    // Extract numbers from text like "1. Something"
+    sortedItems = [...items].sort((a, b) => {
+      const numA = parseInt(a.textContent);
+      const numB = parseInt(b.textContent);
+      return numA - numB;
+    });
+  }
+
+  // Reorder list items without emptying the list
+  sortedItems.forEach(item => ul.appendChild(item));
+}
+
+// =============== LANGUAGE ==================
 
 // ======================== SEARCH LIBRARAY END ===================
  
