@@ -86,7 +86,7 @@ padding: 5px 10px;
 border: none !important;
 }
 
-.login_singup_form input{
+.Sign-in_singup_form input{
   padding: 10px 14px;
   border-radius: 8px;
   font-family: var(--font_family_Figtree) !important;
