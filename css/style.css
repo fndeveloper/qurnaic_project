@@ -185,16 +185,30 @@ background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%,
     padding: 5px !important;
     /* font-size: 14px; */
  }
-.donate_card_main {
-  position: relative;
-  overflow: hidden;
+.card_overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4); /* optional dark overlay */
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: 20px; /* space from bottom */
+}
+.donate_btn {
+  background-color: #f2c94c;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
 }
 
-.donate_card_main_img {
-  height: 250px !important;
-  width: 100%;
-  background-size: cover !important;
+.donate_btn a {
+  color: #000;
 }
+
 
 .card_overlay {
   position: absolute;
