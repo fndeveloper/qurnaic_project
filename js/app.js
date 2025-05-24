@@ -1,14 +1,39 @@
 // ========================== HEADER FETCH START ======================================
+
+// document.addEventListener("DOMContentLoaded", () => {
+//   const header = document.getElementById("header");
+//   if (header) {
+//     fetch("header.html")
+//       .then((res) => res.text())
+//       .then((html) => {
+  //         header.innerHTML = html;
+  //       });
+//   } else {
+//     console.error("Element with ID 'header' not found.");
+//   }
+// });
 document.addEventListener("DOMContentLoaded", () => {
-  var header = document.getElementById("header");
-  if (header) {
-    fetch("header.html")
-      .then((e) => e.text())
-      .then((e) => {
-        header.innerHTML = e;
-      });
-  }
+var header = document.getElementById("header")
+if(header){
+fetch("header.html")
+  .then(e => e.text())
+  .then((e) => {
+
+    header.innerHTML = `
+  ${e}
+  `
+    var dt = document.getElementById("dt");
+  var ti = new Date();
+  dt.innerHTML = ti.toDateString().split("  ");
+
+  })
+}
+
+ 
+  // console.log(ti);
 });
+
+
 
 // ========================== HEADER FETCH END ======================================
 // ========================== FOOTER FETCH START ======================================
@@ -88,7 +113,8 @@ function sortItems(id, type) {
   sortedItems.forEach(item => ul.appendChild(item));
 }
 
-// =============== LANGUAGE ==================
+// =============== LANGUAGE ==================// 
+
 
 // ======================== SEARCH LIBRARAY END ===================
  
