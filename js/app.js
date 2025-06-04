@@ -347,11 +347,33 @@ fetch("https://subjectsofalquran.com/api/topics")
 .then(e => e.json())
 .then(sub=>{
  sub.forEach((dt)=>{
-  console.log(dt);
+  // console.log(dt);
   english_subjects.innerHTML+=`
-    <li class="list-group-item">${dt.topicname}</li>
+    <li class="list-group-item" id="${dt.id}">${dt.topicname}</li>
   
   `
  })
   })
-// =================== ENGLISH SUBJECT CODE END =================
+
+  // =================== ENGLISH SUBJECT CODE END =================
+
+  // =================== QURAN CHAPTERS START ============  //
+   var chaptersTabs=document.getElementById("chaptersTabs");
+fetch("https://subjectsofalquran.com/api/chapters")
+.then(e => e.json())
+.then(sub=>{
+ sub.forEach((dt)=>{
+  console.log(dt);
+  chaptersTabs.innerHTML+=`
+   
+  <li class="nav-item w-100 bg-white shadow-none border  border-0 d-flex col-12 my-1" role="presentation">
+        <button class="nav-link  shadow-none border  border-0" id="chaptertabs${dt.id}" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab">${dt.chaptername}</button>
+      </li>
+  
+  `
+ })
+  })
+
+  // =================== QURAN CHAPTERS END ============  // 
+
+
