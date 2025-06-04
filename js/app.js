@@ -341,3 +341,17 @@ function sortItems(id, type) {
 
 
 
+// =================== ENGLISH SUBJECT CODE START ===============
+var english_subjects=document.getElementById("english_subjects");
+fetch("https://subjectsofalquran.com/api/topics")
+.then(e => e.json())
+.then(sub=>{
+ sub.forEach((dt)=>{
+  console.log(dt);
+  english_subjects.innerHTML+=`
+    <li class="list-group-item">${dt.topicname}</li>
+  
+  `
+ })
+  })
+// =================== ENGLISH SUBJECT CODE END =================
