@@ -407,12 +407,12 @@ if (chaptersTabs && tabContent) {
     const versesHtml = surahDetail.map(v => `
 <div class="bg-light p-3 rounded-2 mb-2 single_ayah_div">
 
-      <p class="text-end fs-6 my-2"><strong></strong><span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}</p>
+      <p class="text-end fs-4 my-2 font_naskh"><strong></strong><span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}</p>
      <br>
-      <p class="text-start fs-6 my-2 fw-light"><strong></strong> ${v.translation_en}</p>
+      <p class="text-start fs-6 my-2 "><strong></strong> ${v.translation_en}</p>
      <br>
      
-      <p class="text-end fs-6 my-2 fw-light"><strong></strong> ${v.translation_ur}</p>
+      <p class="text-end fs-6 my-2  font_naskh"><strong></strong> ${v.translation_ur}</p>
 
 </div>
     `).join("");
@@ -420,7 +420,7 @@ if (chaptersTabs && tabContent) {
     const tabPane = document.getElementById(`surah${surahDetail[0].surah_number}`);
     if (tabPane) {
       tabPane.innerHTML = `
-        <h3 class="text-center fs-3"> سُورَة ${surahDetail[0].surah_name}</h3>
+        <h3 class="text-center font_naskh fs-3"> سُورَة ${surahDetail[0].surah_name}</h3>
 
         ${versesHtml}
       `;
