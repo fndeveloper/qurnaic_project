@@ -343,6 +343,7 @@ function sortItems(id, type) {
 
 // =================== ENGLISH SUBJECT CODE START ===============
 var english_subjects=document.getElementById("english_subjects");
+if(english_subjects){
 fetch("https://subjectsofalquran.com/api/topics")
 .then(e => e.json())
 .then(sub=>{
@@ -354,26 +355,70 @@ fetch("https://subjectsofalquran.com/api/topics")
   `
  })
   })
-
+}
   // =================== ENGLISH SUBJECT CODE END =================
 
-  // =================== QURAN CHAPTERS START ============  //
-   var chaptersTabs=document.getElementById("chaptersTabs");
-fetch("https://subjectsofalquran.com/api/chapters")
-.then(e => e.json())
-.then(sub=>{
- sub.forEach((dt)=>{
-  console.log(dt);
-  chaptersTabs.innerHTML+=`
-   
-  <li class="nav-item w-100 bg-white shadow-none border  border-0 d-flex col-12 my-1" role="presentation">
-        <button class="nav-link  shadow-none border  border-0" id="chaptertabs${dt.id}" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab">${dt.chaptername}</button>
-      </li>
-  
-  `
- })
+  // =================== QURAN SURAH START ============  //
+const chaptersTabs = document.getElementById("chaptersTabs");
+const tabContent = document.getElementById("v-pills-tabContent");
+
+if (chaptersTabs && tabContent) {
+  fetch("https://subjectsofalquran.com/api/surahs")
+    .then(res => res.json())
+    .then(surahs => {
+      surahs.forEach((surah, index) => {
+        // ======= Tab Button =========
+        chaptersTabs.innerHTML += `
+          <li class="nav-item w-100 bg-white d-flex col-12 my-1" role="presentation">
+            <button class="nav-link ${index === 0 ? 'active' : ''}"
+              id="chaptertabs${surah.id}"
+              data-bs-toggle="tab"
+              data-bs-target="#surah${surah.id}"
+              type="button" role="tab">
+              ${surah.id}. <span class="pe-3" style="font-size:3px"> </span> ${surah.surahname}
+            </button>
+          </li>
+        `;
+
+        // ======= Tab Content Placeholder =========
+        tabContent.innerHTML += `
+          <div class="tab-pane fade ${index === 0 ? 'show active' : ''}" 
+            id="surah${surah.id}" role="tabpanel" 
+            aria-labelledby="chaptertabs${surah.id}">
+            <p>Loading surah...</p>
+          </div>
+        `;
+
+        // ======= Fetch Surah Verses =========
+    fetch(`https://subjectsofalquran.com/api/quran/surah/${surah.id}`)
+  .then(res => {
+    // Check if response is HTML (e.g., error page)
+    return res.text().then(text => {
+      try {
+        return JSON.parse(text);
+      } catch (e) {
+        console.error("Not a JSON response:", text);
+        throw e;
+      }
+    });
   })
+  .then(surahDetail => {
+    const versesHtml = surahDetail.map(v => `
+      <p><strong>${v.ayah_number}.</strong> ${v.ayah_text}</p>
+    `).join("");
 
-  // =================== QURAN CHAPTERS END ============  // 
-
-
+    const tabPane = document.getElementById(`surah${surahDetail[0].surah_number}`);
+    if (tabPane) {
+      tabPane.innerHTML = `
+        <h5>${surahDetail[0].surah_name}</h5>
+        ${versesHtml}
+      `;
+    }
+  })
+  .catch(error => {
+    console.error("Fetch or parsing error:", error);
+  });
+;
+      });
+    });
+}
