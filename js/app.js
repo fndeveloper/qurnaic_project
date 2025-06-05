@@ -407,9 +407,9 @@ if (chaptersTabs && tabContent) {
     const versesHtml = surahDetail.map(v => `
 <div class="bg-light p-3 rounded-2 mb-2 single_ayah_div">
 
-      <p class="text-end fs-5 mb-2"><strong>.</strong><span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}</p>
-      <p class="text-start fs-6 mb-2"><strong>.</strong> ${v.translation_en}</p>
-      <p class="text-end fs-6 mb-2"><strong>.</strong> ${v.translation_ur}</p>
+      <p class="text-end fs-5 mb-2"><strong></strong><span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}</p>
+      <p class="text-start fs-6 mb-2 fw-light"><strong></strong> ${v.translation_en}</p>
+      <p class="text-end fs-6 mb-2 fw-light"><strong></strong> ${v.translation_ur}</p>
 
 </div>
     `).join("");
