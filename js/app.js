@@ -391,8 +391,7 @@ if (chaptersTabs && tabContent) {
 
         // ======= Fetch Surah Verses =========
     fetch(`https://subjectsofalquran.com/api/quran/surah/${surah.id}`)
-  .then(res => {
-    // Check if response is HTML (e.g., error page)
+  .then((res) => {
     return res.text().then(text => {
       try {
         return JSON.parse(text);
@@ -403,14 +402,23 @@ if (chaptersTabs && tabContent) {
     });
   })
   .then(surahDetail => {
+    // console.log(surahDetail);
+    
     const versesHtml = surahDetail.map(v => `
-      <p><strong>${v.ayah_number}.</strong> ${v.ayah_text}</p>
+<div class="bg-light p-3 rounded-2 mb-2 single_ayah_div">
+
+      <p class="text-end fs-5 mb-2"><strong>.</strong><span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}</p>
+      <p class="text-start fs-6 mb-2"><strong>.</strong> ${v.translation_en}</p>
+      <p class="text-end fs-6 mb-2"><strong>.</strong> ${v.translation_ur}</p>
+
+</div>
     `).join("");
 
     const tabPane = document.getElementById(`surah${surahDetail[0].surah_number}`);
     if (tabPane) {
       tabPane.innerHTML = `
-        <h5>${surahDetail[0].surah_name}</h5>
+        <h3 class="text-center fs-3"> سُورَة ${surahDetail[0].surah_name}</h3>
+
         ${versesHtml}
       `;
     }
