@@ -421,7 +421,7 @@ if (chaptersTabs && tabContent) {
     if (tabPane) {
       tabPane.innerHTML = `
         <h3 class="text-center font_naskh fs-3"> سُورَة ${surahDetail[0].surah_name}</h3>
-
+<h6 class="text-center fs-5 font_naskh">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</h6>
         ${versesHtml}
       `;
     }
