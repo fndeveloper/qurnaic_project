@@ -361,11 +361,17 @@ fetch("https://subjectsofalquran.com/api/topics")
   // =================== QURAN SURAH START ============  //
 const chaptersTabs = document.getElementById("chaptersTabs");
 const tabContent = document.getElementById("v-pills-tabContent");
-
+document.addEventListener("input",()=>{
+  var surah_name=document.getElementById("surah_name").value
+  return surah_name;
+})
 if (chaptersTabs && tabContent) {
   fetch("https://subjectsofalquran.com/api/surahs")
     .then(res => res.json())
     .then(surahs => {
+  
+      
+      
       surahs.forEach((surah, index) => {
         // ======= Tab Button =========
         chaptersTabs.innerHTML += `
@@ -449,3 +455,10 @@ document.addEventListener("click", function (e) {
 });
 
 // ====================
+
+
+
+// ======================
+
+
+// ======================
