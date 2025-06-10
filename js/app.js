@@ -436,3 +436,16 @@ if (chaptersTabs && tabContent) {
       });
     });
 }
+// ====================
+document.addEventListener("click", function (e) {
+  if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
+    setTimeout(() => {
+      const activePane = document.querySelector('.tab-pane.active');
+      const yOffset = -50; // scroll 50px below top
+      const y = activePane.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }, 200);
+  }
+});
+
+// ====================
