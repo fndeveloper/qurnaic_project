@@ -369,7 +369,7 @@ if (chaptersTabs && tabContent) {
       surahs.forEach((surah, index) => {
         // ======= Tab Button =========
         chaptersTabs.innerHTML += `
-          <li class="nav-item w-100 bg-white d-flex col-12 my-1" role="presentation">
+          <li class="nav-item w-100  d-flex col-12 my-1" role="presentation">
             <button class="nav-link nav_tab_name_Sura ${index === 0 ? 'active' : ''}"
               id="chaptertabs${surah.id}"
               data-bs-toggle="tab"
@@ -401,8 +401,6 @@ if (chaptersTabs && tabContent) {
     });
   })
   .then(surahDetail => {
-    // console.log(surahDetail);
-    
     const versesHtml = surahDetail.map(v => `
 <div class="bg-light p-3 rounded-2 mb-2 single_ayah_div">
 
