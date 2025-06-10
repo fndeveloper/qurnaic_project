@@ -357,7 +357,7 @@ fetch("https://subjectsofalquran.com/api/topics")
   })
 }
   // =================== ENGLISH SUBJECT CODE END =================
-
+ 
   // =================== QURAN SURAH START ============  //
 const chaptersTabs = document.getElementById("chaptersTabs");
 const tabContent = document.getElementById("v-pills-tabContent");
@@ -370,7 +370,7 @@ if (chaptersTabs && tabContent) {
         // ======= Tab Button =========
         chaptersTabs.innerHTML += `
           <li class="nav-item w-100 bg-white d-flex col-12 my-1" role="presentation">
-            <button class="nav-link ${index === 0 ? 'active' : ''}"
+            <button class="nav-link nav_tab_name_Sura ${index === 0 ? 'active' : ''}"
               id="chaptertabs${surah.id}"
               data-bs-toggle="tab"
               data-bs-target="#surah${surah.id}"
@@ -396,7 +396,6 @@ if (chaptersTabs && tabContent) {
       try {
         return JSON.parse(text);
       } catch (e) {
-        console.error("Not a JSON response:", text);
         throw e;
       }
     });
@@ -421,7 +420,13 @@ if (chaptersTabs && tabContent) {
     if (tabPane) {
       tabPane.innerHTML = `
         <h3 class="text-center font_naskh fs-3"> سُورَة ${surahDetail[0].surah_name}</h3>
-<h6 class="text-center fs-5 font_naskh">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</h6>
+<div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
+  <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 mx-auto">
+  <h3 class="position-absolute  start-50 translate-middle-x   font_naskh">
+    بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+  </h3>
+</div>
+
         ${versesHtml}
       `;
     }

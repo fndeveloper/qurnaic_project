@@ -40,6 +40,15 @@ body{
     background-repeat: no-repeat;
     background-position:top!important;
 }
+.nav_tabs_of_s{
+overflow-y: scroll !important;
+height: 100vh !important;
+color: red !important;
+background-color: transparent !important;
+}
+.nav_tabs_of_s::-webkit-scrollbar-button{
+  background-color: #6d94bb !important;
+}
 .scroll_top_btn{
     position: fixed;
     bottom: 5%;
