@@ -464,3 +464,13 @@ fetch("https://subjectsofalquran.com/api/topics")
         });
     }
   });
+
+
+
+  // ============
+  var erase_btn=document.getElementById("erase_btn")
+ if(erase_btn){
+   erase_btn.addEventListener("click",()=>{
+   location.reload();
+  })
+ }
