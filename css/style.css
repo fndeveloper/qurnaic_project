@@ -195,18 +195,15 @@ body {
 .nav_tab_name_Sura{
  transition: 0.5s ease-in-out;
   font-size: 15px !important;
-  color: rgb(109, 109, 109) !important;
-}
-.nav_tab_name_Sura:hover{
-   border-radius: 20px !important;
+  border-radius: 20px !important;
   width: 90% !important;
   text-align: start !important;
   border: none !important;
-  color: white !important;
-  box-shadow: none !important;
- background-color:rgb(52, 118, 131) !important;
-  /* background: linear-gradient(90deg, 0%, rgba(9, 9, 121, 1) 35%,  100%) !important; */
-
+  color: rgb(109, 109, 109) !important;
+}
+.nav_tab_name_Sura_nav-link{
+  width: 90% !important;
+  
 }
 .nav_tab_name_Sura.active{
   border-radius: 20px !important;
@@ -219,6 +216,18 @@ body {
   /* background: linear-gradient(90deg, 0%, rgba(9, 9, 121, 1) 35%,  100%) !important; */
 
 }
+.nav_tab_name_Sura_nav-link:hover .nav_tab_name_Sura{
+
+  width: 90% !important;
+  text-align: start !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: white !important;
+ background-color:rgb(52, 118, 131) !important;
+  /* background: linear-gradient(90deg, 0%, rgba(9, 9, 121, 1) 35%,  100%) !important; */
+
+}
+
 .top_header_1 a {
   text-decoration: none;
   color: white !important;

@@ -369,7 +369,7 @@ if (chaptersTabs && tabContent) {
       surahs.forEach((surah, index) => {
         // ======= Tab Button =========
         chaptersTabs.innerHTML += `
-          <li class="nav-item w-100  d-flex col-12 my-1" role="presentation">
+          <li class="nav-item w-100  d-flex col-12 my-1 nav_tab_name_Sura_nav-link" role="presentation">
             <button class="nav-link nav_tab_name_Sura ${index === 0 ? 'active' : ''}"
               id="chaptertabs${surah.id}"
               data-bs-toggle="tab"
