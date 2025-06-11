@@ -357,9 +357,49 @@ fetch("https://subjectsofalquran.com/api/topics")
   })
 }
   // =================== ENGLISH SUBJECT CODE END =================
+// Elements
 const chaptersTabs = document.getElementById("chaptersTabs");
 const tabContent = document.getElementById("v-pills-tabContent");
 const searchInput = document.getElementById("surah_name");
+const languageSelect = document.getElementById("languageSelect");
+const erase_btn = document.getElementById("erase_btn");
+
+let currentLanguage = "en"; // default language
+
+// ==========================================================================
+
+fetch("https://subjectsofalquran.com/api/quran/languages")
+  .then((res) => res.json())
+  .then((data) => {
+    const langs = data.available_languages || {};  // ✅ Fix here
+
+    let optionsHtml = "";
+
+    Object.entries(langs).forEach(([code, name]) => {
+      console.log(code, name);
+      const selected = code === "en" ? "selected" : "";
+      optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
+    });
+
+    if (languageSelect) {
+      languageSelect.innerHTML = optionsHtml;
+    } else {
+      console.error("languageSelect element not found.");
+    }
+  })
+  .catch((err) => console.error("Language API Error:", err));
+
+// ==========================================================================
+
+// Language change event
+if (languageSelect) {
+  languageSelect.addEventListener("change", () => {
+    currentLanguage = languageSelect.value;
+    fetch("https://subjectsofalquran.com/api/surahs")
+      .then((res) => res.json())
+      .then(loadSurahTabs);
+  });
+}
 
 // Load Tabs from API
 function loadSurahTabs(surahs) {
@@ -369,7 +409,7 @@ function loadSurahTabs(surahs) {
   surahs.forEach((surah, index) => {
     chaptersTabs.innerHTML += `
       <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
-        <button class="nav-link nav_tab_name_Sura ${index === 0 ? 'active' : ''}"
+        <button class="nav-link nav_tab_name_Sura ${index === 0 ? "active" : ""}"
           id="chaptertabs${surah.id}"
           data-bs-toggle="tab"
           data-bs-target="#surah${surah.id}"
@@ -381,8 +421,8 @@ function loadSurahTabs(surahs) {
     `;
 
     tabContent.innerHTML += `
-      <div class="tab-pane fade ${index === 0 ? 'show active' : ''}" 
-        id="surah${surah.id}" role="tabpanel" 
+      <div class="tab-pane fade ${index === 0 ? "show active" : ""}"
+        id="surah${surah.id}" role="tabpanel"
         aria-labelledby="chaptertabs${surah.id}">
         <p class="loading">Click tab to load surah...</p>
       </div>
@@ -401,19 +441,18 @@ function loadSurahContent(surahId) {
   if (pane && !pane.dataset.loaded) {
     pane.innerHTML = `<p>Loading surah...</p>`;
 
-    fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}`)
-      .then(res => res.text().then(text => JSON.parse(text)))
-      .then(data => {
+    fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`)
+      .then((res) => res.text().then((text) => JSON.parse(text)))
+      .then((data) => {
         const surahName = data[0].surah_name.trim();
         const isTawbah = surahName.includes("التوبة") || surahName.toLowerCase().includes("tawbah");
 
-        const versesHtml = data.map(v => `
+        const versesHtml = data.map((v) => `
           <div class="bg-light p-3 rounded-2 mb-2 single_ayah_div">
             <p class="text-end fs-4 my-2 font_naskh">
               <span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}
             </p>
-            <p class="text-start fs-6 my-2">${v.translation_en}</p>
-            <p class="text-end fs-6 my-2 font_naskh">${v.translation_ur}</p>
+            <p class="text-start fs-6 my-2">${v[`translation_${currentLanguage}`] || ""}</p>
           </div>
         `).join("");
 
@@ -434,7 +473,7 @@ function loadSurahContent(surahId) {
 
         pane.dataset.loaded = "true";
       })
-      .catch(error => {
+      .catch((error) => {
         pane.innerHTML = `<p>Error loading surah. Please try again later.</p>`;
         console.error("Surah Fetch Error:", error);
       });
@@ -443,7 +482,7 @@ function loadSurahContent(surahId) {
 
 // Initial Load
 fetch("https://subjectsofalquran.com/api/surahs")
-  .then(res => res.json())
+  .then((res) => res.json())
   .then(loadSurahTabs);
 
 // Tab click to load content
@@ -471,18 +510,18 @@ searchInput.addEventListener("input", function () {
 
   if (query.length === 0) {
     fetch("https://subjectsofalquran.com/api/surahs")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(loadSurahTabs);
   } else {
     fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`)
-      .then(res => res.json())
-      .then(surahs => {
+      .then((res) => res.json())
+      .then((surahs) => {
         loadSurahTabs(surahs);
         if (surahs.length > 0) {
           loadSurahContent(surahs[0].id);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Search API Error:", err);
         chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
         tabContent.innerHTML = "";
@@ -491,7 +530,6 @@ searchInput.addEventListener("input", function () {
 });
 
 // Erase button reload
-const erase_btn = document.getElementById("erase_btn");
 if (erase_btn) {
   erase_btn.addEventListener("click", () => {
     location.reload();
