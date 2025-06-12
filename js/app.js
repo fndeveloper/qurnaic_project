@@ -280,7 +280,8 @@ document.addEventListener("click", function (e) {
 });
 
 // Live Search
-searchInput.addEventListener("input", function () {
+if(searchInput){
+  searchInput.addEventListener("input", function () {
   const query = this.value.trim();
 
   if (query.length === 0) {
@@ -303,6 +304,7 @@ searchInput.addEventListener("input", function () {
       });
   }
 });
+}
 
 // Erase button reload
 if (erase_btn) {
@@ -324,7 +326,11 @@ if (Library_tabs && v_pills_tabContent_library) {
       console.log(library.data[0]);
       
       v_pills_tabContent_library.innerHTML=`
-      <h2>${library.data[0].titlegi}</h2>
+     
+ <h4 class="fw-normal text-center pb-3">${library.data[0].title}</h4>
+      <h6 class="fw-normal">Author : ${library.data[0].author}}</h6>
+      <h6 class="fw-normal">Description :${library.data[0].description}</h6>
+ <img src=${library.data[0].thumbnail_url} class="img-fluid py-2 col-12 lib_thumbnail" alt="" srcset="">
       
       `
       library.data.forEach((element, index) => {
@@ -345,7 +351,11 @@ if (Library_tabs && v_pills_tabContent_library) {
 
           v_pills_tabContent_library.innerHTML = `
        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-       ${tdff.title}
+       <h4 class="fw-normal text-center pb-3"> ${tdff.title}</h4>
+      <h6 class="fw-normal">Author : ${tdff.author}</h6>
+      <h6 class="fw-normal">Description : ${tdff.description}</h6>
+ <img src=${tdff.thumbnail_url} class="img-fluid py-2 col-12 lib_thumbnail" alt="" srcset="">
+
        </div>
   
   `

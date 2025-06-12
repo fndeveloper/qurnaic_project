@@ -29,7 +29,12 @@ body {
   font-size: 12px;
   margin: 0px 5px !important;
 }
+.lib_thumbnail{
+  object-fit: cover;
+  background-size: cover;
+  border-radius: 20px;
 
+}
 /* NAVBAR LARGE CSS START */
 .font_naskh {
   font-family: var(--font-family-Noto) !important;
