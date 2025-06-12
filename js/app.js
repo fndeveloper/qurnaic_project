@@ -280,30 +280,30 @@ document.addEventListener("click", function (e) {
 });
 
 // Live Search
-if(searchInput){
+if (searchInput) {
   searchInput.addEventListener("input", function () {
-  const query = this.value.trim();
+    const query = this.value.trim();
 
-  if (query.length === 0) {
-    fetch("https://subjectsofalquran.com/api/surahs")
-      .then((res) => res.json())
-      .then(loadSurahTabs);
-  } else {
-    fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`)
-      .then((res) => res.json())
-      .then((surahs) => {
-        loadSurahTabs(surahs);
-        if (surahs.length > 0) {
-          loadSurahContent(surahs[0].id);
-        }
-      })
-      .catch((err) => {
-        console.error("Search API Error:", err);
-        chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
-        tabContent.innerHTML = "";
-      });
-  }
-});
+    if (query.length === 0) {
+      fetch("https://subjectsofalquran.com/api/surahs")
+        .then((res) => res.json())
+        .then(loadSurahTabs);
+    } else {
+      fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`)
+        .then((res) => res.json())
+        .then((surahs) => {
+          loadSurahTabs(surahs);
+          if (surahs.length > 0) {
+            loadSurahContent(surahs[0].id);
+          }
+        })
+        .catch((err) => {
+          console.error("Search API Error:", err);
+          chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
+          tabContent.innerHTML = "";
+        });
+    }
+  });
 }
 
 // Erase button reload
@@ -323,9 +323,9 @@ if (Library_tabs && v_pills_tabContent_library) {
   fetch("https://subjectsofalquran.com/api/library")
     .then(e1 => e1.json())
     .then((library) => {
-      console.log(library.data[0]);
       
-      v_pills_tabContent_library.innerHTML=`
+
+      v_pills_tabContent_library.innerHTML = `
      
  <h4 class="fw-normal text-center pb-3">${library.data[0].title}</h4>
       <h6 class="fw-normal">Author : ${library.data[0].author}}</h6>
@@ -335,34 +335,51 @@ if (Library_tabs && v_pills_tabContent_library) {
       `
       library.data.forEach((element, index) => {
         const safeData = JSON.stringify(element).replace(/"/g, "&quot;");
-        Library_tabs.innerHTML += `<button class="nav-link nav_tab_name_Sura btn_of_lib_title ${index === 0 ? "active" : ""} col-11 text-start"  data-id="${safeData}" id="v-pills-hom-tab" data-bs-toggle="pill" data-bs-target="#v-pills-hom" type="button" role="tab" aria-controls="v-pills-hom" aria-selected="true">${element.title}</button> `
+     Library_tabs.innerHTML += `
+  <button class="nav-link nav_tab_name_Sura btn_of_lib_title ${index === 0 ? "active" : ""} col-11 text-start" 
+    data-id="${safeData}" 
+    id="v-pills-hom-tab" 
+    data-bs-toggle="pill" 
+    data-bs-target="#v-pills-hom" 
+    type="button" 
+    role="tab" 
+    aria-controls="v-pills-hom" 
+    aria-selected="true">
+    ${element.title}
+  </button>`;
 
       });
       // =============== BUTTON START ===============
-      var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
+     // =============== BUTTON START ===============
+var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
 
+btn_of_lib_title.forEach((s) => {
+  s.addEventListener("click", (e) => {
+    // Remove 'active' class from all buttons
+    btn_of_lib_title.forEach((btn) => {
+      btn.classList.remove("active");
+    });
 
-      btn_of_lib_title.forEach((s) => {
-        s.addEventListener("click", (e) => {
+    // Add 'active' class to the clicked button
+    e.target.classList.add("active");
 
+    // Get data from the clicked button
+    var tdff = JSON.parse(e.target.getAttribute("data-id"));
+    console.log(tdff);
 
-          var tdff = JSON.parse(e.target.getAttribute("data-id"))
-          console.log(tdff);
+    // Display content
+    v_pills_tabContent_library.innerHTML = `
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+        <h4 class="fw-normal text-center pb-3">${tdff.title}</h4>
+        <h6 class="fw-normal">Author : ${tdff.author}</h6>
+        <h6 class="fw-normal">Description : ${tdff.description}</h6>
+        <img src="${tdff.thumbnail_url}" class="img-fluid py-2 col-12 lib_thumbnail" alt="">
+      </div>
+    `;
+  });
+});
+// =============== BUTTON END =================
 
-          v_pills_tabContent_library.innerHTML = `
-       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-       <h4 class="fw-normal text-center pb-3"> ${tdff.title}</h4>
-      <h6 class="fw-normal">Author : ${tdff.author}</h6>
-      <h6 class="fw-normal">Description : ${tdff.description}</h6>
- <img src=${tdff.thumbnail_url} class="img-fluid py-2 col-12 lib_thumbnail" alt="" srcset="">
-
-       </div>
-  
-  `
-
-
-        })
-      })
       // =============== BUTTON END =================
     })
 
