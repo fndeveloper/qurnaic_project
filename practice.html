@@ -1,34 +1,54 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Arabic TTS</title></head>
-<body style="text-align:center;padding:40px;font-family:sans-serif">
-  <h2>Arabic Ayah</h2>
-  <p id="text" style="font-size:2em;direction:rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-  <button onclick="speakArabic()">🔊 Read Arabic</button>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>تلاوة الآية</title>
+  <style>
+    body {
+      font-family: 'Noto Naskh Arabic', serif;
+      text-align: right;
+      direction: rtl;
+      padding: 20px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+    }
+
+    #ayah {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="ayah">إِنَّ ٱللَّهَ شَدِيدُ ٱلۡعِقَابِ</div>
+  <button onclick="readAyah()">🔊 استمع</button>
 
   <script>
-    let voices = [];
+    function readAyah() {
+      const text = document.getElementById('ayah').textContent;
+      const utterance = new SpeechSynthesisUtterance(text);
 
-    function loadVoices() {
-      voices = speechSynthesis.getVoices();
-    }
-    loadVoices();
-    speechSynthesis.onvoiceschanged = loadVoices;
+      // Set Arabic voice if available
+      const voices = speechSynthesis.getVoices();
+      const arabicVoice = voices.find(v => v.lang.includes('ar'));
 
-    function speakArabic() {
-      const text = document.getElementById('text').innerText;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'ar-SA';
-
-      const arVoice = voices.find(v => v.lang.startsWith('ar'));
-      if (arVoice) {
-        utter.voice = arVoice;
-        speechSynthesis.cancel();
-        speechSynthesis.speak(utter);
+      if (arabicVoice) {
+        utterance.voice = arabicVoice;
       } else {
-        alert("❌ Arabic voice not found on this browser/system.");
+        alert("🎤 المتصفح لا يدعم اللغة العربية في تحويل النص إلى كلام.");
       }
+
+      utterance.lang = 'ar-SA'; // Saudi Arabic
+      speechSynthesis.speak(utterance);
     }
+
+    // Ensure voices are loaded
+    window.speechSynthesis.onvoiceschanged = () => {};
   </script>
+
 </body>
 </html>

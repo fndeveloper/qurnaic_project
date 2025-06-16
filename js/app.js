@@ -305,6 +305,8 @@ function loadSurahContent(surahId) {
         const isTawbah = surahName.includes("التوبة") || surahName.toLowerCase().includes("tawbah");
 
         const versesHtml = data.map((v) =>
+       
+          
 
           `
 <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between">
@@ -315,6 +317,11 @@ function loadSurahContent(surahId) {
   </button>
 <button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
 <i class="fas fa-share-alt"></i>
+</button>
+
+
+<button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${v.id}')">
+<i class="fa-solid fa-play"></i>
 </button>
 
 
@@ -524,6 +531,7 @@ function libarayfuntion(ty){
   
 }
 // =======
+if(search_lib){
 search_lib.addEventListener("input", () => {
   var st = search_lib.value.toLowerCase();
 
@@ -534,6 +542,32 @@ search_lib.addEventListener("input", () => {
   libarayfuntion(filtered); // just once
 });
 
-
+}
 // =================================================
+
+
+// ======================= AUDIO CONTENT IS HERE =====================
+function ReadAyah(id) {
+document.getElementById("aud").innerHTML=`<i class="fa-solid fa-pause"></i>`
+  const audioURL = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
+
+  console.log("Playing audio:", audioURL);
+
+  // Stop any currently playing audio
+  if (window.currentAudio) {
+    window.currentAudio.pause();
+    window.currentAudio.currentTime = 0;
+  }
+
+  const audio = new Audio(audioURL);
+  window.currentAudio = audio;
+  audio.play().catch(error => {
+    alert("Error playing audio: " + error.message);
+  });
+document.getElementById("aud").innerHTML=`<i class="fa-solid fa-play"></i>`
+
+}
+
+
+// ======================= AUDIO CONTENT IS END ======================
 
