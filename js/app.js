@@ -325,13 +325,17 @@ function loadSurahContent(surahId) {
     
 
     <!-- Ayah Number Icon (after the Ayah text) -->
-    <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 36px; height: 36px;">
+    
+ <span class="font_naskh d-block text-end" dir="rtl" style="line-height: 2;">
+    ${v.ayah_text}
+    <span class="position-relative d-inline-flex justify-content-center align-items-center ms-2" style="width: 36px; height: 36px;">
       <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
-      <span class="position-absolute top-50 start-50 translate-middle text-dark font_naskh" style="font-size: 16px;">
-         ${new Intl.NumberFormat('ar-SA', { useGrouping: false }).format(v.ayah_number)}
+      <span class="position-absolute font_naskh" style="font-size: 16px;">
+        ${new Intl.NumberFormat('ar-SA', { useGrouping: false }).format(v.ayah_number)}
       </span>
     </span>
-    <span class="font_naskh">${v.ayah_text}</span>
+  </span>
+    
   </p>
 
   <!-- Translation -->
