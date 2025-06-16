@@ -450,6 +450,12 @@ color: red !important;
 ;
   font-weight: 400;
  }
+ .home_lib_image{
+  height: 200px !important;
+object-fit: contain;
+box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+border: 1px solid #f2c94c;
+ }
 
 /* Progress bar (timer) */
 .swal2-timer-progress-bar {

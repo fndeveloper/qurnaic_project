@@ -137,6 +137,8 @@ if (english_subjects) {
 // ============================== LIBRARY CODE START =====================================
 var Library_tabs = document.getElementById("Library_tabs")
 var v_pills_tabContent_library = document.getElementById("v-pills-tabContent-library");
+
+
 if (Library_tabs && v_pills_tabContent_library) {
 
   fetch("https://subjectsofalquran.com/api/library")
@@ -166,8 +168,14 @@ if (Library_tabs && v_pills_tabContent_library) {
     aria-selected="true">
     ${element.title}
   </button>`;
+// =========
 
       });
+
+
+      // ========== library_home_div start =============
+     
+      // ========== library_home_div ==================
       // =============== BUTTON START ===============
       // =============== BUTTON START ===============
       var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
@@ -494,3 +502,31 @@ Publish By : Fons Vitae Publications,  Inc.
     alert("Web Share API not supported in this browser.");
   }
 }
+
+// =================================================
+var library_home_div=document.getElementById("library_home_div")
+if(library_home_div){
+  fetch("https://subjectsofalquran.com/api/library")
+  .then((e)=>e.json())
+  .then((data)=>{
+    data.data.slice(0,4).forEach((a,index)=>{
+   console.log(a);
+   
+       library_home_div.innerHTML+=`
+        <!-- Subject -->
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center book_div library_div">
+        
+          <a href="The_List_of_Subjects.html" class="text-decoration-none">
+            <img src="${a.thumbnail_url}" alt="" class="img-fluid home_lib_image">
+          </a>
+        </div>
+      `
+    })
+    
+  })
+  .catch((r)=>{
+    console.log(r);
+    
+  })
+}
+// =================================================
