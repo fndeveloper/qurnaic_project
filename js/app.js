@@ -142,7 +142,7 @@ if (Library_tabs && v_pills_tabContent_library) {
   fetch("https://subjectsofalquran.com/api/library")
     .then(e1 => e1.json())
     .then((library) => {
-      
+
 
       v_pills_tabContent_library.innerHTML = `
      
@@ -154,7 +154,7 @@ if (Library_tabs && v_pills_tabContent_library) {
       `
       library.data.forEach((element, index) => {
         const safeData = JSON.stringify(element).replace(/"/g, "&quot;");
-     Library_tabs.innerHTML += `
+        Library_tabs.innerHTML += `
   <button class="nav-link nav_tab_name_Sura btn_of_lib_title ${index === 0 ? "active" : ""} col-11 text-start" 
     data-id="${safeData}" 
     id="v-pills-hom-tab" 
@@ -169,18 +169,18 @@ if (Library_tabs && v_pills_tabContent_library) {
 
       });
       // =============== BUTTON START ===============
-     // =============== BUTTON START ===============
-var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
+      // =============== BUTTON START ===============
+      var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
 
-btn_of_lib_title.forEach((s) => {
-  s.addEventListener("click", (e) => {
-    btn_of_lib_title.forEach((btn) => {
-      btn.classList.remove("active");
-    });
+      btn_of_lib_title.forEach((s) => {
+        s.addEventListener("click", (e) => {
+          btn_of_lib_title.forEach((btn) => {
+            btn.classList.remove("active");
+          });
 
-    e.target.classList.add("active");
- var tdff = JSON.parse(e.target.getAttribute("data-id"));
-    v_pills_tabContent_library.innerHTML = `
+          e.target.classList.add("active");
+          var tdff = JSON.parse(e.target.getAttribute("data-id"));
+          v_pills_tabContent_library.innerHTML = `
       <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
         <h4 class="fw-normal text-center pb-3">${tdff.title}</h4>
         <h6 class="fw-normal">Author : ${tdff.author}</h6>
@@ -188,9 +188,9 @@ btn_of_lib_title.forEach((s) => {
         <img src="${tdff.thumbnail_url}" class="img-fluid py-2 col-12 lib_thumbnail" alt="">
       </div>
     `;
-  });
-});
-// =============== BUTTON END =================
+        });
+      });
+      // =============== BUTTON END =================
 
       // =============== BUTTON END =================
     })
@@ -234,7 +234,7 @@ let currentLanguage = "en"; // default language
 fetch("https://subjectsofalquran.com/api/quran/languages")
   .then((res) => res.json())
   .then((data) => {
-    const langs = data.available_languages || {}; 
+    const langs = data.available_languages || {};
 
     let optionsHtml = "";
 
@@ -307,14 +307,14 @@ function loadSurahContent(surahId) {
     fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`)
       .then((res) => res.text().then((text) => JSON.parse(text)))
       .then((data) => {
-       
-        
-        
+
+
+
         const surahName = data[0].surah_name.trim();
         const isTawbah = surahName.includes("التوبة") || surahName.toLowerCase().includes("tawbah");
 
         const versesHtml = data.map((v) =>
-        
+
           `
 <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between">
  <div class="col-lg-1 col-12  bg-light p-3  mb-lg-2  d-flex flex-lg-column justify-content-lg-center justify-content-around">
@@ -445,7 +445,21 @@ Translation: ${e}
 
   navigator.clipboard.writeText(textToCopy)
     .then(() => {
-      alert("Copied to clipboard!");
+
+      setTimeout(() => {
+        Swal.fire({
+          title: "Verse has been copied to the clipboard!",
+   
+          // icon: "success",
+          draggable: true,
+          customClass: {
+            popup: 'cus_copy_pop'
+          },
+          timer: 2000, // Auto close after 5 seconds
+          showConfirmButton: false, // Hide the OK button
+          timerProgressBar: true // Optional: show progress bar
+        })
+      }, 2000);
       console.log(textToCopy);
     })
     .catch(err => {
