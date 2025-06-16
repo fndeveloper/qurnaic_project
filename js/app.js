@@ -320,7 +320,7 @@ function loadSurahContent(surahId) {
 </button>
 
 
-<button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${v.id}')">
+<button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${v.id}', this)">
 <i class="fa-solid fa-play"></i>
 </button>
 
@@ -547,27 +547,44 @@ search_lib.addEventListener("input", () => {
 
 
 // ======================= AUDIO CONTENT IS HERE =====================
-function ReadAyah(id) {
-document.getElementById("aud").innerHTML=`<i class="fa-solid fa-pause"></i>`
+  let currentAudio = null;
+let currentButton = null;
+
+function ReadAyah(id, button) {
   const audioURL = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
 
-  console.log("Playing audio:", audioURL);
-
-  // Stop any currently playing audio
-  if (window.currentAudio) {
-    window.currentAudio.pause();
-    window.currentAudio.currentTime = 0;
+  // If same button clicked again → toggle pause
+  if (currentAudio && !currentAudio.paused && currentButton === button) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    button.innerHTML = `<i class="fa-solid fa-play"></i>`;
+    return;
   }
 
-  const audio = new Audio(audioURL);
-  window.currentAudio = audio;
-  audio.play().catch(error => {
+  // Stop previous audio and reset previous button icon
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    if (currentButton) {
+      currentButton.innerHTML = `<i class="fa-solid fa-play"></i>`;
+    }
+  }
+
+  // Play new audio
+  currentAudio = new Audio(audioURL);
+  currentButton = button;
+
+  currentAudio.play().then(() => {
+    button.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+  }).catch(error => {
     alert("Error playing audio: " + error.message);
   });
-document.getElementById("aud").innerHTML=`<i class="fa-solid fa-play"></i>`
 
+  // When audio ends → reset play icon
+  currentAudio.onended = function () {
+    button.innerHTML = `<i class="fa-solid fa-play"></i>`;
+  };
 }
-
 
 // ======================= AUDIO CONTENT IS END ======================
 
