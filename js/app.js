@@ -63,24 +63,7 @@ if (share) {
 
 // ========================= share =====================
 
-// ======================== SEARCH LIBRARAY START ===================
-document.addEventListener("input", () => {
-  const libraryDivs = document.querySelectorAll(".library_div");
-  const searchValue = document.getElementById("search_lib");
-  if (libraryDivs && searchValue) {
-    libraryDivs.forEach((div) => {
-      const head = div.querySelector(".div_library_head");
-      if (head) {
-        const text = head.textContent.toLowerCase();
-        const matches = text.includes(searchValue.value.toLowerCase());
 
-
-        // Optional: show/hide based on match
-        div.style.display = matches ? "block" : "none";
-      }
-    });
-  }
-});
 // =============== LANGUAGE ==================
 function sortlanguage(lang) {
   const allLangs = ["english", "arabic", "urdu", "french", "german", "chinese", "spanish"];
@@ -505,28 +488,48 @@ Publish By : Fons Vitae Publications,  Inc.
 
 // =================================================
 var library_home_div=document.getElementById("library_home_div")
+var search_lib=document.getElementById("search_lib");
+var library_data=[];
+
 if(library_home_div){
   fetch("https://subjectsofalquran.com/api/library")
   .then((e)=>e.json())
   .then((data)=>{
-    data.data.slice(0,4).forEach((a,index)=>{
-   console.log(a);
+library_data=data.data.slice(0,4);
+libarayfuntion(library_data)
+ })
+ }
+function libarayfuntion(ty){
+ 
+  
+  library_home_div.innerHTML="";
+  ty.forEach((dt,index)=>{
    
-       library_home_div.innerHTML+=`
-        <!-- Subject -->
+    
+   library_home_div.innerHTML+=`
         <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center book_div library_div">
-        
+        <span class="my-3">${dt.title.split(" ").slice(0,3).join(" ")}..</span>
           <a href="The_List_of_Subjects.html" class="text-decoration-none">
-            <img src="${a.thumbnail_url}" alt="" class="img-fluid home_lib_image">
+            <img src="${dt.thumbnail_url}" alt="" class="mt-3 img-fluid home_lib_image">
           </a>
         </div>
       `
-    })
     
   })
-  .catch((r)=>{
-    console.log(r);
-    
-  })
+  
+  
 }
+// =======
+search_lib.addEventListener("input", () => {
+  var st = search_lib.value.toLowerCase();
+
+  const filtered = library_data.filter((e) =>
+    e.title.toLowerCase().includes(st)
+  );
+
+  libarayfuntion(filtered); // just once
+});
+
+
 // =================================================
+
