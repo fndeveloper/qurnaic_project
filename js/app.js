@@ -316,8 +316,8 @@ function loadSurahContent(surahId) {
         const versesHtml = data.map((v) =>
         
           `
-<div class="d-flex flex-row justify-content-between">
- <div class="col-1  bg-light p-3  mb-2  d-flex flex-column">
+<div class="d-flex mb-2 flex-lg-row flex-column justify-content-between">
+ <div class="col-lg-1 col-12  bg-light p-3  mb-lg-2  d-flex flex-lg-column justify-content-lg-center justify-content-around">
   <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
   <button class="cp_bnt mb-2" onclick="Coopy('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
    <i class="fa-regular fa-copy"></i>
@@ -329,7 +329,7 @@ function loadSurahContent(surahId) {
 
 
  </div>
-  <div class="col-11  bg-light p-3  mb-2 ">
+  <div class="col-lg-11 col-12  bg-light p-3  mb-lg-2 ">
   <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
     
 
@@ -355,7 +355,7 @@ function loadSurahContent(surahId) {
         const bismillahSection = isTawbah ? '' : `
           <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
             <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 mx-auto">
-            <h3 class="position-absolute start-50 translate-middle-x font_naskh">
+            <h3 class="position-absolute start-50 translate-middle-x font_naskh bis_text">
               بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
             </h3>
           </div>
