@@ -123,7 +123,6 @@ if (english_subjects) {
     .then(e => e.json())
     .then(sub => {
       sub.forEach((dt) => {
-        // console.log(dt);
         english_subjects.innerHTML += `
     <li class="list-group-item" id="${dt.id}">${dt.topicname}</li>
   
@@ -132,6 +131,95 @@ if (english_subjects) {
     })
 }
 // =================== ENGLISH SUBJECT CODE END =================
+
+
+
+// ============================== LIBRARY CODE START =====================================
+var Library_tabs = document.getElementById("Library_tabs")
+var v_pills_tabContent_library = document.getElementById("v-pills-tabContent-library");
+if (Library_tabs && v_pills_tabContent_library) {
+
+  fetch("https://subjectsofalquran.com/api/library")
+    .then(e1 => e1.json())
+    .then((library) => {
+      
+
+      v_pills_tabContent_library.innerHTML = `
+     
+ <h4 class="fw-normal text-center pb-3">${library.data[0].title}</h4>
+      <h6 class="fw-normal">Author : ${library.data[0].author}}</h6>
+      <h6 class="fw-normal">Description :${library.data[0].description}</h6>
+ <img src=${library.data[0].thumbnail_url} class="img-fluid py-2 col-12 lib_thumbnail" alt="" srcset="">
+      
+      `
+      library.data.forEach((element, index) => {
+        const safeData = JSON.stringify(element).replace(/"/g, "&quot;");
+     Library_tabs.innerHTML += `
+  <button class="nav-link nav_tab_name_Sura btn_of_lib_title ${index === 0 ? "active" : ""} col-11 text-start" 
+    data-id="${safeData}" 
+    id="v-pills-hom-tab" 
+    data-bs-toggle="pill" 
+    data-bs-target="#v-pills-hom" 
+    type="button" 
+    role="tab" 
+    aria-controls="v-pills-hom" 
+    aria-selected="true">
+    ${element.title}
+  </button>`;
+
+      });
+      // =============== BUTTON START ===============
+     // =============== BUTTON START ===============
+var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
+
+btn_of_lib_title.forEach((s) => {
+  s.addEventListener("click", (e) => {
+    btn_of_lib_title.forEach((btn) => {
+      btn.classList.remove("active");
+    });
+
+    e.target.classList.add("active");
+ var tdff = JSON.parse(e.target.getAttribute("data-id"));
+    v_pills_tabContent_library.innerHTML = `
+      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
+        <h4 class="fw-normal text-center pb-3">${tdff.title}</h4>
+        <h6 class="fw-normal">Author : ${tdff.author}</h6>
+        <h6 class="fw-normal">Description : ${tdff.description}</h6>
+        <img src="${tdff.thumbnail_url}" class="img-fluid py-2 col-12 lib_thumbnail" alt="">
+      </div>
+    `;
+  });
+});
+// =============== BUTTON END =================
+
+      // =============== BUTTON END =================
+    })
+
+
+}
+// ============================== LIBRARAY CODE END  =====================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Elements
 const chaptersTabs = document.getElementById("chaptersTabs");
 const tabContent = document.getElementById("v-pills-tabContent");
@@ -146,7 +234,7 @@ let currentLanguage = "en"; // default language
 fetch("https://subjectsofalquran.com/api/quran/languages")
   .then((res) => res.json())
   .then((data) => {
-    const langs = data.available_languages || {};  // ✅ Fix here
+    const langs = data.available_languages || {}; 
 
     let optionsHtml = "";
 
@@ -219,16 +307,49 @@ function loadSurahContent(surahId) {
     fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`)
       .then((res) => res.text().then((text) => JSON.parse(text)))
       .then((data) => {
+       
+        
+        
         const surahName = data[0].surah_name.trim();
         const isTawbah = surahName.includes("التوبة") || surahName.toLowerCase().includes("tawbah");
 
-        const versesHtml = data.map((v) => `
-          <div class="bg-light p-3 rounded-2 mb-2 single_ayah_div">
-            <p class="text-end fs-4 my-2 font_naskh">
-              <span class="text-center aya_time">${v.ayah_number}</span> ${v.ayah_text}
-            </p>
-            <p class="text-start fs-6 my-2">${v[`translation_${currentLanguage}`] || ""}</p>
-          </div>
+        const versesHtml = data.map((v) =>
+        
+          `
+<div class="d-flex flex-row justify-content-between">
+ <div class="col-1  bg-light p-3  mb-2  d-flex flex-column">
+  <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
+  <button class="cp_bnt mb-2" onclick="Coopy('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
+   <i class="fa-regular fa-copy"></i>
+  </button>
+<button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
+<i class="fas fa-share-alt"></i>
+</button>
+
+
+
+ </div>
+  <div class="col-11  bg-light p-3  mb-2 ">
+  <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
+    
+
+    <!-- Ayah Number Icon (after the Ayah text) -->
+    <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 36px; height: 36px;">
+      <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
+      <span class="position-absolute top-50 start-50 translate-middle text-dark font_naskh" style="font-size: 16px;">
+         ${new Intl.NumberFormat('ar-SA', { useGrouping: false }).format(v.ayah_number)}
+      </span>
+    </span>
+    <span class="font_naskh">${v.ayah_text}</span>
+  </p>
+
+  <!-- Translation -->
+  <p class="text-start fs-6 my-2">
+    ${v[`translation_${currentLanguage}`] || ""}
+  </p>
+</div>
+</div>
+
         `).join("");
 
         const bismillahSection = isTawbah ? '' : `
@@ -313,76 +434,40 @@ if (erase_btn) {
   });
 }
 
+function Coopy(a, b, c, d, e) {
+  const textToCopy = `
+Surah Name: ${a}
+Ayah Number: ${b}
+Surah Number: ${c}
+Ayah Text: ${d}
+Translation: ${e}
+  `.trim();
 
-
-// ============================== LIBRARY CODE START =====================================
-var Library_tabs = document.getElementById("Library_tabs")
-var v_pills_tabContent_library = document.getElementById("v-pills-tabContent-library");
-if (Library_tabs && v_pills_tabContent_library) {
-
-  fetch("https://subjectsofalquran.com/api/library")
-    .then(e1 => e1.json())
-    .then((library) => {
-      
-
-      v_pills_tabContent_library.innerHTML = `
-     
- <h4 class="fw-normal text-center pb-3">${library.data[0].title}</h4>
-      <h6 class="fw-normal">Author : ${library.data[0].author}}</h6>
-      <h6 class="fw-normal">Description :${library.data[0].description}</h6>
- <img src=${library.data[0].thumbnail_url} class="img-fluid py-2 col-12 lib_thumbnail" alt="" srcset="">
-      
-      `
-      library.data.forEach((element, index) => {
-        const safeData = JSON.stringify(element).replace(/"/g, "&quot;");
-     Library_tabs.innerHTML += `
-  <button class="nav-link nav_tab_name_Sura btn_of_lib_title ${index === 0 ? "active" : ""} col-11 text-start" 
-    data-id="${safeData}" 
-    id="v-pills-hom-tab" 
-    data-bs-toggle="pill" 
-    data-bs-target="#v-pills-hom" 
-    type="button" 
-    role="tab" 
-    aria-controls="v-pills-hom" 
-    aria-selected="true">
-    ${element.title}
-  </button>`;
-
-      });
-      // =============== BUTTON START ===============
-     // =============== BUTTON START ===============
-var btn_of_lib_title = document.querySelectorAll(".btn_of_lib_title");
-
-btn_of_lib_title.forEach((s) => {
-  s.addEventListener("click", (e) => {
-    // Remove 'active' class from all buttons
-    btn_of_lib_title.forEach((btn) => {
-      btn.classList.remove("active");
-    });
-
-    // Add 'active' class to the clicked button
-    e.target.classList.add("active");
-
-    // Get data from the clicked button
-    var tdff = JSON.parse(e.target.getAttribute("data-id"));
-    console.log(tdff);
-
-    // Display content
-    v_pills_tabContent_library.innerHTML = `
-      <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab" tabindex="0">
-        <h4 class="fw-normal text-center pb-3">${tdff.title}</h4>
-        <h6 class="fw-normal">Author : ${tdff.author}</h6>
-        <h6 class="fw-normal">Description : ${tdff.description}</h6>
-        <img src="${tdff.thumbnail_url}" class="img-fluid py-2 col-12 lib_thumbnail" alt="">
-      </div>
-    `;
-  });
-});
-// =============== BUTTON END =================
-
-      // =============== BUTTON END =================
+  navigator.clipboard.writeText(textToCopy)
+    .then(() => {
+      alert("Copied to clipboard!");
+      console.log(textToCopy);
     })
-
-
+    .catch(err => {
+      console.error("Failed to copy: ", err);
+    });
 }
-// ============================== LIBRARAY CODE END  =====================================
+
+function ShareAyah(a, b, c, d, e) {
+  const shareData = {
+    title: `Surah ${a} - Ayah ${b}`,
+    text: `Surah Name: ${a}
+Ayah Number: ${b}
+Surah Number: ${c}
+Ayah Text: ${d}
+Translation: ${e}`
+  };
+
+  if (navigator.share) {
+    navigator.share(shareData)
+      .then(() => console.log("Shared successfully"))
+      .catch((error) => console.error("Sharing failed", error));
+  } else {
+    alert("Web Share API not supported in this browser.");
+  }
+}

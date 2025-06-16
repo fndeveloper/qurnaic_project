@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Noto+Naskh+Arabic:wght@400..700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 :root {
   --font_family_poppins: "Poppins", sans-serif;
   --font_family_Figtree: "Figtree", sans-serif;
   --font-family-Noto: "Noto Sans Arabic", sans-serif;
   --font-family-Naskh: "Noto Naskh Arabic", serif;
+  --font-family-Amiri: "Amiri", serif;
   /* rgb(219 194 107) */
 }
 
@@ -35,9 +36,16 @@ body {
   border-radius: 20px;
 
 }
+.cp_bnt{
+  background-color: transparent;
+  padding: 0px !important;
+  border: none;
+  font-weight: 400 !important;
+  text-align: start !important;
+}
 /* NAVBAR LARGE CSS START */
 .font_naskh {
-  font-family: var(--font-family-Noto) !important;
+  font-family: var(--font-family-Amiri) !important;
 }
 
 .carousel-item img {
