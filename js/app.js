@@ -441,6 +441,10 @@ Ayah Number: ${b}
 Surah Number: ${c}
 Ayah Text: ${d}
 Translation: ${e}
+
+
+Website : https://subjectsofalquran.com/
+Publish By : Fons Vitae Publications,  Inc.
   `.trim();
 
   navigator.clipboard.writeText(textToCopy)
@@ -474,7 +478,12 @@ function ShareAyah(a, b, c, d, e) {
 Ayah Number: ${b}
 Surah Number: ${c}
 Ayah Text: ${d}
-Translation: ${e}`
+Translation: ${e}
+Website : https://subjectsofalquran.com/
+Publish By : Fons Vitae Publications,  Inc.
+`
+
+
   };
 
   if (navigator.share) {
