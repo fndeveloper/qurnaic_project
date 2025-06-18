@@ -588,3 +588,58 @@ function ReadAyah(id, button) {
 
 // ======================= AUDIO CONTENT IS END ======================
 
+
+
+
+// =================================================
+var library_div=document.getElementById("library_div")
+var search_lib=document.getElementById("search_lib");
+var library_data1=[];
+
+if(library_div){
+  fetch("https://subjectsofalquran.com/api/library")
+  .then((e)=>e.json())
+  .then((data)=>{
+library_data1=data.data;
+libarayfuntion1(library_data1)
+ })
+ }
+function libarayfuntion1(ty){
+ 
+  
+  library_div.innerHTML="";
+  ty.forEach((dt,index)=>{
+
+    library_div.innerHTML += `
+  <div class="  col-sm-4 col-md-3 col-lg-3  text-center book_di library_div position-relative">
+    <span class="my-3">${dt.title}</span>
+    <a href="The_List_of_Subjects.html" class="text-decoration-none">
+      <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
+    </a>
+    <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf">
+     
+  </div>
+`;
+
+
+    
+  })
+  
+  
+}
+// =======
+if(search_lib){
+search_lib.addEventListener("input", () => {
+  var st = search_lib.value.toLowerCase();
+
+  const filtered = library_data1.filter((e) =>
+    e.title.toLowerCase().includes(st)
+  );
+
+  libarayfuntion1(filtered); // just once
+});
+
+}
+// =================================================
+
+
