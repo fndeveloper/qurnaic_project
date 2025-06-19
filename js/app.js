@@ -299,6 +299,7 @@ function loadSurahContent(surahId) {
       .then((res) => res.text().then((text) => JSON.parse(text)))
       .then((data) => {
 
+  
 
 
         const surahName = data[0].surah_name.trim();
@@ -309,8 +310,8 @@ function loadSurahContent(surahId) {
           
 
           `
-<div class="d-flex mb-2 flex-lg-row flex-column justify-content-between">
- <div class="col-lg-1 col-12  bg-light p-3  mb-lg-2  d-flex flex-lg-column justify-content-lg-center justify-content-around">
+<div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
+ <div class="col-lg-1 col-12   p-3  mb-lg-2  d-flex flex-lg-column justify-content-lg-center justify-content-around">
   <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
   <button class="cp_bnt mb-2" onclick="Coopy('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
    <i class="fa-regular fa-copy"></i>
@@ -327,7 +328,7 @@ function loadSurahContent(surahId) {
 
 
  </div>
-  <div class="col-lg-11 col-12  bg-light p-3  mb-lg-2 ">
+  <div class="col-lg-11 col-12   p-3  mb-lg-2 ">
   <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
     
 
@@ -365,6 +366,10 @@ function loadSurahContent(surahId) {
 
         pane.innerHTML = `
           <h3 class="text-center font_naskh fs-3">سُورَة ${surahName}</h3>
+          <span>No of Surah : ${data[0].surah_number}</span>
+          <br>
+          <span> ${data.length}</span>
+
           ${bismillahSection}
           ${versesHtml}
         `;
