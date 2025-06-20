@@ -311,7 +311,7 @@ function loadSurahContent(surahId) {
     fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`, {
         method: "GET",
         headers: {
-          "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+          "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", 
           "Content-Type": "application/json"
         }
       }
@@ -578,6 +578,8 @@ if (library_home_div) {
   })
     .then((e) => e.json())
     .then((data) => {
+    
+      
       library_data = data.data.slice(0, 4);
       libarayfuntion(library_data)
     })
@@ -678,6 +680,8 @@ if (library_div) {
   })
     .then((e) => e.json())
     .then((data) => {
+      console.log(data);
+      
       library_data1 = data.data;
       libarayfuntion1(library_data1)
     })
@@ -691,7 +695,7 @@ function libarayfuntion1(ty) {
     library_div.innerHTML += `
   <div class="  col-sm-4 col-md-3 col-lg-3  text-center book_di library_div position-relative">
     <span class="my-3">${dt.title}</span>
-    <a href="The_List_of_Subjects.html" class="text-decoration-none">
+    <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank"  class="text-decoration-none">
       <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
     </a>
     <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf">
