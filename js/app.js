@@ -102,7 +102,14 @@ function sortItems(id, type) {
 // =================== ENGLISH SUBJECT CODE START ===============
 var english_subjects = document.getElementById("english_subjects");
 if (english_subjects) {
-  fetch("https://subjectsofalquran.com/api/topics")
+  fetch("https://subjectsofalquran.com/api/topics", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Content-Type": "application/json"
+    }
+  }
+  )
     .then(e => e.json())
     .then(sub => {
       sub.forEach((dt) => {
@@ -124,7 +131,14 @@ var v_pills_tabContent_library = document.getElementById("v-pills-tabContent-lib
 
 if (Library_tabs && v_pills_tabContent_library) {
 
-  fetch("https://subjectsofalquran.com/api/library")
+  fetch("https://subjectsofalquran.com/api/library", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Content-Type": "application/json"
+    }
+  }
+  )
     .then(e1 => e1.json())
     .then((library) => {
 
@@ -151,13 +165,13 @@ if (Library_tabs && v_pills_tabContent_library) {
     aria-selected="true">
     ${element.title}
   </button>`;
-// =========
+        // =========
 
       });
 
 
       // ========== library_home_div start =============
-     
+
       // ========== library_home_div ==================
       // =============== BUTTON START ===============
       // =============== BUTTON START ===============
@@ -190,27 +204,6 @@ if (Library_tabs && v_pills_tabContent_library) {
 }
 // ============================== LIBRARAY CODE END  =====================================
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Elements
 const chaptersTabs = document.getElementById("chaptersTabs");
 const tabContent = document.getElementById("v-pills-tabContent");
@@ -222,7 +215,13 @@ let currentLanguage = "en"; // default language
 
 // ==========================================================================
 
-fetch("https://subjectsofalquran.com/api/quran/languages")
+fetch("https://subjectsofalquran.com/api/quran/languages", {
+  method: "GET",
+  headers: {
+    "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+    "Content-Type": "application/json"
+  }
+})
   .then((res) => res.json())
   .then((data) => {
     const langs = data.available_languages || {};
@@ -249,14 +248,26 @@ fetch("https://subjectsofalquran.com/api/quran/languages")
 if (languageSelect) {
   languageSelect.addEventListener("change", () => {
     currentLanguage = languageSelect.value;
-    fetch("https://subjectsofalquran.com/api/surahs")
+    fetch("https://subjectsofalquran.com/api/surahs"
+      , {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+          "Content-Type": "application/json"
+        }
+      }
+    )
       .then((res) => res.json())
+
+
       .then(loadSurahTabs);
   });
 }
 
 // Load Tabs from API
 function loadSurahTabs(surahs) {
+
+
   chaptersTabs.innerHTML = "";
   tabContent.innerHTML = "";
 
@@ -291,25 +302,32 @@ function loadSurahTabs(surahs) {
 
 // Load Surah content by ID
 function loadSurahContent(surahId) {
+
+
   const pane = document.getElementById(`surah${surahId}`);
   if (pane && !pane.dataset.loaded) {
     pane.innerHTML = `<p>Loading surah...</p>`;
 
-    fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`)
+    fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+          "Content-Type": "application/json"
+        }
+      }
+    )
       .then((res) => res.text().then((text) => JSON.parse(text)))
       .then((data) => {
+        const verses = data.data || [];
+        if (!Array.isArray(verses)) {
+          throw new Error("Invalid data format: 'data.data' is not an array");
+        }
 
-  
-
-
-        const surahName = data[0].surah_name.trim();
+        const surahName = verses[0]?.surah_name || "";
         const isTawbah = surahName.includes("التوبة") || surahName.toLowerCase().includes("tawbah");
-
-        const versesHtml = data.map((v) =>
-       
-          
-
+        const versesHtml = verses.map((v) =>
           `
+      
 <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
  <div class="col-lg-1 col-12   p-3  mb-lg-2  d-flex flex-lg-column justify-content-lg-center justify-content-around">
   <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
@@ -365,11 +383,9 @@ function loadSurahContent(surahId) {
         `;
 
         pane.innerHTML = `
+       
           <h3 class="text-center font_naskh fs-3">سُورَة ${surahName}</h3>
-          <span>No of Surah : ${data[0].surah_number}</span>
-          <br>
-          <span> ${data.length}</span>
-
+          
           ${bismillahSection}
           ${versesHtml}
         `;
@@ -378,13 +394,21 @@ function loadSurahContent(surahId) {
       })
       .catch((error) => {
         pane.innerHTML = `<p>Error loading surah. Please try again later.</p>`;
-        // console.error("Surah Fetch Error:", error);
+        console.error("Surah Fetch Error:", error);
       });
   }
 }
 
 // Initial Load
-fetch("https://subjectsofalquran.com/api/surahs")
+fetch("https://subjectsofalquran.com/api/surahs"
+  , {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Content-Type": "application/json"
+    }
+  }
+)
   .then((res) => res.json())
   .then(loadSurahTabs);
 
@@ -413,11 +437,27 @@ if (searchInput) {
     const query = this.value.trim();
 
     if (query.length === 0) {
-      fetch("https://subjectsofalquran.com/api/surahs")
+      fetch("https://subjectsofalquran.com/api/surahs"
+        , {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+            "Content-Type": "application/json"
+          }
+        }
+      )
         .then((res) => res.json())
         .then(loadSurahTabs);
     } else {
-      fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`)
+      fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`
+        , {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+            "Content-Type": "application/json"
+          }
+        }
+      )
         .then((res) => res.json())
         .then((surahs) => {
           loadSurahTabs(surahs);
@@ -433,6 +473,27 @@ if (searchInput) {
     }
   });
 }
+
+// ====================================== QURAN.HTML CODE END ==============================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ======================================================= QURAN.HTML CODE END ================================================
+
 
 // Erase button reload
 if (erase_btn) {
@@ -460,7 +521,7 @@ Publish By : Fons Vitae Publications,  Inc.
       setTimeout(() => {
         Swal.fire({
           title: "Verse has been copied to the clipboard!",
-   
+
           // icon: "success",
           draggable: true,
           customClass: {
@@ -503,56 +564,62 @@ Publish By : Fons Vitae Publications,  Inc.
 }
 
 // =================================================
-var library_home_div=document.getElementById("library_home_div")
-var search_lib=document.getElementById("search_lib");
-var library_data=[];
+var library_home_div = document.getElementById("library_home_div")
+var search_lib = document.getElementById("search_lib");
+var library_data = [];
 
-if(library_home_div){
-  fetch("https://subjectsofalquran.com/api/library")
-  .then((e)=>e.json())
-  .then((data)=>{
-library_data=data.data.slice(0,4);
-libarayfuntion(library_data)
- })
- }
-function libarayfuntion(ty){
- 
-  
-  library_home_div.innerHTML="";
-  ty.forEach((dt,index)=>{
-   
-    
-   library_home_div.innerHTML+=`
+if (library_home_div) {
+  fetch("https://subjectsofalquran.com/api/library", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Content-Type": "application/json"
+    }
+  })
+    .then((e) => e.json())
+    .then((data) => {
+      library_data = data.data.slice(0, 4);
+      libarayfuntion(library_data)
+    })
+}
+function libarayfuntion(ty) {
+
+
+  library_home_div.innerHTML = "";
+  ty.forEach((dt, index) => {
+
+
+    library_home_div.innerHTML += `
         <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center book_div library_div">
-        <span class="my-3">${dt.title.split(" ").slice(0,3).join(" ")}..</span>
+        <span class="my-3">${dt.title.split(" ").slice(0, 3).join(" ")}..</span>
           <a href="The_List_of_Subjects.html" class="text-decoration-none">
             <img src="${dt.thumbnail_url}" alt="" class="mt-3 img-fluid home_lib_image">
           </a>
         </div>
       `
-    
+
   })
-  
-  
+
+
 }
 // =======
-if(search_lib){
-search_lib.addEventListener("input", () => {
-  var st = search_lib.value.toLowerCase();
+if (search_lib) {
+  search_lib.addEventListener("input", () => {
+    var st = search_lib.value.toLowerCase();
 
-  const filtered = library_data.filter((e) =>
-    e.title.toLowerCase().includes(st)
-  );
+    const filtered = library_data.filter((e) =>
+      e.title.toLowerCase().includes(st)
+    );
 
-  libarayfuntion(filtered); // just once
-});
+    libarayfuntion(filtered); // just once
+  });
 
 }
 // =================================================
 
 
 // ======================= AUDIO CONTENT IS HERE =====================
-  let currentAudio = null;
+let currentAudio = null;
 let currentButton = null;
 
 function ReadAyah(id, button) {
@@ -597,23 +664,29 @@ function ReadAyah(id, button) {
 
 
 // =================================================
-var library_div=document.getElementById("library_div")
-var search_lib=document.getElementById("search_lib");
-var library_data1=[];
+var library_div = document.getElementById("library_div")
+var search_lib = document.getElementById("search_lib");
+var library_data1 = [];
 
-if(library_div){
-  fetch("https://subjectsofalquran.com/api/library")
-  .then((e)=>e.json())
-  .then((data)=>{
-library_data1=data.data;
-libarayfuntion1(library_data1)
- })
- }
-function libarayfuntion1(ty){
- 
-  
-  library_div.innerHTML="";
-  ty.forEach((dt,index)=>{
+if (library_div) {
+  fetch("https://subjectsofalquran.com/api/library", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Content-Type": "application/json"
+    }
+  })
+    .then((e) => e.json())
+    .then((data) => {
+      library_data1 = data.data;
+      libarayfuntion1(library_data1)
+    })
+}
+function libarayfuntion1(ty) {
+
+
+  library_div.innerHTML = "";
+  ty.forEach((dt, index) => {
 
     library_div.innerHTML += `
   <div class="  col-sm-4 col-md-3 col-lg-3  text-center book_di library_div position-relative">
@@ -627,22 +700,22 @@ function libarayfuntion1(ty){
 `;
 
 
-    
+
   })
-  
-  
+
+
 }
 // =======
-if(search_lib){
-search_lib.addEventListener("input", () => {
-  var st = search_lib.value.toLowerCase();
+if (search_lib) {
+  search_lib.addEventListener("input", () => {
+    var st = search_lib.value.toLowerCase();
 
-  const filtered = library_data1.filter((e) =>
-    e.title.toLowerCase().includes(st)
-  );
+    const filtered = library_data1.filter((e) =>
+      e.title.toLowerCase().includes(st)
+    );
 
-  libarayfuntion1(filtered); // just once
-});
+    libarayfuntion1(filtered); // just once
+  });
 
 }
 // =================================================
