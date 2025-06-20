@@ -1,42 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Flipbook Practice</title>
-
-  <!-- DearFlip CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@dearhive/dearflip@2.3.4/css/dflip.min.css" />
-  
-  <!-- DearFlip JS -->
-  <script src="https://cdn.jsdelivr.net/npm/@dearhive/dearflip@2.3.4/js/dflip.min.js"></script>
-
+  <meta charset="UTF-8">
+  <title>Quran PDF Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: sans-serif;
-      background-color: #f9f9f9;
-      padding: 20px;
+      background-color: #f8f9fa;
     }
-    #flipbook {
+
+    h2 {
+      text-align: center;
+      padding: 20px;
+      color: #343a40;
+    }
+
+    .pdf-container {
       width: 90%;
-      height: 600px;
-      margin: auto;
+      height: 90vh;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border: 1px solid #dee2e6;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   </style>
 </head>
 <body>
 
-  <h2 style="text-align:center;">Quran PDF Flipbook</h2>
+  <h2>📘 Quran PDF Viewer (API Source)</h2>
 
-  <div id="flipbook" class="dflip-book" 
-       data-pdf-url="https://subjectsofalquran.com/storage/library/pdf/1749957533_INDEX1.pdf"
-       style="width:100%; height:600px;"></div>
-
-  <script>
-    window.addEventListener("load", function () {
-      DFLIP.parse(); // Initialize flipbook
-    });
-  </script>
+  <div class="pdf-container">
+    <iframe 
+      src="https://subjectsofalquran.com/storage/library/pdf/1749957533_INDEX1.pdf">
+    </iframe>
+  </div>
 
 </body>
 </html>

@@ -65,13 +65,7 @@ if (share) {
 
 
 // =============== LANGUAGE ==================
-function sortlanguage(lang) {
-  const allLangs = ["english", "arabic", "urdu", "french", "german", "chinese", "spanish"];
-  allLangs.forEach(l => {
-    const ul = document.getElementById(l);
-    if (ul) ul.style.display = (l === lang) ? "block" : "none";
-  });
-}
+
 function sortItems(id, type) {
   const ul = document.getElementById(id);
   const items = Array.from(ul.querySelectorAll('li'));
@@ -102,6 +96,7 @@ function sortItems(id, type) {
 // =================== ENGLISH SUBJECT CODE START ===============
 var english_subjects = document.getElementById("english_subjects");
 if (english_subjects) {
+ 
   fetch("https://subjectsofalquran.com/api/topics", {
     method: "GET",
     headers: {
@@ -112,7 +107,11 @@ if (english_subjects) {
   )
     .then(e => e.json())
     .then(sub => {
-      sub.forEach((dt) => {
+      // console.log(sub.data);
+      var sub_data=sub.data;
+      
+      
+      sub_data.forEach((dt) => {
         english_subjects.innerHTML += `
     <li class="list-group-item" id="${dt.id}">${dt.topicname}</li>
   
