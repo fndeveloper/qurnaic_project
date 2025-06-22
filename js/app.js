@@ -107,7 +107,7 @@ if (english_subjects) {
   )
     .then(e => e.json())
     .then(sub => {
-      // console.log(sub.data);
+      console.log(sub.data);
       var sub_data=sub.data;
       
       
@@ -140,6 +140,7 @@ if (Library_tabs && v_pills_tabContent_library) {
   )
     .then(e1 => e1.json())
     .then((library) => {
+
 
 
       v_pills_tabContent_library.innerHTML = `
@@ -693,7 +694,7 @@ function libarayfuntion1(ty) {
 
     library_div.innerHTML += `
   <div class="  col-sm-4 col-md-3 col-lg-3  text-center book_di library_div position-relative">
-    <span class="my-3">${dt.title}</span>
+    <span class="my-3 tit col-12">${dt.title}</span>
     <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank"  class="text-decoration-none">
       <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
     </a>
