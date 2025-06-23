@@ -476,12 +476,12 @@ border: 1px solid #f2c94c;
 
 @media (min-width:992px) {
   .library_divs{
-    height: 80vh !important;
+    height: 115vh !important;
   }
   
   .pagin-library-btn{
     position: absolute;
-    bottom: 3% !important;
+    bottom: 0% !important;
   }
 }
  .btn_of_pagin_lib.active {

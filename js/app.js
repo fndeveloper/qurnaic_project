@@ -675,7 +675,7 @@ var lenght_page = document.getElementById("lenght_page");
 var library_data1 = [];
 var library_media = [];
 var currentPage = 1;
-var itemsPerPage = 5;
+var itemsPerPage = 12;
 var currentDataSet = [];
 
 if (library_div && search_lib && media_type) {
