@@ -669,18 +669,14 @@ function ReadAyah(id, button) {
 var library_div = document.getElementById("library_div");
 var search_lib = document.getElementById("search_lib");
 var media_type = document.getElementById("media_type");
-var prevBtn = document.getElementById("prevPage");
-var nextBtn = document.getElementById("nextPage");
-var lenght_page=document.getElementById("lenght_page");
+var paginationNumbers = document.getElementById("paginationNumbers");
+var lenght_page = document.getElementById("lenght_page");
+
 var library_data1 = [];
 var library_media = [];
 var currentPage = 1;
-
-
-var itemsPerPage = 8;
-var currentDataSet = []; // Stores filtered or full data
-
-
+var itemsPerPage = 5;
+var currentDataSet = [];
 
 if (library_div && search_lib && media_type) {
   fetch("https://subjectsofalquran.com/api/library", {
@@ -690,22 +686,18 @@ if (library_div && search_lib && media_type) {
       "Content-Type": "application/json"
     }
   })
-    .then((e) => e.json())
-    .then((data) => {
-      library_data1 = data.data;
-
-      currentDataSet = [...library_data1]; // initial full data
-      libarayfuntion1(currentDataSet);
-      renderMediaTypes();
-    })
-    .catch((e) => {
-      // console.log(e);
-    });
+  .then((e) => e.json())
+  .then((data) => {
+    library_data1 = data.data;
+    currentDataSet = [...library_data1];
+    libarayfuntion1(currentDataSet);
+    renderMediaTypes();
+  });
 }
 
 function renderMediaTypes() {
   setTimeout(() => {
-    library_media.forEach((e, index) => {
+    library_media.forEach((e) => {
       media_type.innerHTML += `<option value="${e}">${e}</option>`;
     });
   }, 1000);
@@ -733,17 +725,38 @@ function libarayfuntion1(dataArray) {
     `;
   });
 
-
-  prevBtn.disabled = currentPage === 1;
-  nextBtn.disabled = end >= dataArray.length;
-  updateButtonStates();
+  renderPaginationNumbers(dataArray);
+  updatePageInfo(dataArray);
 }
 
+function renderPaginationNumbers(dataArray) {
+  paginationNumbers.innerHTML = "";
+  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement("button");
+    btn.className = "btn btn_of_pagin_lib page-btn";
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add("active");
+
+    btn.addEventListener("click", () => {
+      currentPage = i;
+      libarayfuntion1(currentDataSet);
+    });
+
+    paginationNumbers.appendChild(btn);
+  }
+}
+
+function updatePageInfo(dataArray) {
+  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
+  lenght_page.innerHTML = `Page: ${currentPage}/${totalPages}`;
+}
 
 if (media_type) {
   media_type.addEventListener("change", () => {
     const selectedType = media_type.value;
-    currentPage = 1; 
+    currentPage = 1;
     currentDataSet = library_data1.filter(item => item.media_type === selectedType);
     libarayfuntion1(currentDataSet);
   });
@@ -752,34 +765,12 @@ if (media_type) {
 if (search_lib) {
   search_lib.addEventListener("input", () => {
     const st = search_lib.value.toLowerCase();
-    currentPage = 1; 
+    currentPage = 1;
     currentDataSet = library_data1.filter(item =>
       item.title.toLowerCase().includes(st)
     );
     libarayfuntion1(currentDataSet);
   });
 }
-
-
-prevBtn.addEventListener("click", () => {
-  if (currentPage > 1) {
-    currentPage--;
-    libarayfuntion1(currentDataSet);
-  }
-});
-
-nextBtn.addEventListener("click", () => {
-  const maxPage = Math.ceil(currentDataSet.length / itemsPerPage);
-  if (currentPage < maxPage) {
-    currentPage++;
-    libarayfuntion1(currentDataSet);
-  }
-});
-function updateButtonStates() {
-        lenght_page.innerHTML=`${ Math.ceil(library_data1.length/itemsPerPage)}/${currentPage}`
-  prevBtn.classList.toggle('active', currentPage > 1);
-  nextBtn.classList.toggle('active', currentPage < Math.ceil(currentDataSet.length / itemsPerPage));
-}
-
 // =================================================
 
