@@ -666,104 +666,120 @@ function ReadAyah(id, button) {
 
 
 // =================================================
-var library_div = document.getElementById("library_div")
+var library_div = document.getElementById("library_div");
 var search_lib = document.getElementById("search_lib");
-var media_type=document.getElementById("media_type");
-
+var media_type = document.getElementById("media_type");
+var prevBtn = document.getElementById("prevPage");
+var nextBtn = document.getElementById("nextPage");
+var lenght_page=document.getElementById("lenght_page");
 var library_data1 = [];
 var library_media = [];
+var currentPage = 1;
+
+
+var itemsPerPage = 8;
+var currentDataSet = []; // Stores filtered or full data
+
 
 
 if (library_div && search_lib && media_type) {
   fetch("https://subjectsofalquran.com/api/library", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
       "Content-Type": "application/json"
     }
   })
     .then((e) => e.json())
     .then((data) => {
-      
-      
       library_data1 = data.data;
-      libarayfuntion1(library_data1)
+
+      currentDataSet = [...library_data1]; // initial full data
+      libarayfuntion1(currentDataSet);
+      renderMediaTypes();
     })
+    .catch((e) => {
+      // console.log(e);
+    });
 }
-function libarayfuntion1(ty) {
 
-console.log(ty);
+function renderMediaTypes() {
+  setTimeout(() => {
+    library_media.forEach((e, index) => {
+      media_type.innerHTML += `<option value="${e}">${e}</option>`;
+    });
+  }, 1000);
+}
 
+function libarayfuntion1(dataArray) {
   library_div.innerHTML = "";
-  ty.forEach((dt, index) => {
+  const start = (currentPage - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  const pageItems = dataArray.slice(start, end);
 
-    // console.log(dt.media_type);
-    if(!library_media.includes(dt.media_type) ){
-    
-    library_media.push(
-      dt.media_type
-    )
-    
+  pageItems.forEach((dt) => {
+    if (!library_media.includes(dt.media_type)) {
+      library_media.push(dt.media_type);
     }
-    
 
     library_div.innerHTML += `
-  <div class="  col-sm-4 col-md-3 col-lg-3  text-center book_di library_div position-relative">
-    <span class="my-3 tit col-12">${dt.title}</span>
-    <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank"  class="text-decoration-none">
-      <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
-    </a>
-    <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf">
-     
-  </div>
-`;
+      <div class="col-sm-4 col-md-3 col-lg-3 text-center book_di library_div position-relative">
+        <span class="my-3 tit col-12">${dt.title}</span>
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="text-decoration-none">
+          <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
+        </a>
+        <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf">
+      </div>
+    `;
+  });
 
 
-
-  })
-
-
+  prevBtn.disabled = currentPage === 1;
+  nextBtn.disabled = end >= dataArray.length;
+  updateButtonStates();
 }
-// =======
 
 
-
-setTimeout(() => {
- 
-  library_media.forEach((e,index)=>{
-media_type.innerHTML+=`
-       <option value=${e}>${e}</option>
-`
-    
-  })
-}, 1000);
 if (media_type) {
-  media_type.addEventListener("change", (e) => {
+  media_type.addEventListener("change", () => {
     const selectedType = media_type.value;
-
-    const matchedItems = library_data1.filter(item => item.media_type === selectedType);
-
- 
-
-     libarayfuntion1(matchedItems); 
+    currentPage = 1; 
+    currentDataSet = library_data1.filter(item => item.media_type === selectedType);
+    libarayfuntion1(currentDataSet);
   });
 }
-
-
-
 
 if (search_lib) {
   search_lib.addEventListener("input", () => {
-    var st = search_lib.value.toLowerCase();
-
-    const filtered = library_data1.filter((e) =>
-      e.title.toLowerCase().includes(st)
+    const st = search_lib.value.toLowerCase();
+    currentPage = 1; 
+    currentDataSet = library_data1.filter(item =>
+      item.title.toLowerCase().includes(st)
     );
-
-    libarayfuntion1(filtered); 
+    libarayfuntion1(currentDataSet);
   });
-
 }
-// =================================================
 
+
+prevBtn.addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
+    libarayfuntion1(currentDataSet);
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  const maxPage = Math.ceil(currentDataSet.length / itemsPerPage);
+  if (currentPage < maxPage) {
+    currentPage++;
+    libarayfuntion1(currentDataSet);
+  }
+});
+function updateButtonStates() {
+        lenght_page.innerHTML=`${ Math.ceil(library_data1.length/itemsPerPage)}/${currentPage}`
+  prevBtn.classList.toggle('active', currentPage > 1);
+  nextBtn.classList.toggle('active', currentPage < Math.ceil(currentDataSet.length / itemsPerPage));
+}
+
+// =================================================
 

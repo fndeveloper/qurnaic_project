@@ -473,3 +473,22 @@ border: 1px solid #f2c94c;
   background-color: transparent;
   border: 1px solid ;
 }
+
+
+.pagin-library-btn{
+  position: absolute;
+  bottom: 3% !important;
+}
+.library_divs{
+  height: 80vh !important;
+}
+ .btn_of_pagin_lib.active {
+    background-color:#6d94bb !important;
+    color: white !important;
+
+  }
+  .bg{
+    
+    color: white;
+    background-color: #6d94bb;
+  }
