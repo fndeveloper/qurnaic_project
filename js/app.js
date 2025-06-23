@@ -668,9 +668,13 @@ function ReadAyah(id, button) {
 // =================================================
 var library_div = document.getElementById("library_div")
 var search_lib = document.getElementById("search_lib");
-var library_data1 = [];
+var media_type=document.getElementById("media_type");
 
-if (library_div) {
+var library_data1 = [];
+var library_media = [];
+
+
+if (library_div && search_lib && media_type) {
   fetch("https://subjectsofalquran.com/api/library", {
     method: "GET",
     headers: {
@@ -680,7 +684,7 @@ if (library_div) {
   })
     .then((e) => e.json())
     .then((data) => {
-      console.log(data);
+      
       
       library_data1 = data.data;
       libarayfuntion1(library_data1)
@@ -688,9 +692,20 @@ if (library_div) {
 }
 function libarayfuntion1(ty) {
 
+console.log(ty);
 
   library_div.innerHTML = "";
   ty.forEach((dt, index) => {
+
+    // console.log(dt.media_type);
+    if(!library_media.includes(dt.media_type) ){
+    
+    library_media.push(
+      dt.media_type
+    )
+    
+    }
+    
 
     library_div.innerHTML += `
   <div class="  col-sm-4 col-md-3 col-lg-3  text-center book_di library_div position-relative">
@@ -710,6 +725,33 @@ function libarayfuntion1(ty) {
 
 }
 // =======
+
+
+
+setTimeout(() => {
+ 
+  library_media.forEach((e,index)=>{
+media_type.innerHTML+=`
+       <option value=${e}>${e}</option>
+`
+    
+  })
+}, 1000);
+if (media_type) {
+  media_type.addEventListener("change", (e) => {
+    const selectedType = media_type.value;
+
+    const matchedItems = library_data1.filter(item => item.media_type === selectedType);
+
+ 
+
+     libarayfuntion1(matchedItems); 
+  });
+}
+
+
+
+
 if (search_lib) {
   search_lib.addEventListener("input", () => {
     var st = search_lib.value.toLowerCase();
@@ -718,7 +760,7 @@ if (search_lib) {
       e.title.toLowerCase().includes(st)
     );
 
-    libarayfuntion1(filtered); // just once
+    libarayfuntion1(filtered); 
   });
 
 }
