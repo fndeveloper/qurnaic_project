@@ -471,7 +471,7 @@ border: 1px solid #f2c94c;
 }
 .surah-max-div{
   background-color: transparent;
-  border: 1px solid ;
+  border: 1px solid #bd910f ;
 }
 
 @media (min-width:992px) {
@@ -493,4 +493,11 @@ border: 1px solid #f2c94c;
 
     color: white;
     background-color: #6d94bb;
+  }
+
+
+  .page_border_of_quran_page{
+    padding:15px 5px ;
+    border-radius: 10px;
+    border: 2px solid #bd910f;
   }
