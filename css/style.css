@@ -474,13 +474,15 @@ border: 1px solid #f2c94c;
   border: 1px solid ;
 }
 
-
-.pagin-library-btn{
-  position: absolute;
-  bottom: 3% !important;
-}
-.library_divs{
-  height: 80vh !important;
+@media (min-width:992px) {
+  .library_divs{
+    height: 80vh !important;
+  }
+  
+  .pagin-library-btn{
+    position: absolute;
+    bottom: 3% !important;
+  }
 }
  .btn_of_pagin_lib.active {
     background-color:#6d94bb !important;
@@ -488,7 +490,7 @@ border: 1px solid #f2c94c;
 
   }
   .bg{
-    
+
     color: white;
     background-color: #6d94bb;
   }
