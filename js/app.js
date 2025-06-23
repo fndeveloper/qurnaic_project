@@ -355,8 +355,8 @@ function loadSurahContent(surahId) {
  <span class="font_naskh d-block text-end" dir="rtl" style="line-height: 2;">
     ${v.ayah_text}
     <span class="position-relative d-inline-flex justify-content-center align-items-center ms-2" style="width: 36px; height: 36px;">
-      <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
-      <span class="position-absolute font_naskh" style="font-size: 16px;">
+      <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto; margin-top:"10px">
+      <span class="position-absolute font_naskh mt-4" style="font-size: 16px;">
         ${new Intl.NumberFormat('ar-SA', { useGrouping: false }).format(v.ayah_number)}
       </span>
     </span>
