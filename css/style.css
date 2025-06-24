@@ -142,6 +142,7 @@ body {
   padding: 10px 15px;
   border-radius: 10px;
   margin: 2px auto;
+  
   border: 2px solid white !important;
   background-color: rgb(235, 235, 235);
 }
@@ -472,6 +473,7 @@ border: 1px solid #f2c94c;
 .surah-max-div{
   background-color: transparent;
   border: 1px solid #bd910f ;
+      border-radius: 10px;
 }
 
 @media (min-width:992px) {

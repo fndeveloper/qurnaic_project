@@ -352,15 +352,17 @@ function loadSurahContent(surahId) {
 
     <!-- Ayah Number Icon (after the Ayah text) -->
     
- <span class="font_naskh d-block text-end" dir="rtl" style="line-height: 2;">
-    ${v.ayah_text}
-    <span class="position-relative d-inline-flex justify-content-center align-items-center ms-2" style="width: 36px; height: 36px;">
-      <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto; margin-top:"10px">
-      <span class="position-absolute font_naskh mt-4" style="font-size: 16px;">
-        ${new Intl.NumberFormat('ar-SA', { useGrouping: false }).format(v.ayah_number)}
-      </span>
+ <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
+  <span class=" me-2">${v.ayah_text}</span>
+
+  <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
+    <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
+    <span class="position-absolute font_naskh" style="font-size: 18px;">
+      ${new Intl.NumberFormat('ar-SA', { useGrouping: true }).format(v.ayah_number)}
     </span>
   </span>
+</span>
+
     
   </p>
 
@@ -412,14 +414,14 @@ fetch("https://subjectsofalquran.com/api/surahs"
   .then((res) => res.json())
   .then(loadSurahTabs);
 
-// Tab click to load content
+
 document.addEventListener("click", function (e) {
   if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
     const button = e.target;
     const surahId = button.getAttribute("data-surahid");
     loadSurahContent(surahId);
 
-    // Smooth scroll
+
     setTimeout(() => {
       const pane = document.getElementById(`surah${surahId}`);
       if (pane) {
@@ -475,21 +477,6 @@ if (searchInput) {
 }
 
 // ====================================== QURAN.HTML CODE END ==============================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // ======================================================= QURAN.HTML CODE END ================================================
