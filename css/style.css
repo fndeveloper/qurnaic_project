@@ -477,11 +477,15 @@ border: 1px solid #f2c94c;
 }
 
 @media (min-width:992px) {
-  
+  .library_divs{
+    height: 700px;
+  }
   .pagin-library-btn{
     position: absolute;
     bottom: -5% !important;
+  z-index: 111 !important;
   }
+ 
 }
  .btn_of_pagin_lib.active {
     background-color:#6d94bb !important;
