@@ -94,32 +94,69 @@ function sortItems(id, type) {
 // =============== LANGUAGE ==================// 
 
 // =================== ENGLISH SUBJECT CODE START ===============
-var english_subjects = document.getElementById("english_subjects");
-if (english_subjects) {
- 
-  fetch("https://subjectsofalquran.com/api/topics", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
-      "Content-Type": "application/json"
-    }
-  }
-  )
-    .then(e => e.json())
-    .then(sub => {
-      console.log(sub.data);
-      var sub_data=sub.data;
-      
-      
-      sub_data.forEach((dt) => {
-        english_subjects.innerHTML += `
-    <li class="list-group-item" id="${dt.id}">${dt.topicname}</li>
+const english_subjects = document.getElementById("english_subjects");
+
+const headers = {
+  "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+  "Content-Type": "application/json"
+};
+
+fetch("https://subjectsofalquran.com/api/topics", { method: "GET", headers })
+  .then(res => res.json())
+  .then(async (topicRes) => {
+    const topics = topicRes.data;
+
+    for (let topic of topics) {
+
+      const detailRes = await fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, {
+        method: "GET",
+        headers
+      });
+
+      if (!detailRes.ok) continue;
+
+      const detailJson = await detailRes.json();
+      const details = detailJson.data;
+
+      const joinedDetails = details.map(d => d.topicdetail).filter(Boolean).join(', ');
+      const accordionHTML = `
   
-  `
-      })
-    })
-}
+        <div class="accordion mb-3" id="accordion-${topic.id}">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-${topic.id}">
+              <button class="accordion-button collapsed" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-${topic.id}"
+                aria-expanded="false"
+                aria-controls="collapse-${topic.id}">
+                ${topic.topicname}
+              </button>
+            </h2>
+            <div id="collapse-${topic.id}" class="accordion-collapse collapse"
+              aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
+              <div class="accordion-body">
+                ${
+                
+                  
+                  joinedDetails
+                    ? `<p>${joinedDetails}</p>`
+                    : `<p class="text-muted">No details available.</p>`
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      english_subjects.innerHTML += accordionHTML;
+    }
+  })
+  .catch(err => console.error("Error:", err));
 // =================== ENGLISH SUBJECT CODE END =================
+
+// ============================== SEARCH LIBRARY CODE START =================================
+
+// ============================== SEARCH LIBRARY CODE END =================================
 
 
 
