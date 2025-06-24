@@ -702,17 +702,17 @@ function libarayfuntion1(dataArray) {
     }
 
     library_div.innerHTML += `
-      <div class="col-sm-4 col-md-3 col-lg-3 text-center book_di library_div position-relative">
-        <span class="my-3 tit col-12">${dt.title}</span>
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="text-decoration-none">
-          <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
-        </a>
-        <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf">
+      <div class="col-sm-4 col-md-3 col-lg-3 text-center my-2 book_di library_div position-relative">
+      <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="text-decoration-none">
+      <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
+      </a>
+      
       </div>
-    `;
-  });
-
-  renderPaginationNumbers(dataArray);
+      `;
+    });
+    // <span class="my-3 tit col-12">${dt.title}</span>
+    //  <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf"></img>
+    renderPaginationNumbers(dataArray);
   updatePageInfo(dataArray);
 }
 
