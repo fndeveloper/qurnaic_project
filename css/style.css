@@ -462,15 +462,27 @@ color: red !important;
  .home_lib_image{
   height: 200px !important;
 object-fit: contain;
-box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-border: 1px solid #f2c94c;
+/* box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px; */
+/* border: 1px solid #f2c94c; */
  }
+.library_div{
+  object-fit: contain;
+/* box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px; */
+}
+.library_div_und{
+  border: 1px solid #f2c94c;
 
+}
 /* Progress bar (timer) */
 .swal2-timer-progress-bar {
   background: #6d94bb !important;
   height: 5px;
   border-radius: 4px;
+}
+.audio-wrapper {
+
+  background-color: transparent !important;
+  height: 25px !important;
 }
 .surah-max-div{
   background-color: transparent;
@@ -478,17 +490,7 @@ border: 1px solid #f2c94c;
       border-radius: 10px;
 }
 
-@media (min-width:992px) {
-  .library_divs{
-    height: 700px;
-  }
-  .pagin-library-btn{
-    position: absolute;
-    bottom: -5% !important;
-  z-index: 111 !important;
-  }
- 
-}
+
  .btn_of_pagin_lib.active {
     background-color:#6d94bb !important;
     color: white !important;

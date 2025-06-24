@@ -704,32 +704,60 @@ function libarayfuntion1(dataArray) {
     }
     console.log(dt);
 library_div.innerHTML += `
-  <div class="col-sm-4 col-md-3 col-lg-3 text-center my-2 book_di library_div position-relative">
+  <div class="col-12 col-lg-4 text-start my-2 book_di library_div position-relative">
 
+ <div class="col-lg-11 col-12 mx-auto library_div_und rounded-3">
     ${dt.media_type === 'video' ? `
-      <video controls class="col-12" style="height: 200px;">
+      <video controls class="col-12" style="height: 194px; width:100%" >
         <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
+        <hr class="col-11 mx-auto ">
+     <div class="p-2">
+      <h6 class="fw-light">Title : ${dt.title}</h6>
+    
+      <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
+
+
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none rounded-2 ">
+          View Video
+        </a>
     ` : `
       <img src="${dt.thumbnail_url}" alt="Thumbnail" class="img-fluid home_lib_image z-2">
     `}
 
     <div class="position-relative">
       ${dt.media_type === 'audio' ? `
-        <audio controls class="position-absolute bottom-0 col-9 fs-6 start-0 p-1 ms-4 mb-2 text-decoration-none rounded-2 mx-auto">
+       
+          <hr class="col-11 mx-auto ">
+     <div class="p-2">
+      <h6 class="fw-light">Title : ${dt.title}</h6>
+    
+      <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
+ <audio controls class="audio-wrapper   col-11   text-decoration-none rounded-2  ">
           <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="audio/mpeg">
-          Your browser does not support the audio element.
+
         </audio>
+
       ` : dt.media_type === 'pdf' ? `
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg position-absolute bottom-0 col-lg-9 col-10 fs-6 start-0 p-1 ms-4 mb-2 text-decoration-none rounded-2 mx-auto">
+      <hr class="col-11 mx-auto ">
+     <div class="p-2">
+      <h6 class="fw-light">Title : ${dt.title}</h6>
+    
+      <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
+
+
+      <div class="mb-2">
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none rounded-2 ">
           View E-Book
         </a>
+      </div>
+     </div>
       ` : dt.media_type === 'video' ? `` : `
         <p class="text-muted">Unsupported Media Type</p>
       `}
     </div>
-
+</div>
   </div>
 `;
 
