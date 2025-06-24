@@ -685,7 +685,9 @@ if (library_div && search_lib && media_type) {
 function renderMediaTypes() {
   setTimeout(() => {
     library_media.forEach((e) => {
-      media_type.innerHTML += `<option value="${e}">${e}</option>`;
+     
+      
+      media_type.innerHTML += `<option class="text-capitalize" value="${e}">${e === "pdf" ? "E-Book":`${e}`} </option>`;
     });
   }, 1000);
 }
@@ -700,15 +702,37 @@ function libarayfuntion1(dataArray) {
     if (!library_media.includes(dt.media_type)) {
       library_media.push(dt.media_type);
     }
+    console.log(dt);
+library_div.innerHTML += `
+  <div class="col-sm-4 col-md-3 col-lg-3 text-center my-2 book_di library_div position-relative">
 
-    library_div.innerHTML += `
-      <div class="col-sm-4 col-md-3 col-lg-3 text-center my-2 book_di library_div position-relative">
-      <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="text-decoration-none">
-      <img src="${dt.thumbnail_url}" alt="" class="col-12 img-fluid home_lib_image position-relative z-2">
-      </a>
-      
-      </div>
-      `;
+    ${dt.media_type === 'video' ? `
+      <video controls class="col-12" style="height: 200px;">
+        <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    ` : `
+      <img src="${dt.thumbnail_url}" alt="Thumbnail" class="img-fluid home_lib_image z-2">
+    `}
+
+    <div class="position-relative">
+      ${dt.media_type === 'audio' ? `
+        <audio controls class="position-absolute bottom-0 col-9 fs-6 start-0 p-1 ms-4 mb-2 text-decoration-none rounded-2 mx-auto">
+          <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      ` : dt.media_type === 'pdf' ? `
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg position-absolute bottom-0 col-lg-9 col-10 fs-6 start-0 p-1 ms-4 mb-2 text-decoration-none rounded-2 mx-auto">
+          View E-Book
+        </a>
+      ` : dt.media_type === 'video' ? `` : `
+        <p class="text-muted">Unsupported Media Type</p>
+      `}
+    </div>
+
+  </div>
+`;
+
     });
     // <span class="my-3 tit col-12">${dt.title}</span>
     //  <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf"></img>
