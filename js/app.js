@@ -95,63 +95,99 @@ function sortItems(id, type) {
 
 // =================== ENGLISH SUBJECT CODE START ===============
 const english_subjects = document.getElementById("english_subjects");
+const pagination_buttons = document.getElementById("pagination_buttons");
+const loader = document.getElementById("loader");
 
 const headers = {
   "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
   "Content-Type": "application/json"
 };
 
-fetch("https://subjectsofalquran.com/api/topics", { method: "GET", headers })
-  .then(res => res.json())
-  .then(async (topicRes) => {
+async function loadTopics(page = 1) {
+  // Show loader and clear old content
+
+  english_subjects.innerHTML = "";
+  pagination_buttons.innerHTML = "";
+
+  try {
+    const res = await fetch(`https://subjectsofalquran.com/api/topics?page=${page}`, { method: "GET", headers });
+
+    if (!res.ok) {
+      throw new Error("API limit exceeded or invalid request.");
+    }
+
+    const topicRes = await res.json();
     const topics = topicRes.data;
 
-    for (let topic of topics) {
+    // Fetch all topic details in parallel
+    const detailFetches = topics.map(topic =>
+      fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, { method: "GET", headers })
+        .then(res => res.ok ? res.json() : { data: [] })
+        .then(detailJson => ({
+          topic,
+          details: detailJson.data || []
+        }))
+    );
 
-      const detailRes = await fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, {
-        method: "GET",
-        headers
-      });
+    const topicDetailsArray = await Promise.all(detailFetches);
 
-      if (!detailRes.ok) continue;
+    topicDetailsArray.forEach(({ topic, details }) => {
+      const joinedDetails = details.map(d => d.topicdetail).filter(Boolean).join('<br>');
 
-      const detailJson = await detailRes.json();
-      const details = detailJson.data;
-
-      const joinedDetails = details.map(d => d.topicdetail).filter(Boolean).join(', ');
       const accordionHTML = `
-  
         <div class="accordion mb-3" id="accordion-${topic.id}">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="heading-${topic.id}">
-              <button class="accordion-button collapsed" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapse-${topic.id}"
-                aria-expanded="false"
-                aria-controls="collapse-${topic.id}">
-                ${topic.topicname}
-              </button>
-            </h2>
-            <div id="collapse-${topic.id}" class="accordion-collapse collapse"
-              aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
-              <div class="accordion-body">
-                ${
-                
-                  
-                  joinedDetails
-                    ? `<p>${joinedDetails}</p>`
-                    : `<p class="text-muted">No details available.</p>`
-                }
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="accordion-item">
+    <h6 class="accordion-header" id="heading-${topic.id}">
+     <button class="accordion-button collapsed text-start text-wrap fs-6 w-100" type="button"
+  data-bs-toggle="collapse"
+  data-bs-target="#collapse-${topic.id}"
+  aria-expanded="false"
+  aria-controls="collapse-${topic.id}">
+  <span class="d-block w-100" style="word-break: break-word;">
+    ${topic.topicname}
+  </span>
+</button>
+    </h6>
+    <div id="collapse-${topic.id}" class="accordion-collapse collapse"
+      aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
+      <div class="accordion-body">
+        ${
+          joinedDetails
+            ? `<p class="mb-0">${joinedDetails}</p>`
+            : `<p class="text-muted">No details available.</p>`
+        }
+      </div>
+    </div>
+  </div>
+</div>
+
       `;
 
       english_subjects.innerHTML += accordionHTML;
+    });
+
+    for (let i = 1; i <= topicRes.last_page; i++) {
+      pagination_buttons.innerHTML += `
+        <button class="pagin-library-btn m-1 ${i === page ? 'active' : ''}" onclick="loadTopics(${i})">${i}</button>
+      `;
     }
-  })
-  .catch(err => console.error("Error:", err));
+
+  } catch (err) {
+    english_subjects.innerHTML = `
+ <div class="col-12 col-lg-12 text-center mx-auto">
+                   <div class="spinner-border text-center" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+      </div>
+    `;
+    // console.error("Error loading topics:", err);
+  } finally {
+    loader.style.display = "none"; // Always hide loader
+  }
+}
+
+// Load initial page
+loadTopics();
 // =================== ENGLISH SUBJECT CODE END =================
 
 // ============================== SEARCH LIBRARY CODE START =================================

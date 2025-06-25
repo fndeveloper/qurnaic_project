@@ -489,12 +489,29 @@ object-fit: contain;
   border: 1px solid #bd910f ;
       border-radius: 10px;
 }
-
+.btn_of_pagin_lib > button{
+  border: 1px solid red !important;
+}
 
  .btn_of_pagin_lib.active {
     background-color:#6d94bb !important;
     color: white !important;
 
+  }
+  .btn_of_pagin_lib.active {
+    background-color:#6d94bb !important;
+    color: white !important;
+
+  }
+  .pagin-library-btn button.active{
+    background-color:#6d94bb !important;
+    color: white !important;
+
+  }
+  .pagin-library-btn{
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px; 
   }
   .bg{
 
