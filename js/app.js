@@ -652,7 +652,7 @@ function libarayfuntion(ty) {
 
 
     library_home_div.innerHTML += `
-        <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center book_div library_div">
+        <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center book_div library_div_und library_div">
         <span class="my-3">${dt.title.split(" ").slice(0, 3).join(" ")}..</span>
           <a href="library.html" class="text-decoration-none">
             <img src="${dt.thumbnail_url}" alt="" class="mt-3 img-fluid home_lib_image">

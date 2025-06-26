@@ -498,6 +498,9 @@ object-fit: contain;
     color: white !important;
 
   }
+  .about_content.active{
+    background-color: #6d94bb !important;
+  }
   .btn_of_pagin_lib.active {
     background-color:#6d94bb !important;
     color: white !important;
