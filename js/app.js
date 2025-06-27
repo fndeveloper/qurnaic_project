@@ -1,17 +1,4 @@
-// ========================== HEADER FETCH START ======================================
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   const header = document.getElementById("header");
-//   if (header) {
-//     fetch("header.html")
-//       .then((res) => res.text())
-//       .then((html) => {
-//         header.innerHTML = html;
-//       });
-//   } else {
-//     console.error("Element with ID 'header' not found.");
-//   }
-// });
 document.addEventListener("DOMContentLoaded", () => {
   var header = document.getElementById("header")
   if (header) {
@@ -63,131 +50,91 @@ if (share) {
 
 // ========================= share =====================
 
-
-// =============== LANGUAGE ==================
-
-function sortItems(id, type) {
-  const ul = document.getElementById(id);
-  const items = Array.from(ul.querySelectorAll('li'));
-
-  let sortedItems;
-
-  if (type === "alpha" || type === "name") {
-    // Alphabetically sort
-    sortedItems = [...items].sort((a, b) => a.textContent.localeCompare(b.textContent));
-  } else if (type === "size") {
-    // Sort by length of text
-    sortedItems = [...items].sort((a, b) => a.textContent.length - b.textContent.length);
-  } else if (type === "serial") {
-    // Extract numbers from text like "1. Something"
-    sortedItems = [...items].sort((a, b) => {
-      const numA = parseInt(a.textContent);
-      const numB = parseInt(b.textContent);
-      return numA - numB;
-    });
-  }
-
-  // Reorder list items without emptying the list
-  sortedItems.forEach(item => ul.appendChild(item));
-}
-
-// =============== LANGUAGE ==================// 
-
 // =================== ENGLISH SUBJECT CODE START ===============
-const english_subjects = document.getElementById("english_subjects");
-const pagination_buttons = document.getElementById("pagination_buttons");
-const loader = document.getElementById("loader");
+var english_subjects = document.getElementById("english_subjects");
+var pagination_buttons = document.getElementById("pagination_buttons");
+if (english_subjects && pagination_buttons) {
+  var headers = {
+    "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    "Content-Type": "application/json"
+  };
 
-const headers = {
-  "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
-  "Content-Type": "application/json"
-};
+  function loadTopics(page) {
+    if (!page) page = 1;
 
-async function loadTopics(page = 1) {
-  // Show loader and clear old content
+    english_subjects.innerHTML = "";
+    pagination_buttons.innerHTML = "";
 
-  english_subjects.innerHTML = "";
-  pagination_buttons.innerHTML = "";
+    fetch("https://subjectsofalquran.com/api/topics?page=" + page, {
+      method: "GET",
+      headers: headers
+    })
+    .then(res => res.json())
+    .then(data => {
+      var topics = data.data;
+      var totalTopics = topics.length;
+      var index = 0;
 
-  try {
-    const res = await fetch(`https://subjectsofalquran.com/api/topics?page=${page}`, { method: "GET", headers });
+      function loadNext() {
+        if (index >= totalTopics) {
+          for (var i = 1; i <= data.last_page; i++) {
+            pagination_buttons.innerHTML += `<button class="btn btn-sm btn-primary m-1" onclick="loadTopics(${i})">${i}</button>`;
+          }
+        } else {
+          var topic = topics[index];
+          fetch("https://subjectsofalquran.com/api/topicdetails/topic/" + topic.id, {
+            method: "GET",
+            headers: headers
+          })
+          .then(res2 => res2.json())
+          .then(detailData => {
+            var details = detailData.data;
+            var joinedDetails = "";
 
-    if (!res.ok) {
-      throw new Error("API limit exceeded or invalid request.");
-    }
+            for (var d = 0; d < details.length; d++) {
+              if (details[d].topicdetail && details[d].surah && details[d].surah.id) {
+                let sID = details[d].surah.id;
+                let sName = details[d].surah.surahname;
+                let aNum = details[d].ayah_number;
+                let detail = details[d].topicdetail;
 
-    const topicRes = await res.json();
-    const topics = topicRes.data;
+                joinedDetails += `
+                  <p><span class="fw-bold">Surah:</span> <a href="The_List_of_Subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
+                  <p><span class="fw-bold">Ayah Number:  </span> ${detail}</p>
+                  <hr>`;
+              }
+            }
 
-    // Fetch all topic details in parallel
-    const detailFetches = topics.map(topic =>
-      fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, { method: "GET", headers })
-        .then(res => res.ok ? res.json() : { data: [] })
-        .then(detailJson => ({
-          topic,
-          details: detailJson.data || []
-        }))
-    );
+            english_subjects.innerHTML += `
+              <div class="accordion mb-3" id="accordion-${topic.id}">
+                <div class="accordion-item">
+                  <h5 class="accordion-header" id="heading-${topic.id}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${topic.id}" aria-expanded="false" aria-controls="collapse-${topic.id}">
+                      <h5 class="fs-6 m-0">${topic.topicname}</h5>
+                    </button>
+                  </h5>
+                  <div id="collapse-${topic.id}" class="accordion-collapse collapse" aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
+                    <div class="accordion-body">${joinedDetails || "<p>No details found.</p>"}</div>
+                  </div>
+                </div>
+              </div>`;
 
-    const topicDetailsArray = await Promise.all(detailFetches);
-
-    topicDetailsArray.forEach(({ topic, details }) => {
-      const joinedDetails = details.map(d => d.topicdetail).filter(Boolean).join('<br>');
-
-      const accordionHTML = `
-        <div class="accordion mb-3" id="accordion-${topic.id}">
-  <div class="accordion-item">
-    <h6 class="accordion-header" id="heading-${topic.id}">
-     <button class="accordion-button collapsed text-start text-wrap fs-6 w-100" type="button"
-  data-bs-toggle="collapse"
-  data-bs-target="#collapse-${topic.id}"
-  aria-expanded="false"
-  aria-controls="collapse-${topic.id}">
-  <span class="d-block w-100" style="word-break: break-word;">
-    ${topic.topicname}
-  </span>
-</button>
-    </h6>
-    <div id="collapse-${topic.id}" class="accordion-collapse collapse"
-      aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
-      <div class="accordion-body">
-        ${
-          joinedDetails
-            ? `<p class="mb-0">${joinedDetails}</p>`
-            : `<p class="text-muted">No details available.</p>`
+            index++;
+            loadNext();
+          });
         }
-      </div>
-    </div>
-  </div>
-</div>
+      }
 
-      `;
-
-      english_subjects.innerHTML += accordionHTML;
+      loadNext();
+    })
+    .catch(() => {
+      english_subjects.innerHTML = "<p style='color:red;'>Error loading topics. Please try again.</p>";
     });
-
-    for (let i = 1; i <= topicRes.last_page; i++) {
-      pagination_buttons.innerHTML += `
-        <button class="pagin-library-btn m-1 ${i === page ? 'active' : ''}" onclick="loadTopics(${i})">${i}</button>
-      `;
-    }
-
-  } catch (err) {
-    english_subjects.innerHTML = `
- <div class="col-12 col-lg-12 text-center mx-auto">
-                   <div class="spinner-border text-center" role="status">
-  <span class="visually-hidden">Loading...</span>
-</div>
-      </div>
-    `;
-    // console.error("Error loading topics:", err);
-  } finally {
-    loader.style.display = "none"; // Always hide loader
   }
+
+  loadTopics(1);
 }
 
-// Load initial page
-loadTopics();
 // =================== ENGLISH SUBJECT CODE END =================
 
 // ============================== SEARCH LIBRARY CODE START =================================
@@ -277,282 +224,204 @@ if (Library_tabs && v_pills_tabContent_library) {
 }
 // ============================== LIBRARAY CODE END  =====================================
 
-// Elements
+// ======================== QURAN.HTML CODE START =======================
+
 const chaptersTabs = document.getElementById("chaptersTabs");
 const tabContent = document.getElementById("v-pills-tabContent");
 const searchInput = document.getElementById("surah_name");
-const languageSelect = document.getElementById("languageSelect");
 const erase_btn = document.getElementById("erase_btn");
 
+const languageSelect = document.querySelectorAll(".languageSelect");
 let currentLanguage = "en"; // default language
 
-// ==========================================================================
-
-fetch("https://subjectsofalquran.com/api/quran/languages", {
-  method: "GET",
-  headers: {
-    "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
-    "Content-Type": "application/json"
-  }
-})
-  .then((res) => res.json())
-  .then((data) => {
-    const langs = data.available_languages || {};
-
-    let optionsHtml = "";
-
-    Object.entries(langs).forEach(([code, name]) => {
-
-      const selected = code === "en" ? "selected" : "";
-      optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
-    });
-
-    if (languageSelect) {
-      languageSelect.innerHTML = optionsHtml;
-    } else {
-
-    }
-  })
-// .catch((err) =>);
-
-// ==========================================================================
-
-// Language change event
-if (languageSelect) {
-  languageSelect.addEventListener("change", () => {
-    currentLanguage = languageSelect.value;
-    fetch("https://subjectsofalquran.com/api/surahs"
-      , {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
-          "Content-Type": "application/json"
-        }
-      }
-    )
-      .then((res) => res.json())
-
-
-      .then(loadSurahTabs);
-  });
-}
-
-// Load Tabs from API
-function loadSurahTabs(surahs) {
-
-
-  chaptersTabs.innerHTML = "";
-  tabContent.innerHTML = "";
-
-  surahs.forEach((surah, index) => {
-    chaptersTabs.innerHTML += `
-      <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
-        <button class="nav-link nav_tab_name_Sura ${index === 0 ? "active" : ""}"
-          id="chaptertabs${surah.id}"
-          data-bs-toggle="tab"
-          data-bs-target="#surah${surah.id}"
-          data-surahid="${surah.id}"
-          type="button" role="tab">
-          ${surah.id}. <span class="pe-3" style="font-size:3px"></span> ${surah.surahname}
-        </button>
-      </li>
-    `;
-
-    tabContent.innerHTML += `
-      <div class="tab-pane fade ${index === 0 ? "show active" : ""}"
-        id="surah${surah.id}" role="tabpanel"
-        aria-labelledby="chaptertabs${surah.id}">
-        <p class="loading">Click tab to load surah...</p>
-      </div>
-    `;
-  });
-
-  // Auto-load first Surah content
-  if (surahs.length > 0) {
-    loadSurahContent(surahs[0].id);
-  }
-}
-
-// Load Surah content by ID
-function loadSurahContent(surahId) {
-
-
-  const pane = document.getElementById(`surah${surahId}`);
-  if (pane && !pane.dataset.loaded) {
-    pane.innerHTML = `<p>Loading surah...</p>`;
-
-    fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`, {
-        method: "GET",
-        headers: {
-          "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", 
-          "Content-Type": "application/json"
-        }
-      }
-    )
-      .then((res) => res.text().then((text) => JSON.parse(text)))
-      .then((data) => {
-        const verses = data.data || [];
-        if (!Array.isArray(verses)) {
-          throw new Error("Invalid data format: 'data.data' is not an array");
-        }
-
-        const surahName = verses[0]?.surah_name || "";
-        const isTawbah = surahName.includes("التوبة") || surahName.toLowerCase().includes("tawbah");
-        const versesHtml = verses.map((v) =>
-          `
-      
-<div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
- <div class="col-lg-1 col-12   p-3  mb-lg-2  d-flex flex-lg-column justify-content-lg-center justify-content-around">
-  <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
-  <button class="cp_bnt mb-2" onclick="Coopy('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
-   <i class="fa-regular fa-copy"></i>
-  </button>
-<button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
-<i class="fas fa-share-alt"></i>
-</button>
-
-
-<button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${v.id}', this)">
-<i class="fa-solid fa-play"></i>
-</button>
-
-
-
- </div>
-  <div class="col-lg-11 col-12   p-3  mb-lg-2 ">
-  <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
-    
-
-    <!-- Ayah Number Icon (after the Ayah text) -->
-    
- <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
-  <span class=" me-2">${v.ayah_text}</span>
-
-  <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
-    <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
-    <span class="position-absolute font_naskh" style="font-size: 18px;">
-      ${new Intl.NumberFormat('ar-SA', { useGrouping: true }).format(v.ayah_number)}
-    </span>
-  </span>
-</span>
-
-    
-  </p>
-
-  <!-- Translation -->
-  <p class="text-start fs-6 my-2">
-    ${v[`translation_${currentLanguage}`] || ""}
-  </p>
-</div>
-</div>
-
-        `).join("");
-
-        const bismillahSection = isTawbah ? '' : `
-          <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
-            <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 mx-auto">
-            <h3 class="position-absolute start-50 translate-middle-x font_naskh bis_text">
-              بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
-            </h3>
-          </div>
-        `;
-
-        pane.innerHTML = `
-       
-          <h3 class="text-center font_naskh fs-3">سُورَة ${surahName}</h3>
-          
-          ${bismillahSection}
-          ${versesHtml}
-        `;
-
-        pane.dataset.loaded = "true";
-      })
-      .catch((error) => {
-        pane.innerHTML = `<p>Error loading surah. Please try again later.</p>`;
-        console.error("Surah Fetch Error:", error);
-      });
-  }
-}
-
-// Initial Load
-fetch("https://subjectsofalquran.com/api/surahs"
-  , {
+if (chaptersTabs && tabContent) {
+  // Fetch available languages and populate dropdowns
+  fetch("https://subjectsofalquran.com/api/quran/languages", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
       "Content-Type": "application/json"
     }
+  })
+    .then(res => res.json())
+    .then(data => {
+      const langs = data.available_languages || {};
+      let optionsHtml = "";
+      Object.entries(langs).forEach(([code, name]) => {
+        const selected = code === "en" ? "selected" : "";
+        optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
+      });
+      languageSelect.forEach(e => e.innerHTML = optionsHtml);
+    });
+
+  // Handle language change
+  languageSelect.forEach(es => {
+    es.addEventListener("change", () => {
+      currentLanguage = es.value;
+      fetchSurahs();
+    });
+  });
+
+  // Load tabs from API
+  function loadSurahTabs(surahs) {
+    chaptersTabs.innerHTML = "";
+    tabContent.innerHTML = "";
+
+    surahs.forEach((surah, index) => {
+      chaptersTabs.innerHTML += `
+        <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
+          <button class="nav-link nav_tab_name_Sura ${index === 0 ? "active" : ""}"
+            id="chaptertabs${surah.id}"
+            data-bs-toggle="tab"
+            data-bs-target="#surah${surah.id}"
+            data-surahid="${surah.id}"
+            type="button" role="tab">
+            ${surah.id}. <span class="pe-3" style="font-size:3px"></span> ${surah.surahname}
+          </button>
+        </li>`;
+
+      tabContent.innerHTML += `
+        <div class="tab-pane fade ${index === 0 ? "show active" : ""}"
+          id="surah${surah.id}" role="tabpanel"
+          aria-labelledby="chaptertabs${surah.id}">
+          <p class="loading">Click tab to load surah...</p>
+        </div>`;
+    });
+
+    if (surahs.length > 0) {
+      loadSurahContent(surahs[0].id);
+    }
   }
-)
-  .then((res) => res.json())
-  .then(loadSurahTabs);
 
 
-document.addEventListener("click", function (e) {
-  if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
-    const button = e.target;
-    const surahId = button.getAttribute("data-surahid");
-    loadSurahContent(surahId);
-
-
-    setTimeout(() => {
-      const pane = document.getElementById(`surah${surahId}`);
-      if (pane) {
-        const yOffset = -50;
-        const y = pane.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-    }, 200);
-  }
-});
-
-// Live Search
-if (searchInput) {
-  searchInput.addEventListener("input", function () {
-    const query = this.value.trim();
-
-    if (query.length === 0) {
-      fetch("https://subjectsofalquran.com/api/surahs"
-        , {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
-            "Content-Type": "application/json"
-          }
+  // Load Surah content by ID
+  function loadSurahContent(surahId) {
+    const pane = document.getElementById(`surah${surahId}`);
+    if (pane) {
+      pane.innerHTML = `<p>Loading surah...</p>`;
+      fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`, {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+          "Content-Type": "application/json"
         }
-      )
-        .then((res) => res.json())
-        .then(loadSurahTabs);
-    } else {
-      fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`
-        , {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
-            "Content-Type": "application/json"
-          }
-        }
-      )
-        .then((res) => res.json())
-        .then((surahs) => {
-          loadSurahTabs(surahs);
-          if (surahs.length > 0) {
-            loadSurahContent(surahs[0].id);
-          }
+      })
+        .then(res => res.text().then(text => JSON.parse(text)))
+        .then(data => {
+          const verses = data.data || [];
+          const surahName = verses[0]?.surah_name || "";
+          const isTawbah = surahName.toLowerCase().includes("tawbah") || surahName.includes("التوبة");
+          const bismillahSection = isTawbah ? '' : `
+            <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
+              <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 mx-auto">
+              <h3 class="position-absolute start-50 translate-middle-x font_naskh bis_text">
+                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+              </h3>
+            </div>`;
+
+          const versesHtml = verses.map(v => `
+            <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
+              <div class="col-lg-1 col-12 p-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
+                <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
+                <button class="cp_bnt mb-2" onclick="Coopy('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${currentLanguage}`]}')">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${v.id}', this)">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+              </div>
+              <div class="col-lg-11 col-12 p-3 mb-lg-2">
+                <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
+                  <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
+                    <span class="me-2">${v.ayah_text}</span>
+                    <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
+                      <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
+                      <span class="position-absolute font_naskh" style="font-size: 18px;">
+                        ${new Intl.NumberFormat('ar-SA').format(v.ayah_number)}
+                      </span>
+                    </span>
+                  </span>
+                </p>
+                <p class="text-start fs-6 my-2">
+                  ${v[`translation_${currentLanguage}`] || ""}
+                </p>
+              </div>
+            </div>`).join("");
+
+          pane.innerHTML = `<h3 class="text-center font_naskh fs-3">سُورَة ${surahName}</h3>${bismillahSection}${versesHtml}`;
+          pane.dataset.loaded = "true";
         })
-        .catch((err) => {
-          console.error("Search API Error:", err);
-          chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
-          tabContent.innerHTML = "";
+        .catch(err => {
+          pane.innerHTML = `<p>Error loading surah. Please try again later.</p>`;
+          console.error("Surah Fetch Error:", err);
         });
     }
+  }
+
+  function fetchSurahs() {
+    fetch("https://subjectsofalquran.com/api/surahs", {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(loadSurahTabs);
+  }
+
+  fetchSurahs(); // Initial Load
+
+  // Tab Click Event
+  document.addEventListener("click", function (e) {
+    if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
+      const button = e.target;
+      const surahId = button.getAttribute("data-surahid");
+      loadSurahContent(surahId);
+      setTimeout(() => {
+        const pane = document.getElementById(`surah${surahId}`);
+        if (pane) {
+          const yOffset = -50;
+          const y = pane.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }, 200);
+    }
   });
-}
 
-// ====================================== QURAN.HTML CODE END ==============================================
+  // Live Search
+  if (searchInput) {
+    searchInput.addEventListener("input", function () {
+      const query = this.value.trim();
+      if (query.length === 0) {
+        fetchSurahs();
+      } else {
+        fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+            "Content-Type": "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(surahs => {
+            loadSurahTabs(surahs);
+            if (surahs.length > 0) {
+              loadSurahContent(surahs[0].id);
+            }
+          })
+          .catch(err => {
+            console.error("Search API Error:", err);
+            chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
+            tabContent.innerHTML = "";
+          });
+      }
+    });
+  }
 
-
-// ======================================================= QURAN.HTML CODE END ================================================
 
 
 // Erase button reload
@@ -613,14 +482,19 @@ Publish By : Fons Vitae Publications,  Inc.
 
 
   };
-
-  if (navigator.share) {
+    if (navigator.share) {
     navigator.share(shareData)
       .then(() => console.log("Shared successfully"))
       .catch((error) => console.error("Sharing failed", error));
   } else {
     alert("Web Share API not supported in this browser.");
   }
+  }
+// ======================== QURAN.HTML CODE END =======================
+// 
+
+
+
 }
 
 // =================================================
@@ -835,9 +709,7 @@ library_div.innerHTML += `
 `;
 
     });
-    // <span class="my-3 tit col-12">${dt.title}</span>
-    //  <img src="assets/images/banners/shelf.png" class="col-12 img-fluid shelft" alt="Shelf"></img>
-    renderPaginationNumbers(dataArray);
+   renderPaginationNumbers(dataArray);
   updatePageInfo(dataArray);
 }
 
@@ -886,3 +758,100 @@ if (search_lib) {
 }
 // =================================================
 
+
+// ======================= GET SINGLE SURAH IN SUBJECT PAGE START ===========================
+var location_of_page = location.search.split("=")[1];
+if (location.href.includes("The_List_of_Subjects_detail.html")) {
+  let currentLanguage_detail = "en";
+  var languageSelect_detail = document.getElementById("languageSelect_detail");
+  var single_Detail_of_subject=document.getElementById("single_Detail_of_subject");
+
+  // Set languages
+  fetch("https://subjectsofalquran.com/api/quran/languages", {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      const langs = data.available_languages || {};
+      let optionsHtml = "";
+
+      Object.entries(langs).forEach(([code, name]) => {
+        const selected = code === "en" ? "selected" : "";
+        optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
+      });
+
+      languageSelect_detail.innerHTML = `${optionsHtml}`;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  function fn() {
+    fetch(`https://subjectsofalquran.com/api/quran/surah/${location_of_page}?lang=${currentLanguage_detail}`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .then(res => {
+        res.data.forEach((dat) => {
+          console.log(dat[`translation_${currentLanguage_detail}`]);
+
+        single_Detail_of_subject.innerHTML += `
+  <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
+    <div class="col-lg-1 col-12 p-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
+      <span class="fw-light mb-2">${dat.surah_number}:${dat.ayah_number}</span>
+      <button class="cp_bnt mb-2" onclick="Coopy('${dat.surah_name}', ${dat.ayah_number}, ${dat.surah_number}, '${dat.ayah_text}', '${dat[`translation_${currentLanguage_detail}`]}')">
+        <i class="fa-regular fa-copy"></i>
+      </button>
+      <button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${dat.surah_name}', ${dat.ayah_number}, ${dat.surah_number}, '${dat.ayah_text}', '${dat[`translation_${currentLanguage_detail}`]}')">
+        <i class="fas fa-share-alt"></i>
+      </button>
+      <button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${dat.id}', this)">
+        <i class="fa-solid fa-play"></i>
+      </button>
+    </div>
+    <div class="col-lg-11 col-12 p-3 mb-lg-2">
+      <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
+        <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
+          <span class="me-2">${dat.ayah_text}</span>
+          <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
+            <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
+            <span class="position-absolute font_naskh" style="font-size: 18px;">
+              ${new Intl.NumberFormat('ar-SA').format(dat.ayah_number)}
+            </span>
+          </span>
+        </span>
+      </p>
+      <p class="text-start fs-6 my-2">
+        ${dat[`translation_${currentLanguage_detail}`] || ""}
+      </p>
+    </div>
+  </div>
+`;
+
+        });
+      })
+      .catch(err => {
+        console.error("Error loading Surah:", err);
+        const container = document.getElementById("single_surah_container");
+        if (container) container.innerHTML = "<p class='text-danger'>Failed to load surah.</p>";
+      });
+  }
+
+  // Language change
+  languageSelect_detail.addEventListener("change", function () {
+    currentLanguage_detail = this.value;
+    fn();
+  });
+
+  // First load
+  fn();
+}
+// ======================= GET SINGLE SURAH IN SUBJECT PAGE END ===========================

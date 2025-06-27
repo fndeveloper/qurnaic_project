@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="assets/images/logo/quranic_logo.jpg"
       type="image/x-icon">
     <!-- TITLE  -->
-    <title> The Subjects of Al-Quran Al-Hakeem | The List of Subject </title>
+    <title> The Subjects of Al-Quran Al-Hakeem | The List of Subject Detail </title>
 
     <!-- BOOTSTRAP 5 CDN CSS -->
     <link
@@ -37,7 +37,7 @@
       class="container-fluid  d-flex flex-column  justify-content-center align-items-center text-white m-0 p-0 home_banner">
       <div class="mt-5 text-center">
         <h1 class="pt-5 mt-5">The Subjects of Al-Quran Al-Hakeem </h1>
-        <h4> The List of Subject </h4>
+        <h4> The List of Subject Detail </h4>
       </div>
     </div>
     <!-- MAIN 1 END -->
@@ -54,28 +54,10 @@
             <!-- ============= NAVLINKS START =============== -->
             <!-- Tabs -->
             <div class="col-12 ">
-              <ul class="nav nav-tabs d-flex flex-column" id="subjectTabs"
-                role="tablist">
-                <!-- <li class="nav-item" role="presentation">
-        <button class="nav-link " id="subjects-tab" data-bs-toggle="tab" data-bs-target="#subjects" type="button" role="tab">List of Subjects</button>
-      </li> -->
+             <div class="col-11">
+              <select id="languageSelect_detail" class=" languageSelec form-select col-12 mb-3"></select>
+            </div>
 
-              </ul>
-              <div class="col-12">
-                <select class="form-select col-12"
-                  onchange="sortlanguage(this.value)">
-                  <option value="Choose Language" disabled>Choose
-                    Language</option>
-                  <option value="english">English</option>
-                  <option value="arabic">Arabic</option>
-                  <option value="urdu">Urdu</option>
-                  <option value="french">French</option>
-                  <option value="german">German</option>
-                  <option value="chinese">Chinese</option>
-                  <option value="spanish">Spanish</option>
-
-                </select>
-              </div>
             </div>
 
             <!-- ============= NAVLINKS END =============== -->
@@ -122,21 +104,18 @@
               id="subjectTabsContent">
 
               <!-- Subjects Tab -->
+              <h5>List of Subjects</h5>
               <div class="tab-pane fade show active" id="subjects"
                 role="tabpanel">
                 <div
                   class="d-flex flex-row col-12 justify-content-between  align-items-center mb-3">
-                     <h5>List of Subjects</h5>
-                    <div id="pagination_buttons" class="text-end my-3 pagin-library-btn ">
-                  </div>
-                  <!-- Language Switcher -->
+                 
+             <div id="single_Detail_of_subject">
+
+             </div>
     
                 </div>
-                <ul id="english_subjects" class="list-group">
-      
-
-                </ul>
-
+              
               </div>
 
             </div>
