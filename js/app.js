@@ -761,7 +761,7 @@ if (search_lib) {
 
 // ======================= GET SINGLE SURAH IN SUBJECT PAGE START ===========================
 var location_of_page = location.search.split("=")[1];
-if (location.href.includes("The_List_of_Subjects_detail.html")) {
+if (location.href.includes("the_list_of_subjects_detail.html")) {
   let currentLanguage_detail = "en";
   var languageSelect_detail = document.getElementById("languageSelect_detail");
   var single_Detail_of_subject=document.getElementById("single_Detail_of_subject");
