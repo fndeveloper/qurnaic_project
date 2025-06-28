@@ -62,7 +62,7 @@ if (english_subjects && pagination_buttons) {
   };
 
   function loadTopics(page = 1, query = "") {
-    english_subjects.innerHTML = ``;
+    english_subjects.innerHTML = `<p class='text-center text-muted'>Loading topics, please wait...</p>`;
     pagination_buttons.innerHTML = "";
 
     const endpoint = query
@@ -78,13 +78,18 @@ if (english_subjects && pagination_buttons) {
           return;
         }
 
+        english_subjects.innerHTML = ""; // clear loading message
         let index = 0;
 
         function loadDetailsSequentially() {
           if (index >= topics.length) {
-            // Show pagination
-            for (let i = 1; i <= data.last_page; i++) {
-              pagination_buttons.innerHTML += `<button class="btn btn-outline-primary btn-sm m-1 ${i === page ? 'active' : ''}" onclick="loadTopics(${i}, '${query}')">${i}</button>`;
+            // ✅ Show pagination only when not searching
+            if (!query && data.last_page > 1) {
+              for (let i = 1; i <= data.last_page; i++) {
+                pagination_buttons.innerHTML += `
+                  <button class="btn btn-outline-primary btn-sm m-1 ${i === page ? 'active' : ''}" 
+                  onclick="loadTopics(${i})">${i}</button>`;
+              }
             }
             return;
           }
@@ -93,48 +98,48 @@ if (english_subjects && pagination_buttons) {
           fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, {
             method: "GET", headers,
           })
-            .then(res => res.ok ? res.json() : { data: [] })
-            .then(detailData => {
-              let joinedDetails = "";
+          .then(res => res.ok ? res.json() : { data: [] })
+          .then(detailData => {
+            let joinedDetails = "";
 
-              detailData.data.forEach(d => {
-                if (d.topicdetail && d.surah && d.surah.id) {
-                  const sID = d.surah.id;
-                  const sName = d.surah.surahname;
-                  const detail = d.topicdetail;
+            detailData.data.forEach(d => {
+              if (d.topicdetail && d.surah && d.surah.id) {
+                const sID = d.surah.id;
+                const sName = d.surah.surahname;
+                const detail = d.topicdetail;
 
-                  joinedDetails += `
-                    <p><strong>Surah:</strong> <a href="The_List_of_Subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
-                    <p><strong>Ayah Detail:</strong> ${detail}</p>
-                    <hr>`;
-                }
-              });
+                joinedDetails += `
+                  <p><strong>Surah:</strong> <a href="The_List_of_Subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
+                  <p><strong>Ayah Detail:</strong> ${detail}</p>
+                  <hr>`;
+              }
+            });
 
-              english_subjects.innerHTML += `
-                <div class="accordion mb-3" id="accordion-${topic.id}">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="heading-${topic.id}">
-                      <button class="accordion-button collapsed" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#collapse-${topic.id}"
-                        aria-expanded="false"
-                        aria-controls="collapse-${topic.id}">
-                        ${topic.topicname}
-                      </button>
-                    </h2>
-                    <div id="collapse-${topic.id}" class="accordion-collapse collapse"
-                      aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
-                      <div class="accordion-body">
-                        ${joinedDetails || "<p class='text-muted'>No details found.</p>"}
-                      </div>
+            english_subjects.innerHTML += `
+              <div class="accordion mb-3" id="accordion-${topic.id}">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="heading-${topic.id}">
+                    <button class="accordion-button collapsed" type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapse-${topic.id}"
+                      aria-expanded="false"
+                      aria-controls="collapse-${topic.id}">
+                      ${topic.topicname}
+                    </button>
+                  </h2>
+                  <div id="collapse-${topic.id}" class="accordion-collapse collapse"
+                    aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
+                    <div class="accordion-body">
+                      ${joinedDetails || "<p class='text-muted'>No details found.</p>"}
                     </div>
                   </div>
                 </div>
-              `;
+              </div>
+            `;
 
-              index++;
-              loadDetailsSequentially();
-            });
+            index++;
+            loadDetailsSequentially();
+          });
         }
 
         loadDetailsSequentially();
@@ -144,15 +149,15 @@ if (english_subjects && pagination_buttons) {
       });
   }
 
-  // Search functionality
+  // 🔍 Live search
   if (search_subject_here) {
     search_subject_here.addEventListener("input", function () {
       const query = this.value.trim();
-      loadTopics(1, query);
+      loadTopics(1, query); // Load page 1 with search
     });
   }
 
-  // Initial load
+  // 📦 Initial load
   loadTopics();
 }
 
