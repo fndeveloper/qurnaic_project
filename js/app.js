@@ -99,7 +99,7 @@ if (english_subjects && pagination_buttons) {
                 let detail = details[d].topicdetail;
 
                 joinedDetails += `
-                  <p><span class="fw-bold">Surah:</span> <a href="The_List_of_Subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
+                  <p><span class="fw-bold">Surah:</span> <a href="the_list_of_subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
                   <p><span class="fw-bold">Ayah Number:  </span> ${detail}</p>
                   <hr>`;
               }
