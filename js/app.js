@@ -51,88 +51,109 @@ if (share) {
 // ========================= share =====================
 
 // =================== ENGLISH SUBJECT CODE START ===============
-var english_subjects = document.getElementById("english_subjects");
-var pagination_buttons = document.getElementById("pagination_buttons");
+const english_subjects = document.getElementById("english_subjects");
+const pagination_buttons = document.getElementById("pagination_buttons");
+const search_subject_here = document.getElementById("search_subject_here");
+
 if (english_subjects && pagination_buttons) {
-  var headers = {
+  const headers = {
     "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   };
 
-  function loadTopics(page) {
-    if (!page) page = 1;
-
-    english_subjects.innerHTML = "";
+  function loadTopics(page = 1, query = "") {
+    english_subjects.innerHTML = ``;
     pagination_buttons.innerHTML = "";
 
-    fetch("https://subjectsofalquran.com/api/topics?page=" + page, {
-      method: "GET",
-      headers: headers
-    })
-    .then(res => res.json())
-    .then(data => {
-      var topics = data.data;
-      var totalTopics = topics.length;
-      var index = 0;
+    const endpoint = query
+      ? `https://subjectsofalquran.com/api/topics/search?q=${encodeURIComponent(query)}&language_id=1&page=${page}`
+      : `https://subjectsofalquran.com/api/topics?page=${page}`;
 
-      function loadNext() {
-        if (index >= totalTopics) {
-          for (var i = 1; i <= data.last_page; i++) {
-            pagination_buttons.innerHTML += `<button class="btn btn-sm btn-primary m-1" onclick="loadTopics(${i})">${i}</button>`;
-          }
-        } else {
-          var topic = topics[index];
-          fetch("https://subjectsofalquran.com/api/topicdetails/topic/" + topic.id, {
-            method: "GET",
-            headers: headers
-          })
-          .then(res2 => res2.json())
-          .then(detailData => {
-            var details = detailData.data;
-            var joinedDetails = "";
+    fetch(endpoint, { method: "GET", headers })
+      .then(res => res.ok ? res.json() : Promise.reject())
+      .then(data => {
+        const topics = data.data;
+        if (!topics.length) {
+          english_subjects.innerHTML = `<p class="text-danger text-center py-3">No topics found.</p>`;
+          return;
+        }
 
-            for (var d = 0; d < details.length; d++) {
-              if (details[d].topicdetail && details[d].surah && details[d].surah.id) {
-                let sID = details[d].surah.id;
-                let sName = details[d].surah.surahname;
-                let aNum = details[d].ayah_number;
-                let detail = details[d].topicdetail;
+        let index = 0;
 
-                joinedDetails += `
-                  <p><span class="fw-bold">Surah:</span> <a href="the_list_of_subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
-                  <p><span class="fw-bold">Ayah Number:  </span> ${detail}</p>
-                  <hr>`;
-              }
+        function loadDetailsSequentially() {
+          if (index >= topics.length) {
+            // Show pagination
+            for (let i = 1; i <= data.last_page; i++) {
+              pagination_buttons.innerHTML += `<button class="btn btn-outline-primary btn-sm m-1 ${i === page ? 'active' : ''}" onclick="loadTopics(${i}, '${query}')">${i}</button>`;
             }
+            return;
+          }
 
-            english_subjects.innerHTML += `
-              <div class="accordion mb-3" id="accordion-${topic.id}">
-                <div class="accordion-item">
-                  <h5 class="accordion-header" id="heading-${topic.id}">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${topic.id}" aria-expanded="false" aria-controls="collapse-${topic.id}">
-                      <h5 class="fs-6 m-0">${topic.topicname}</h5>
-                    </button>
-                  </h5>
-                  <div id="collapse-${topic.id}" class="accordion-collapse collapse" aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
-                    <div class="accordion-body">${joinedDetails || "<p>No details found.</p>"}</div>
+          const topic = topics[index];
+          fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, {
+            method: "GET", headers,
+          })
+            .then(res => res.ok ? res.json() : { data: [] })
+            .then(detailData => {
+              let joinedDetails = "";
+
+              detailData.data.forEach(d => {
+                if (d.topicdetail && d.surah && d.surah.id) {
+                  const sID = d.surah.id;
+                  const sName = d.surah.surahname;
+                  const detail = d.topicdetail;
+
+                  joinedDetails += `
+                    <p><strong>Surah:</strong> <a href="The_List_of_Subjects_detail.html?surah=${sID}" target="_blank">${sName}</a></p>
+                    <p><strong>Ayah Detail:</strong> ${detail}</p>
+                    <hr>`;
+                }
+              });
+
+              english_subjects.innerHTML += `
+                <div class="accordion mb-3" id="accordion-${topic.id}">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-${topic.id}">
+                      <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-${topic.id}"
+                        aria-expanded="false"
+                        aria-controls="collapse-${topic.id}">
+                        ${topic.topicname}
+                      </button>
+                    </h2>
+                    <div id="collapse-${topic.id}" class="accordion-collapse collapse"
+                      aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
+                      <div class="accordion-body">
+                        ${joinedDetails || "<p class='text-muted'>No details found.</p>"}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>`;
+              `;
 
-            index++;
-            loadNext();
-          });
+              index++;
+              loadDetailsSequentially();
+            });
         }
-      }
 
-      loadNext();
-    })
-    .catch(() => {
-      english_subjects.innerHTML = "<p style='color:red;'>Error loading topics. Please try again.</p>";
+        loadDetailsSequentially();
+      })
+      .catch(() => {
+        english_subjects.innerHTML = `<p class="text-danger text-center">Error loading topics. Please try again.</p>`;
+      });
+  }
+
+  // Search functionality
+  if (search_subject_here) {
+    search_subject_here.addEventListener("input", function () {
+      const query = this.value.trim();
+      loadTopics(1, query);
     });
   }
 
-  loadTopics(1);
+  // Initial load
+  loadTopics();
 }
 
 // =================== ENGLISH SUBJECT CODE END =================
