@@ -205,15 +205,28 @@ background-color: lightgray !important;
   color: #6d94bb;
   /* Normal tab color */
 }
-
+.single_subject_div_here{
+  border: 2px solid #bd910f;
+  /* height: 100vh !important; */
+}
 .custom-select {
   max-height: 200px;
   /* Controls dropdown height */
   overflow-y: auto;
 }
-
+.num_css{
+  font-size: 14px;
+  font-weight: 300;
+  text-align: justify;
+}
 .bg {
   background-color: rgb(235, 235, 235);
+}
+.bg_btn{
+  border: none;
+  padding: 5px 8px;
+  background-color: #6d94bb !important;
+  color: white !important;
 }
 .bg_1 {
   box-shadow: rgba(109, 109, 109, 0.09) 0px 3px 12px;
