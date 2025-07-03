@@ -52,115 +52,77 @@ if (share) {
 
 // =================== ENGLISH SUBJECT CODE START ===============
 const english_subjects = document.getElementById("english_subjects");
-const pagination_buttons = document.getElementById("pagination_buttons");
-const search_subject_here = document.getElementById("search_subject_here");
+const pagin_bnt_of_subject = document.getElementById("pagin_bnt_of_subject");
 
-if (english_subjects && pagination_buttons) {
+const search_subject_here = document.getElementById("search_subject_here");
+let page = 1;
+if (english_subjects && pagin_bnt_of_subject) {
   const headers = {
     "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
     "Content-Type": "application/json",
   };
+// 🟡 Search button
+document.getElementById("searchbtn_subje").addEventListener("click", () => {
+  const query = searchBox.value.trim();
+  pages(1, query);
+});
+  function pages(params = 1, query = "") {
+  page = params;
+  const isSearching = query !== "";
 
-  function loadTopics(page = 1, query = "") {
-    english_subjects.innerHTML = `<p class='text-center text-muted'>Loading topics, please wait...</p>`;
-    pagination_buttons.innerHTML = "";
+  const apiUrl = isSearching
+    ? `https://subjectsofalquran.com/api/topics/search?q=${query}&page=${page}`
+    : `https://subjectsofalquran.com/api/topics?page=${page}`;
 
-    const endpoint = `https://subjectsofalquran.com/api/topics?page=${page}`;
+  fetch(apiUrl, {
+    headers: {
+      Authorization: "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((datas) => {
+      console.log("DATA:", datas);
 
-    fetch(endpoint, { method: "GET", headers })
-      .then(res => res.ok ? res.json() : Promise.reject())
-      .then(data => {
-        const topics = data.data;
+      english_subjects.innerHTML = "";
+      pagin_bnt_of_subject.innerHTML = "";
 
-        if (!topics.length) {
-          english_subjects.innerHTML = `<p class="text-danger text-center py-3">No topics found.</p>`;
-          return;
-        }
-
-        english_subjects.innerHTML = ""; // clear loading message
-        let index = 0;
-
-        function loadDetailsSequentially() {
-          if (index >= topics.length) {
-            if (!query && data.last_page > 1) {
-              for (let i = 1; i <= data.last_page; i++) {
-                pagination_buttons.innerHTML += `
-                  <button class="btn btn-outline-primary btn-sm m-1 ${i === page ? 'active' : ''}" 
-                  onclick="loadTopics(${i})">${i}</button>`;
-              }
-            }
-            return;
-          }
-
-          const topic = topics[index];
-          fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, {
-            method: "GET", headers,
-          })
-            .then(res => res.ok ? res.json() : { data: [] })
-            .then(detailData => {
-            
-              let matchFound = false;
-
-              detailData.data.forEach(d => {
-                if (d.topicdetail && d.surah && d.surah.id) {
-                  const sID = d.surah.id;
-                  const sName = d.surah.surahname;
-                  const detail = d.topicdetail;
-
-                  // Match condition for topicname or detail
-                  if (
-                    topic.topicname.toLowerCase().includes(query.toLowerCase()) ||
-                    detail.toLowerCase().includes(query.toLowerCase())
-                  ) {
-                    matchFound = true;
-                  }
-
-              
-                }
-              });
-
-              if (!query || matchFound) {
-                english_subjects.innerHTML += `
-                <div class="accordion mb-3" id="accordion-${topic.id}">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="heading-${topic.id}">
-    <a href="the_list_of_subjects_detail.html?subject=${topic.id}"  target="_blank" class="text-decoration-none">
-      <button class="accordion-button collapsed" type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#collapse-${topic.id}"
-        aria-expanded="false"
-        aria-controls="collapse-${topic.id}">
-        ${topic.topicname}
-      </button>
-    </a>
-   </h2>
- 
-  </div>
-</div>
-
-              `;
-              }
-
-              index++;
-              loadDetailsSequentially();
-            });
-        }
-
-        loadDetailsSequentially();
-      })
-      .catch(() => {
-        english_subjects.innerHTML = `<p class="text-danger text-center">Error loading topics. Please try again.</p>`;
+      // 🟢 Render topics
+      datas.data.forEach((element) => {
+        english_subjects.innerHTML += `
+          <div class="accordion mb-2">
+            <div class="accordion-item">
+            <a href="the_list_of_subjects_detail.html?subject=${element.id}"  target="_blank" class="text-decoration-none">
+              <h4 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapse${element.id}"
+                  aria-expanded="false"
+                  aria-controls="flush-collapse${element.id}">
+                  ${element.topicname}
+                </button>
+                  </a>
+              </h4>
+            </div>
+          </div>
+        `;
       });
-  }
 
-  if (search_subject_here) {
-    search_subject_here.addEventListener("input", function () {
-      const query = this.value.trim();
-      loadTopics(1, query);
-    });
-  }
 
-  loadTopics();
+   for (let i = 1; i <= datas.last_page; i++) {
+  pagin_bnt_of_subject.innerHTML += `
+    <button class="btn m-1 btn_pagin ${i === page ? ' active' : ''}" onclick="pages(${i}, '${query}')">
+      ${i}
+    </button>`;
+}
+
+    })
+    .catch((err) => console.error("API ERROR:", err));
+}
+
+// 🔃 Load first page
+pages();
+
 }
 
 
@@ -263,7 +225,7 @@ if (Library_tabs && v_pills_tabContent_library) {
     const languageSelect = document.querySelectorAll(".languageSelect");
 
     let currentLanguage = "en";
-    const ayahLimit = 20;
+    const ayahLimit = 40;
 
     if (chaptersTabs && tabContent) {
       fetch("https://subjectsofalquran.com/api/quran/languages", {
@@ -338,13 +300,12 @@ if (Library_tabs && v_pills_tabContent_library) {
         .then(data => {
           const verses = data.data || [];
           const surahName = verses[0]?.surah_name || "";
-          console.log(data.data);
-          
+       
           const isTawbah = surahName.toLowerCase().includes("tawbah") || surahName.includes("التوبة");
           const bismillahSection = isTawbah ? '' : `
             <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
               <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 mx-auto">
-              <h3 class="position-absolute start-50 translate-middle-x font_naskh bis_text">
+              <h3 class="position-absolute start-50 translate-middle-x font_naskh  bis_text">
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
             </div>`;
@@ -366,7 +327,7 @@ if (Library_tabs && v_pills_tabContent_library) {
               <div class="col-lg-11 col-12 p-3 mb-lg-2">
                 <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
                   <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
-                    <span class="me-2">${v.ayah_text}</span>
+                    <span class="me-2 font_naskh ">${v.ayah_text}</span>
                     <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
                       <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
                       <span class="position-absolute font_naskh" style="font-size: 18px;">
@@ -381,7 +342,7 @@ if (Library_tabs && v_pills_tabContent_library) {
               </div>
             </div>`).join("");
 
-          ayahContainer.innerHTML = `<h2  class='text-center mb-3'>سُورَة ${surahName}</h2> <br><h2></h2> ${bismillahSection}${versesHtml}`;
+          ayahContainer.innerHTML = `<h2  class='text-center mb-3 font_naskh '>سُورَة ${surahName}</h2>  ${bismillahSection}${versesHtml}`;
           renderAyahPagination(surahId, data.last_page, page);
         })
         .catch(err => {
