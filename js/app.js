@@ -87,7 +87,7 @@ document.getElementById("searchbtn_subje").addEventListener("click", () => {
       english_subjects.innerHTML = "";
       pagin_bnt_of_subject.innerHTML = "";
 
-      // 🟢 Render topics
+
       datas.data.forEach((element) => {
         english_subjects.innerHTML += `
           <div class="accordion mb-2">
@@ -120,7 +120,6 @@ document.getElementById("searchbtn_subje").addEventListener("click", () => {
     .catch((err) => console.error("API ERROR:", err));
 }
 
-// 🔃 Load first page
 pages();
 
 }
@@ -735,6 +734,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
   let currentLanguage_detail = "en";
   var languageSelect_detail = document.getElementById("languageSelect_detail");
   var single_Detail_of_subject = document.getElementById("single_Detail_of_subject");
+var read_subject_detail=document.getElementById("read_subject_detail");
 
   // Set languages
   fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${location_of_page}`, {
@@ -746,11 +746,16 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
   })
     .then(res => res.json())
     .then((single_topic)=>{
+
    
-      
+read_subject_detail.addEventListener("click", () => {
+  window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`, '_blank');
+})      
 if(single_topic.data.length > 0){
   const  body_of_detail=single_topic.data.map((e,index)=>
- 
+//  console.log(e.topic_id)
+
+
     `
     <div class="d-flex col-12">
     
@@ -765,8 +770,16 @@ if(single_topic.data.length > 0){
         single_Detail_of_subject.innerHTML=`
 
         <!-- ======================= SUBJECT NAME START ====================== -->
-              <div class="col-lg-8 mx-auto col-12"> <h4 class="text-center fs-5  fw-normal py-2">
-    ${single_topic.data[0].topic.topicname}11
+              <div class="col-lg-8 mx-auto col-12"> 
+              
+                <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
+              <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-9 mx-auto">
+              <h3 class="position-absolute start-50 translate-middle-x font_naskh  bis_text p-3">
+                بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+              </h3>
+            </div>
+              <h4 class="text-center fs-5  fw-normal py-2">
+    ${single_topic.data[0].topic.topicname}
               </h4>
           
 </div>
@@ -806,7 +819,12 @@ else{
     
     .catch((err) => {
       console.log(err);
+            single_Detail_of_subject.innerHTML=`Wait Your content is ready `
     });
 
   }
 // ======================= GET SINGLE SURAH IN SUBJECT PAGE END ===========================
+
+
+
+
