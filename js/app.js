@@ -82,7 +82,7 @@ document.getElementById("searchbtn_subje").addEventListener("click", () => {
   })
     .then((res) => res.json())
     .then((datas) => {
-      console.log("DATA:", datas);
+
 
       english_subjects.innerHTML = "";
       pagin_bnt_of_subject.innerHTML = "";
