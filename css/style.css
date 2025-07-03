@@ -186,8 +186,8 @@ body {
   .tab_s {
     position: sticky !important;
     top: 1% !important;
-    height: max-content !important;
-background-color: lightgray !important;
+ height: max-content !important;
+background-color: #e7e7e7 !important;
   }
 }
 

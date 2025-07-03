@@ -12,126 +12,86 @@
 
   <!-- Search Field -->
   <div class="mb-4">
-    <input type="text" id="searchInput" class="form-control" placeholder="Search by topic name...">
+    <input type="search" id="searchBox" class="form-control" placeholder="Search by topic name...">
+ <button id="searchbtn">Search Now</button>
   </div>
 
   <!-- Results -->
+   <div id="pagin_bnt_of_subject">
+
+   </div>
   <div id="english_subjects"></div>
 </div>
 
 <script>
-const searchInput = document.getElementById("searchInput");
 const english_subjects = document.getElementById("english_subjects");
+const pagin_bnt_of_subject = document.getElementById("pagin_bnt_of_subject");
+const searchBox = document.getElementById("searchBox");
 
-const headers = {
-  "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
-  "Content-Type": "application/json"
-};
+let page = 1;
 
-let timeout;
-
-// 🔄 Load all topics initially
-function loadAllTopics() {
-  english_subjects.innerHTML = "<p class='text-center text-muted'>Loading all topics, please wait...</p>";
-
-  fetch("https://subjectsofalquran.com/api/topics?page=1", { method: "GET", headers })
-    .then(res => res.ok ? res.json() : Promise.reject())
-    .then(async data => {
-      const topics = data.data;
-      if (!topics.length) {
-        english_subjects.innerHTML = "<p class='text-center text-muted'>No topics available.</p>";
-        return;
-      }
-
-      english_subjects.innerHTML = "";
-      for (const topic of topics) {
-        await renderTopic(topic);
-      }
-    })
-    .catch(() => {
-      english_subjects.innerHTML = "<p class='text-danger text-center'>Failed to load topics. Try again later.</p>";
-    });
-}
-
-// 🔎 Load search results
-function searchTopics(query) {
-  english_subjects.innerHTML = "<p class='text-center text-muted'>Searching, please wait...</p>";
-
-  fetch(`https://subjectsofalquran.com/api/topics/search?q=${encodeURIComponent(query)}&language_id=1`, {
-    method: "GET",
-    headers
-  })
-    .then(res => res.ok ? res.json() : Promise.reject())
-    .then(async data => {
-      const topics = data.data;
-      if (!topics.length) {
-        english_subjects.innerHTML = "<p class='text-center text-muted'>No matching topics found.</p>";
-        return;
-      }
-
-      english_subjects.innerHTML = "";
-      for (const topic of topics) {
-        await renderTopic(topic);
-      }
-    })
-    .catch(() => {
-      english_subjects.innerHTML = "<p class='text-danger text-center'>Error during search. Try again later.</p>";
-    });
-}
-
-// 📦 Render a single topic + details
-async function renderTopic(topic) {
-  const res2 = await fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${topic.id}`, { method: "GET", headers });
-  const detailData = await res2.json();
-
-  let joinedDetails = "";
-  (detailData.data || []).forEach(d => {
-    if (d.topicdetail && d.surah && d.surah.id) {
-      joinedDetails += `
-        <p><strong>Surah:</strong> <a href="the_list_of_subjects_detail.html?surah=${d.surah.id}" target="_blank">${d.surah.surahname}</a></p>
-        <p><strong>Ayah Detail:</strong> ${d.topicdetail}</p>
-        <hr>`;
-    }
-  });
-
-  english_subjects.innerHTML += `
-    <div class="accordion mb-3" id="accordion-${topic.id}">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="heading-${topic.id}">
-          <button class="accordion-button collapsed" type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapse-${topic.id}"
-            aria-expanded="false"
-            aria-controls="collapse-${topic.id}">
-            ${topic.topicname}
-          </button>
-        </h2>
-        <div id="collapse-${topic.id}" class="accordion-collapse collapse"
-          aria-labelledby="heading-${topic.id}" data-bs-parent="#accordion-${topic.id}">
-          <div class="accordion-body">
-            ${joinedDetails || "<p>No details found.</p>"}
-          </div>
-        </div>
-      </div>
-    </div>`;
-}
-
-// 🔁 On input: search or reset
-searchInput.addEventListener("input", () => {
-  clearTimeout(timeout);
-  timeout = setTimeout(() => {
-    const query = searchInput.value.trim();
-    if (query.length > 0) {
-      searchTopics(query);
-    } else {
-      loadAllTopics();
-    }
-  }, 500);
+// 🟡 Search button
+document.getElementById("searchbtn").addEventListener("click", () => {
+  const query = searchBox.value.trim();
+  pages(1, query);
 });
 
-// 🚀 Initial load
-loadAllTopics();
+// 🔁 Main fetch function
+function pages(params = 1, query = "") {
+  page = params;
+  const isSearching = query !== "";
+
+  const apiUrl = isSearching
+    ? `https://subjectsofalquran.com/api/topics/search?q=${query}&page=${page}`
+    : `https://subjectsofalquran.com/api/topics?page=${page}`;
+
+  fetch(apiUrl, {
+    headers: {
+      Authorization: "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => res.json())
+    .then((datas) => {
+      console.log("DATA:", datas);
+
+      english_subjects.innerHTML = "";
+      pagin_bnt_of_subject.innerHTML = "";
+
+      // 🟢 Render topics
+      datas.data.forEach((element) => {
+        english_subjects.innerHTML += `
+          <div class="accordion accordion-flush">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapse${element.id}"
+                  aria-expanded="false"
+                  aria-controls="flush-collapse${element.id}">
+                  ${element.topicname}
+                </button>
+              </h2>
+            </div>
+          </div>
+        `;
+      });
+
+
+      for (let i = 1; i <= datas.last_page; i++) {
+        pagin_bnt_of_subject.innerHTML += `
+          <button class="btn btn-outline-primary m-1 btn_pagin" onclick="pages(${i}, '${query}')">
+            ${i}
+          </button>`;
+      }
+    })
+    .catch((err) => console.error("API ERROR:", err));
+}
+
+// 🔃 Load first page
+pages();
 </script>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -98,7 +98,7 @@ if (english_subjects && pagination_buttons) {
           })
             .then(res => res.ok ? res.json() : { data: [] })
             .then(detailData => {
-              let joinedDetails = "";
+            
               let matchFound = false;
 
               detailData.data.forEach(d => {
@@ -115,10 +115,7 @@ if (english_subjects && pagination_buttons) {
                     matchFound = true;
                   }
 
-                  joinedDetails += `
-                  <p><strong>Surah:</strong> ${sName}</p>
-                  <p><strong>Ayah :</strong> ${detail}</p>
-                  <hr>`;
+              
                 }
               });
 
@@ -818,6 +815,7 @@ if(single_topic.data.length > 0){
  
     `
     <div class="d-flex col-12">
+    
 <p class="col-2 num_css">${e.surahcode} : </p>
 <p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
 
