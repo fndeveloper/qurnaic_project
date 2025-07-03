@@ -256,90 +256,90 @@ if (Library_tabs && v_pills_tabContent_library) {
 
 // ======================== QURAN.HTML CODE START =======================
 
-const chaptersTabs = document.getElementById("chaptersTabs");
-const tabContent = document.getElementById("v-pills-tabContent");
-const searchInput = document.getElementById("surah_name");
-const erase_btn = document.getElementById("erase_btn");
+ const chaptersTabs = document.getElementById("chaptersTabs");
+    const tabContent = document.getElementById("v-pills-tabContent");
+    const searchInput = document.getElementById("surah_name");
+    const erase_btn = document.getElementById("erase_btn");
+    const languageSelect = document.querySelectorAll(".languageSelect");
 
-const languageSelect = document.querySelectorAll(".languageSelect");
-let currentLanguage = "en"; // default language
+    let currentLanguage = "en";
+    const ayahLimit = 20;
 
-if (chaptersTabs && tabContent) {
-  // Fetch available languages and populate dropdowns
-  fetch("https://subjectsofalquran.com/api/quran/languages", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      const langs = data.available_languages || {};
-      let optionsHtml = "";
-      Object.entries(langs).forEach(([code, name]) => {
-        const selected = code === "en" ? "selected" : "";
-        optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
-      });
-      languageSelect.forEach(e => e.innerHTML = optionsHtml);
-    });
-
-  // Handle language change
-  languageSelect.forEach(es => {
-    es.addEventListener("change", () => {
-      currentLanguage = es.value;
-      fetchSurahs();
-    });
-  });
-
-  // Load tabs from API
-  function loadSurahTabs(surahs) {
-    chaptersTabs.innerHTML = "";
-    tabContent.innerHTML = "";
-
-    surahs.forEach((surah, index) => {
-      chaptersTabs.innerHTML += `
-        <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
-          <button class="nav-link nav_tab_name_Sura ${index === 0 ? "active" : ""}"
-            id="chaptertabs${surah.id}"
-            data-bs-toggle="tab"
-            data-bs-target="#surah${surah.id}"
-            data-surahid="${surah.id}"
-            type="button" role="tab">
-            ${surah.id}. <span class="pe-3" style="font-size:3px"></span> ${surah.surahname}
-          </button>
-        </li>`;
-
-      tabContent.innerHTML += `
-        <div class="tab-pane fade ${index === 0 ? "show active" : ""}"
-          id="surah${surah.id}" role="tabpanel"
-          aria-labelledby="chaptertabs${surah.id}">
-          <p class="loading">Click tab to load surah...</p>
-        </div>`;
-    });
-
-    if (surahs.length > 0) {
-      loadSurahContent(surahs[0].id);
-    }
-  }
-
-
-  // Load Surah content by ID
-  function loadSurahContent(surahId) {
-    const pane = document.getElementById(`surah${surahId}`);
-    if (pane) {
-      pane.innerHTML = `<p>Loading surah...</p>`;
-      fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}`, {
+    if (chaptersTabs && tabContent) {
+      fetch("https://subjectsofalquran.com/api/quran/languages", {
         method: "GET",
         headers: {
           "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
           "Content-Type": "application/json"
         }
       })
-        .then(res => res.text().then(text => JSON.parse(text)))
+        .then(res => res.json())
+        .then(data => {
+          const langs = data.available_languages || {};
+          let optionsHtml = "";
+          Object.entries(langs).forEach(([code, name]) => {
+            const selected = code === "en" ? "selected" : "";
+            optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
+          });
+          languageSelect.forEach(e => e.innerHTML = optionsHtml);
+        });
+
+      languageSelect.forEach(es => {
+        es.addEventListener("change", () => {
+          currentLanguage = es.value;
+          fetchSurahs();
+        });
+      });
+
+      function loadSurahTabs(surahs) {
+        chaptersTabs.innerHTML = "";
+        tabContent.innerHTML = "";
+
+        surahs.forEach((surah, index) => {
+          chaptersTabs.innerHTML += `
+            <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
+              <button class="nav-link nav_tab_name_Sura ${index === 0 ? "active" : ""}"
+                id="chaptertabs${surah.id}"
+                data-bs-toggle="tab"
+                data-bs-target="#surah${surah.id}"
+                data-surahid="${surah.id}"
+                type="button" role="tab">
+                ${surah.id}. ${surah.surahname}
+              </button>
+            </li>`;
+
+          tabContent.innerHTML += `
+            <div class="tab-pane fade ${index === 0 ? "show active" : ""}"
+              id="surah${surah.id}" role="tabpanel"
+              aria-labelledby="chaptertabs${surah.id}">
+              <div id="ayahContent${surah.id}"></div>
+              <div id="ayahPagination${surah.id}" class="mt-3"></div>
+            </div>`;
+        });
+
+        if (surahs.length > 0) {
+          loadSurahContent(surahs[0].id, 1);
+        }
+      }
+
+      function loadSurahContent(surahId, page = 1) {
+        const ayahContainer = document.getElementById(`ayahContent${surahId}`);
+        const paginationDiv = document.getElementById(`ayahPagination${surahId}`);
+        ayahContainer.innerHTML = `<p>Loading ayahs...</p>`;
+
+        fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`, {
+          method: "GET",
+          headers: {
+            "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+            "Content-Type": "application/json"
+          }
+        })
+        .then(res => res.json())
         .then(data => {
           const verses = data.data || [];
           const surahName = verses[0]?.surah_name || "";
+          console.log(data.data);
+          
           const isTawbah = surahName.toLowerCase().includes("tawbah") || surahName.includes("التوبة");
           const bismillahSection = isTawbah ? '' : `
             <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
@@ -381,151 +381,128 @@ if (chaptersTabs && tabContent) {
               </div>
             </div>`).join("");
 
-          pane.innerHTML = `<h3 class="text-center font_naskh fs-3">سُورَة ${surahName}</h3>${bismillahSection}${versesHtml}`;
-          pane.dataset.loaded = "true";
+          ayahContainer.innerHTML = `<h2  class='text-center mb-3'>سُورَة ${surahName}</h2> <br><h2></h2> ${bismillahSection}${versesHtml}`;
+          renderAyahPagination(surahId, data.last_page, page);
         })
         .catch(err => {
-          pane.innerHTML = `<p>Error loading surah. Please try again later.</p>`;
-          console.error("Surah Fetch Error:", err);
+          ayahContainer.innerHTML = `<p class='text-danger'>Error loading ayahs. Please try again later.</p>`;
         });
-    }
-  }
-
-  function fetchSurahs() {
-    fetch("https://subjectsofalquran.com/api/surahs", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
-        "Content-Type": "application/json"
       }
-    })
-      .then(res => res.json())
-      .then(loadSurahTabs);
-  }
 
-  fetchSurahs(); // Initial Load
-
-  // Tab Click Event
-  document.addEventListener("click", function (e) {
-    if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
-      const button = e.target;
-      const surahId = button.getAttribute("data-surahid");
-      loadSurahContent(surahId);
-      setTimeout(() => {
-        const pane = document.getElementById(`surah${surahId}`);
-        if (pane) {
-          const yOffset = -50;
-          const y = pane.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+      function renderAyahPagination(surahId, lastPage, currentPage) {
+        const paginationDiv = document.getElementById(`ayahPagination${surahId}`);
+        let paginationHTML = `<nav><ul class="pagination justify-content-center">`;
+        for (let i = 1; i <= lastPage; i++) {
+          paginationHTML += `
+            <li class="page-item ${i === currentPage ? "active" : ""}">
+              <button class="page-link" onclick="loadSurahContent(${surahId}, ${i})">${i}</button>
+            </li>`;
         }
-      }, 200);
-    }
-  });
+        paginationHTML += `</ul></nav>`;
+        paginationDiv.innerHTML = paginationHTML;
+      }
 
-  // Live Search
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      const query = this.value.trim();
-      if (query.length === 0) {
-        fetchSurahs();
-      } else {
-        fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`, {
+      function fetchSurahs() {
+        fetch("https://subjectsofalquran.com/api/surahs", {
           method: "GET",
           headers: {
             "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
             "Content-Type": "application/json"
           }
         })
-          .then(res => res.json())
-          .then(surahs => {
-            loadSurahTabs(surahs);
-            if (surahs.length > 0) {
-              loadSurahContent(surahs[0].id);
-            }
-          })
-          .catch(err => {
-            console.error("Search API Error:", err);
-            chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
-            tabContent.innerHTML = "";
-          });
+        .then(res => res.json())
+        .then(loadSurahTabs);
       }
-    });
-  }
 
+      document.addEventListener("click", function (e) {
+        if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
+          const button = e.target;
+          const surahId = button.getAttribute("data-surahid");
+          loadSurahContent(surahId, 1);
+          setTimeout(() => {
+            const pane = document.getElementById(`surah${surahId}`);
+            if (pane) {
+              const yOffset = -50;
+              const y = pane.getBoundingClientRect().top + window.pageYOffset + yOffset;
+              window.scrollTo({ top: y, behavior: 'smooth' });
+            }
+          }, 200);
+        }
+      });
 
+      if (searchInput) {
+        searchInput.addEventListener("input", function () {
+          const query = this.value.trim();
+          if (query.length === 0) {
+            fetchSurahs();
+          } else {
+            fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`, {
+              method: "GET",
+              headers: {
+                "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+                "Content-Type": "application/json"
+              }
+            })
+              .then(res => res.json())
+              .then(surahs => {
+                loadSurahTabs(surahs);
+                if (surahs.length > 0) {
+                  loadSurahContent(surahs[0].id, 1);
+                }
+              })
+              .catch(err => {
+                chaptersTabs.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
+                tabContent.innerHTML = "";
+              });
+          }
+        });
+      }
 
-  // Erase button reload
-  if (erase_btn) {
-    erase_btn.addEventListener("click", () => {
-      location.reload();
-    });
-  }
+      if (erase_btn) {
+        erase_btn.addEventListener("click", () => {
+          location.reload();
+        });
+      }
 
-  function Coopy(a, b, c, d, e) {
-    const textToCopy = `
-Surah Name: ${a}
-Ayah Number: ${b}
-Surah Number: ${c}
-Ayah Text: ${d}
-Translation: ${e}
+      fetchSurahs();
+    }
 
+    function Coopy(a, b, c, d, e) {
+      const textToCopy = `Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\n\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`;
 
-Website : https://subjectsofalquran.com/
-Publish By : Fons Vitae Publications,  Inc.
-  `.trim();
-
-    navigator.clipboard.writeText(textToCopy)
-      .then(() => {
-
-        setTimeout(() => {
+      navigator.clipboard.writeText(textToCopy)
+        .then(() => {
           Swal.fire({
             title: "Verse has been copied to the clipboard!",
-
-            // icon: "success",
-            draggable: true,
-            customClass: {
-              popup: 'cus_copy_pop'
-            },
-            timer: 2000, // Auto close after 5 seconds
-            showConfirmButton: false, // Hide the OK button
-            timerProgressBar: true // Optional: show progress bar
-          })
-        }, 2000);
-        console.log(textToCopy);
-      })
-      .catch(err => {
-        console.error("Failed to copy: ", err);
-      });
-  }
-
-  function ShareAyah(a, b, c, d, e) {
-    const shareData = {
-      title: `Surah ${a} - Ayah ${b}`,
-      text: `Surah Name: ${a}
-Ayah Number: ${b}
-Surah Number: ${c}
-Ayah Text: ${d}
-Translation: ${e}
-Website : https://subjectsofalquran.com/
-Publish By : Fons Vitae Publications,  Inc.
-`
-
-
-    };
-    if (navigator.share) {
-      navigator.share(shareData)
-        .then(() => console.log("Shared successfully"))
-        .catch((error) => console.error("Sharing failed", error));
-    } else {
-      alert("Web Share API not supported in this browser.");
+            timer: 2000,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
+        })
+        .catch(err => {
+          console.error("Failed to copy: ", err);
+        });
     }
-  }
+
+    function ShareAyah(a, b, c, d, e) {
+      const shareData = {
+        title: `Surah ${a} - Ayah ${b}`,
+        text: `Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`
+      };
+      if (navigator.share) {
+        navigator.share(shareData)
+          .then(() => console.log("Shared successfully"))
+          .catch((error) => console.error("Sharing failed", error));
+      } else {
+        alert("Web Share API not supported in this browser.");
+      }
+    }
   // ======================== QURAN.HTML CODE END =======================
   // 
 
 
 
-}
+
 
 // =================================================
 var library_home_div = document.getElementById("library_home_div")

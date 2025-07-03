@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Viewer with Ayah Pagination</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    .font_naskh { font-family: 'Scheherazade New', serif; }
+    .bis_text { font-size: 1.5rem; }
+    .cp_bnt {
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Quran Viewer</h2>
+      <div class="d-flex gap-2">
+        <input id="surah_name" type="text" class="form-control" placeholder="Search Surah by Name">
+        <button id="erase_btn" class="btn btn-secondary">Reset</button>
+        <select class="form-select w-auto languageSelect"></select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <ul class="nav flex-column nav-pills" id="chaptersTabs" role="tablist"></ul>
+      </div>
+      <div class="col-md-8">
+        <div class="tab-content" id="v-pills-tabContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  let currentAudio = null;
+  let currentButton = null;
+
+  function ReadAyah(id, button) {
+    const audioURL = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
+
+    if (currentAudio && !currentAudio.paused && currentButton === button) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      button.innerHTML = `<i class="fa-solid fa-play"></i>`;
+      return;
+    }
+
+    if (currentAudio) {
+      currentAudio.pause();
+      currentAudio.currentTime = 0;
+      if (currentButton) {
+        currentButton.innerHTML = `<i class="fa-solid fa-play"></i>`;
+      }
+    }
+
+    currentAudio = new Audio(audioURL);
+    currentButton = button;
+
+    currentAudio.play().then(() => {
+      button.innerHTML = `<i class="fa-solid fa-pause"></i>`;
+    }).catch(error => {
+      alert("Error playing audio: " + error.message);
+    });
+
+    currentAudio.onended = function () {
+      button.innerHTML = `<i class="fa-solid fa-play"></i>`;
+    };
+  }
+
+  function Coopy(a, b, c, d, e) {
+    const textToCopy = `Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\n\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`;
+    navigator.clipboard.writeText(textToCopy)
+      .then(() => {
+        Swal.fire({ title: "Verse has been copied to the clipboard!", timer: 2000, showConfirmButton: false, timerProgressBar: true });
+      });
+  }
+
+  function ShareAyah(a, b, c, d, e) {
+    const shareData = {
+      title: `Surah ${a} - Ayah ${b}`,
+      text: `Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`
+    };
+    if (navigator.share) {
+      navigator.share(shareData)
+        .catch((error) => console.error("Sharing failed", error));
+    } else {
+      alert("Web Share API not supported in this browser.");
+    }
+  }
+
+  function renderVerses(verses, lang) {
+    return verses.map(v => `
+      <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
+        <div class="col-lg-1 col-12 p-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
+          <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
+          <button class="cp_bnt mb-2" onclick="Coopy('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${lang}`]}')">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+          <button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${v.surah_name}', ${v.ayah_number}, ${v.surah_number}, '${v.ayah_text}', '${v[`translation_${lang}`]}')">
+            <i class="fas fa-share-alt"></i>
+          </button>
+          <button class="cp_bnt mb-2 fw-lighter" onclick="ReadAyah('${v.id}', this)">
+            <i class="fa-solid fa-play"></i>
+          </button>
+        </div>
+        <div class="col-lg-11 col-12 p-3 mb-lg-2">
+          <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
+            <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
+              <span class="me-2">${v.ayah_text}</span>
+              <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
+                <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
+                <span class="position-absolute font_naskh" style="font-size: 18px;">
+                  ${new Intl.NumberFormat('ar-SA').format(v.ayah_number)}
+                </span>
+              </span>
+            </span>
+          </p>
+          <p class="text-start fs-6 my-2">
+            ${v[`translation_${lang}`] || ""}
+          </p>
+        </div>
+      </div>`).join("");
+  }
+  </script>
+
+  <script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

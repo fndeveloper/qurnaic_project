@@ -190,6 +190,11 @@ body {
 background-color: #e7e7e7 !important;
   }
 }
+.page-item.active .page-link {
+  background-color: #6d94bb !important;
+  color: white !important;
+  border-color: #6d94bb !important;
+}
 
 @media (max-width:430px) {
   .top_1-e a {
