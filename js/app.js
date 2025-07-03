@@ -753,7 +753,7 @@ read_subject_detail.addEventListener("click", () => {
 })      
 if(single_topic.data.length > 0){
   const  body_of_detail=single_topic.data.map((e,index)=>
-//  console.log(e.topic_id)
+
 
 
     `
@@ -824,6 +824,77 @@ else{
 
   }
 // ======================= GET SINGLE SURAH IN SUBJECT PAGE END ===========================
+
+
+
+
+
+// ======================= GET SINGLE READDETAIL IN SUBJECT PAGE START ===========================
+var location_of_page_read = location.search.split("=")[1];
+
+
+if (location.href.includes("the_list_of_subjects_read.html")) {
+  let currentLanguage_detail = "en";
+  var languageSelect_detail_read = document.getElementById("languageSelect_detail_read");
+  var single_Detail_of_subject_read = document.getElementById("single_Detail_of_subject_read");
+
+
+  // Set languages
+  fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${location_of_page_read}`, {
+    method: "GET",
+    headers: {
+      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Content-Type": "application/json"
+    }
+  })
+    .then(res => res.json())
+.then((single_topic) => {
+  if (single_topic.data.length > 0) {
+    // Extract only topicdetail values into a new array
+const topicDetailsArray = single_topic.data.flatMap(item =>
+  item.topicdetail
+    .split(/[\s,]+/) // split by comma, tab, or space
+    .filter(Boolean) // remove empty strings
+    .map(num => String(Number(num))) // remove leading zeros
+);
+console.log("Cleaned topic details:", topicDetailsArray);
+
+    const body_of_detail = single_topic.data.map((e, index) => `
+      <div class="d-flex col-12">
+        <p class="col-2 num_css">${e.surahcode} : </p>
+        <p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
+      </div>
+    `).join("");
+
+    single_Detail_of_subject.innerHTML = `
+      <div class="col-lg-8 mx-auto col-12"> 
+        <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
+          <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-9 mx-auto">
+          <h3 class="position-absolute start-50 translate-middle-x font_naskh  bis_text p-3">
+            بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+          </h3>
+        </div>
+        
+      </div>
+      <hr>
+    
+   
+      ${body_of_detail}
+    `;
+  } else {
+    single_Detail_of_subject.innerHTML = `This Subject is not Uploaded`;
+  }
+})
+
+    
+    .catch((err) => {
+      console.log(err);
+            single_Detail_of_subject.innerHTML=`Wait Your content is ready `
+    });
+
+  }
+// ======================= GET SINGLE READDETAIL IN SUBJECT PAGE END ===========================
+
 
 
 
