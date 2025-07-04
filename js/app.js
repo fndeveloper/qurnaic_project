@@ -778,17 +778,17 @@ if(single_topic.data.length > 0){
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
             </div>
-              <h4 class="text-center fs-5  fw-normal py-2">
+              <h5 class="text-center fs-6  fw-normal py-2">
     ${single_topic.data[0].topic.topicname}
-              </h4>
+              </h5>
           
 </div>
-    <hr>
+ 
 <!-- ======================= SUBJECT NAME END ====================== -->
 
 <!-- ======================= SUBJECT SERIAL START ====================== -->
 
-<div class="d-flex">
+<div class="d-flex ">
   <p class="col-2">SRL : </p>
   <p class="pe-2"> ${single_topic.data[0].topiccode}</p>
 </div>
@@ -919,8 +919,8 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
             });
 
             if (!res.ok) {
-              console.error(`❌ Could not load Ayah ${ayah} of Surah ${cleanSurah}`);
-              ayahContainer.innerHTML += `<div class="alert alert-warning">❌ Could not load Ayah ${ayah} of Surah ${cleanSurah}</div>`;
+              console.error(` Could not load Ayah ${ayah} of Surah ${cleanSurah}`);
+              ayahContainer.innerHTML += `<div class="alert alert-warning"> Could not load Ayah ${ayah} of Surah ${cleanSurah}</div>`;
               continue;
             }
 
@@ -959,18 +959,18 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
               </div>
             `;
           } catch (err) {
-            console.error(`❌ Error fetching Surah ${cleanSurah} Ayah ${ayah}:`, err);
+            console.error(` Error fetching Surah ${cleanSurah} Ayah ${ayah}:`, err);
           }
 
           await new Promise(resolve => setTimeout(resolve, 300));
         }
 
       } else {
-        single_Detail_of_subject_read.innerHTML = `<div class="alert alert-info">📭 This subject is not uploaded yet.</div>`;
+        single_Detail_of_subject_read.innerHTML = `<div class="alert alert-info"> This subject is not uploaded yet.</div>`;
       }
     })
     .catch(err => {
-      console.log("🔥 Fetch Error:", err);
+      console.log(" Fetch Error:", err);
       single_Detail_of_subject_read.innerHTML = `<div class="alert alert-danger">Wait... Your content is getting ready.</div>`;
     });
 }
