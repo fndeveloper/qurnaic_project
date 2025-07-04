@@ -906,11 +906,37 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
             const verse = data;
 
             ayahContainer.innerHTML += `
-              <div class="d-flex col-12 flex-column my-3 p-2 border rounded">
-                <p class="fw-bold mb-1">Surah ${verse.surah_name} - Ayah ${verse.ayah_number}</p>
-                <p class="text-end font_naskh fs-4" dir="rtl">${verse.ayah_text}</p>
-                <p class="text-start">${verse.translation_en}</p>
+             <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
+              <div class="col-lg-1 col-12 p-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
+                <span class="fw-light mb-2">${verse.surah_number}:${verse.ayah_number}</span>
+                <button class="cp_bnt mb-2" onclick="Coopy('${verse.surah_name}', ${verse.ayah_number}, ${verse.surah_number}, '${verse.ayah_text}', '${verse[`translation_${currentLanguage}`]}')">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+                <button class="cp_bnt mb-2 fw-lighter" onclick="ShareAyah('${verse.surah_name}', ${verse.ayah_number}, ${verse.surah_number}, '${verse.ayah_text}', '${verse[`translation_${currentLanguage}`]}')">
+                  <i class="fas fa-share-alt"></i>
+                </button>
+                <button class="cp_bnt mb-2 fw-lighter" id="aud" onclick="ReadAyah('${verse.id}', this)">
+                  <i class="fa-solid fa-play"></i>
+                </button>
               </div>
+              <div class="col-lg-11 col-12 p-3 mb-lg-2">
+                <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
+                  <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
+                    <span class="me-2 font_naskh ">${verse.ayah_text}</span>
+                    <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
+                      <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
+                      <span class="position-absolute font_naskh" style="font-size: 18px;">
+                        ${new Intl.NumberFormat('ar-SA').format(verse.ayah_number)}
+                      </span>
+                    </span>
+                  </span>
+                </p>
+                <p class="text-start fs-6 my-2">
+                  ${verse[`translation_${currentLanguage}`] || ""}
+                </p>
+              </div>
+            </div>
+
             `;
 
           } catch (err) {
