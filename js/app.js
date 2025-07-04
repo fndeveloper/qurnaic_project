@@ -898,8 +898,8 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
               </h3>
             </div>
           </div>
-          <hr>
-          <h4 class="text-center py-3">${topicAyahsWithSurah[0].topic}</h4>
+
+          <h4 class="text-center py-3 fs-6">${topicAyahsWithSurah[0].topic}</h4>
           <div id="ayahContainer"></div>
         `;
 
