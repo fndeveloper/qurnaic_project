@@ -822,7 +822,9 @@ else{
             single_Detail_of_subject.innerHTML=`Wait Your content is ready `
     });
 
-  }// ======================= GET SINGLE SURAH IN SUBJECT PAGE ===========================
+  }
+  
+  // ======================= the_list_of_subjects_read.html START ===========================
 
 var location_of_page_read = location.search.split("=")[1];
 
@@ -970,3 +972,5 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
   // First load
   fetchAndRenderAyahs();
 }
+
+// =============================== the_list_of_subjects_read.html END ==================================
