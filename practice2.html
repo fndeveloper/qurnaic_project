@@ -59,30 +59,35 @@ fetch("https://subjectsofalquran.com/api/topicdetails/topic/1", {
   headers: header_of_api
 })
 .then(res => res.json())
-.then(data => {
-  data.data.forEach(item => {
+.then(async data => {
+  for (const item of data.data) {
     const surah = item.surahcode || item.surah_id;
     const ayahs = item.topicdetail.split(",");
 
-    ayahs.forEach(ayah => {
+    for (const ayah of ayahs) {
       const cleanAyah = ayah.trim();
 
-      fetch(`https://subjectsofalquran.com/api/quran/surah/${Number(surah)}/ayah/${Number(cleanAyah)}`, {
-        headers: header_of_api
-      })
-      .then(res => res.json())
-      .then(verse => {
-        console.log(verse); // Yahan verse data milega
-      })
-      .catch(err => {
-        console.error("Error:", err);
-      });
-    });
-  });
-})
-.catch(err => {
-  console.error("Main fetch error:", err);
+      try {
+        const res = await fetch(`https://subjectsofalquran.com/api/quran/surah/${Number(surah)}/ayah/${Number(cleanAyah)}`, {
+          headers: header_of_api
+        });
+
+        const verse = await res.json();
+
+        read_data.innerHTML += `
+          <span>${verse.surah_number}:${verse.ayah_number}</span>
+          <h5>${verse.ayah_text}</h5>
+        `;
+      } catch (err) {
+        console.log("Error:", err);
+      }
+
+      // Optional: slow down to prevent API overload
+      await new Promise(resolve => setTimeout(resolve, 200)); // 200ms delay
+    }
+  }
 });
+
 
 
     </script>
