@@ -781,16 +781,30 @@ if(single_topic.data.length > 0){
               <h5 class="text-center fs-6  fw-normal py-2">
     ${single_topic.data[0].topic.topicname}
               </h5>
-          
+      <select class="form-select my-3">
+  <option selected disabled>Translate Here</option>
+  <option value="en">English</option>
+  <option value="ar">Arabic</option>
+  <option value="ur">Urdu</option>
+  <option value="hi">Hindi</option>
+  <option value="fr">French</option>
+  <option value="es">Spanish</option>
+  <option value="tr">Turkish</option>
+  <option value="id">Indonesian</option>
+  <option value="bn">Bengali</option>
+  <option value="zh">Chinese</option>
+  <option value="fa">Persian</option>
+</select>
+
 </div>
  
 <!-- ======================= SUBJECT NAME END ====================== -->
 
 <!-- ======================= SUBJECT SERIAL START ====================== -->
 
-<div class="d-flex ">
-  <p class="col-2">SRL : </p>
-  <p class="pe-2"> ${single_topic.data[0].topiccode}</p>
+<div class="d-flex flex-row  justify-content-center col-12  text-center">
+  <p class=" ">SRL : </p>
+  <p class="pe-2  "> ${single_topic.data[0].topiccode}</p>
 </div>
 <!-- ======================= SUBJECT SERIAL START ====================== -->
  <div class="d-flex col-12">
