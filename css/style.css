@@ -39,6 +39,10 @@ body {
   .bis_text{
     font-size: 14px !important;
   }
+  @media (max-width:376px) {
+  .bis_text{
+    font-size: 12px !important;
+  }}
 }
 
 .aya_time {

@@ -94,7 +94,7 @@ document.getElementById("searchbtn_subje").addEventListener("click", () => {
             <div class="accordion-item">
             <a href="the_list_of_subjects_detail.html?subject=${element.id}"  target="_blank" class="text-decoration-none">
               <h4 class="accordion-header">
-                <button class="accordion-button collapsed" type="button"
+                <button class="accordion-button collapsed text-wrap text-break" type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse${element.id}"
                   aria-expanded="false"
