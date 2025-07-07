@@ -778,10 +778,12 @@ if(single_topic.data.length > 0){
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
             </div>
-              <h5 class="text-center fs-6  fw-normal py-2">
+              <h5 class="text-center fs-4  fw-normal py-2">
     ${single_topic.data[0].topic.topicname}
               </h5>
-      <select class="form-select my-3">
+              </div>
+     <div class="col-lg-3">
+      <select class="form-select my-3 ">
   <option selected disabled>Translate Here</option>
   <option value="en">English</option>
   <option value="ar">Arabic</option>
@@ -795,21 +797,22 @@ if(single_topic.data.length > 0){
   <option value="zh">Chinese</option>
   <option value="fa">Persian</option>
 </select>
+     </div>
 
-</div>
+
  
 <!-- ======================= SUBJECT NAME END ====================== -->
 
 <!-- ======================= SUBJECT SERIAL START ====================== -->
 
-<div class="d-flex flex-row  justify-content-center col-12  text-center">
-  <p class=" ">SRL : </p>
+<div class="d-flex flex-row  col-12 ">
+  <p class="col-2 ">Srl : </p>
   <p class="pe-2  "> ${single_topic.data[0].topiccode}</p>
 </div>
 <!-- ======================= SUBJECT SERIAL START ====================== -->
  <div class="d-flex col-12">
-  <p class="col-2 num_css">Surah :</p>
-  <p class="pe-2 num_css">Ayah </p>
+  <p class="col-2 ">Surah :</p>
+  <p class="pe-2 ">Ayah </p>
 
  </div>
 <!-- ======================= SUBJECT DETIAL LOOP START ====================== -->
