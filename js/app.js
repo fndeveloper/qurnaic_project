@@ -1,44 +1,13 @@
-
-document.addEventListener("DOMContentLoaded", () => {
-  var header = document.getElementById("header")
-  if (header) {
-    fetch("header.html")
-      .then(e => e.text())
-      .then((e) => {
-
-        header.innerHTML = `
-  ${e}
-  `
-        var dt = document.getElementById("dt");
-        var ti = new Date();
-        dt.innerHTML = ti.toDateString().split("  ");
-
-      })
-  }
-
-
-  // console.log(ti);
-});
-
-
-
-// ========================== HEADER FETCH END ======================================
-// ========================== FOOTER FETCH START ======================================
-var footer = document.getElementById("footer")
-
-if (footer) {
-  fetch("footer.html")
-    .then(e => e.text())
-    .then((e) => {
-
-      footer.innerHTML = `
-  ${e}
-  `
-
-    })
+// ========== THIS CODE IS HERE FOR SHOW A TIME IN HEADER TOP LEFT START =========
+var dt = document.getElementById("dt");
+if(dt){
+var ti = new Date();
+dt.innerHTML = ti.toDateString().split("  ");
 }
+// ========== THIS CODE IS HERE FOR SHOW A TIME IN HEADER TOP LEFT END =========
 
-// ========================= share =====================
+
+// ========== THIS CODE IS HERE FOR SHARE BUTTON IN EACH PAGE START ========
 var share = document.getElementById("share");
 if (share) {
   share.addEventListener("click", () => {
@@ -48,7 +17,7 @@ if (share) {
   })
 }
 
-// ========================= share =====================
+// ========== THIS CODE IS HERE FOR SHARE BUTTON IN EACH PAGE END ========
 
 // =================== ENGLISH SUBJECT CODE START ===============
 const english_subjects = document.getElementById("english_subjects");
@@ -756,6 +725,7 @@ if(single_topic.data.length > 0){
 
 
 
+
     `
     <div class="d-flex col-12">
     
@@ -778,13 +748,13 @@ if(single_topic.data.length > 0){
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
             </div>
-              <h5 class="text-center fs-4  fw-normal py-2">
+              <h3 class="text-center fs-2  py-2 font_naskh">
     ${single_topic.data[0].topic.topicname}
-              </h5>
+              </h3>
               </div>
      <div class="col-lg-3">
       <select class="form-select my-3 ">
-  <option selected disabled>Translate Here</option>
+  <option selected disabled>Select Language</option>
   <option value="en">English</option>
   <option value="ar">Arabic</option>
   <option value="ur">Urdu</option>
@@ -811,8 +781,8 @@ if(single_topic.data.length > 0){
 </div>
 <!-- ======================= SUBJECT SERIAL START ====================== -->
  <div class="d-flex col-12">
-  <p class="col-2 ">Surah :</p>
-  <p class="pe-2 ">Ayah </p>
+  <p class="col-2 ">Surah No:</p>
+  <p class="pe-2 ">Ayah No:</p>
 
  </div>
 <!-- ======================= SUBJECT DETIAL LOOP START ====================== -->
