@@ -474,7 +474,7 @@ function libarayfuntion1(dataArray) {
     if (!library_media.includes(dt.media_type)) {
       library_media.push(dt.media_type);
     }
-    console.log(dt);
+
     library_div.innerHTML += `
   <div class="col-12 col-lg-4 text-start my-2 book_di library_div position-relative">
 
