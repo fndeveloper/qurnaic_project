@@ -637,18 +637,22 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 
 
         datas.data.forEach((element) => {
+          console.log(element);
+          
           list_of_subjects.innerHTML += `
 
           
           <div class="accordion mb-2">
             <div class="accordion-item">
-            <a href="the_list_of_subjects_detail.html?subject=${element.id}"  target="_blank" class="text-decoration-none text-dark">
+            <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark">
               <h4 class="accordion-header">
+   
                 <button class="accordion-button collapsed text-wrap text-break" type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse${element.id}"
                   aria-expanded="false"
                   aria-controls="flush-collapse${element.id}">
+              <span class="pe-3">${Number(element.topiccode)}</span>
                   ${element.topicname}
                 </button>
                   </a>
@@ -667,7 +671,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
         }
 
       })
-      .catch((err) => console.error("API ERROR:", err));
+      .catch((err) => console.log("API ERROR:", err));
   }
 
   pages();
