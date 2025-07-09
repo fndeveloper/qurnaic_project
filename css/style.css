@@ -217,12 +217,19 @@ background-color: #e7e7e7 !important;
   font-weight: bold;
 }
 
-@media (max-width:430px) {
-  .top_1-e a {
+@media (max-width:576px) {
+  .top_1-e a ,.paper_book_header_text,.time_head {
     font-size: 13px;
   }
+  /* .gorgia_font{
+    font-size: 22px !important;
+  } */
+ 
 }
-
+.fons_logo{
+  height: 120px;
+  /* width: 20% !important; */
+}
 .top_toogle_icon {
   transform: rotate(90deg);
 }
