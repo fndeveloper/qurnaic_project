@@ -69,7 +69,7 @@ function libarayfuntion(ty) {
     library_home_div.innerHTML += `
         <div class="col-6 col-sm-4 col-md-3 col-lg-2 text-center book_div library_div_und library_div">
         <span class="my-3">${dt.title.split(" ").slice(0, 3).join(" ")}..</span>
-          <a href="library.html" class="text-decoration-none">
+          <a href="library.html" class="text-decoration-none text-dark">
             <img src="${encodeURI(dt.thumbnail_url)}" alt="" class="mt-3 img-fluid home_lib_image">
           </a>
         </div>
@@ -140,7 +140,9 @@ if (quran_tab_div && tabContent) {
   })
     .then(res => res.json())
     .then(data => {
+
       const langs = data.available_languages || {};
+      
       let optionsHtml = "";
       Object.entries(langs).forEach(([code, name]) => {
         const selected = code === "en" ? "selected" : "";
@@ -493,7 +495,7 @@ function libarayfuntion1(dataArray) {
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
 
 
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none rounded-2 ">
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">
           View Video
         </a>
     ` : `
@@ -508,7 +510,7 @@ function libarayfuntion1(dataArray) {
       <h6 class="fw-light">Title : ${dt.title}</h6>
     
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
- <audio controls class="audio-wrapper   col-11   text-decoration-none rounded-2  ">
+ <audio controls class="audio-wrapper   col-11   text-decoration-none text-dark rounded-2  ">
           <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="audio/mpeg">
 
         </audio>
@@ -522,7 +524,7 @@ function libarayfuntion1(dataArray) {
 
 
       <div class="mb-2">
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none rounded-2 ">
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-dark rounded-2 ">
           View E-Book
         </a>
       </div>
@@ -636,9 +638,11 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 
         datas.data.forEach((element) => {
           list_of_subjects.innerHTML += `
+
+          
           <div class="accordion mb-2">
             <div class="accordion-item">
-            <a href="the_list_of_subjects_detail.html?subject=${element.id}"  target="_blank" class="text-decoration-none">
+            <a href="the_list_of_subjects_detail.html?subject=${element.id}"  target="_blank" class="text-decoration-none text-dark">
               <h4 class="accordion-header">
                 <button class="accordion-button collapsed text-wrap text-break" type="button"
                   data-bs-toggle="collapse"
@@ -700,6 +704,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
     .then((single_topic) => {
 
 
+
       read_subject_detail.addEventListener("click", () => {
         window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`, '_blank');
       })
@@ -735,22 +740,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
     ${single_topic.data[0].topic.topicname}
               </h3>
               </div>
-     <div class="col-lg-3">
-      <select class="form-select my-3 ">
-  <option selected disabled>Select Language</option>
-  <option value="en">English</option>
-  <option value="ar">Arabic</option>
-  <option value="ur">Urdu</option>
-  <option value="hi">Hindi</option>
-  <option value="fr">French</option>
-  <option value="es">Spanish</option>
-  <option value="tr">Turkish</option>
-  <option value="id">Indonesian</option>
-  <option value="bn">Bengali</option>
-  <option value="zh">Chinese</option>
-  <option value="fa">Persian</option>
-</select>
-     </div>
+
 
 
  
