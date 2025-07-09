@@ -2,12 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Noto+Naskh+Arabic:wght@400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Georgian:wght@100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=My+Soul&display=swap');
 :root {
   --font_family_poppins: "Poppins", sans-serif;
   --font_family_Figtree: "Figtree", sans-serif;
   --font-family-Noto: "Noto Sans Arabic", sans-serif;
   --font-family-Naskh: "Noto Naskh Arabic", serif;
   --font-family-Amiri: "Amiri", serif;
+ --font-family-Georgian: "Noto Sans Georgian", sans-serif;
+   --font-family-cursive: "My Soul", cursive;
   /* rgb(219 194 107) */
 }
 
@@ -16,6 +20,9 @@ body {
   padding: 0%;
   font-family: var(--font_family_Figtree) !important;
   /* font-family: var(--font-family-Noto); */
+}
+.gorgia_font{
+  font-family: var(--font-family-cursive) !important;
 }
 .tit{
   font-size: 14px !important;
