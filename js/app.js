@@ -526,7 +526,7 @@ function libarayfuntion1(dataArray) {
 
 
       <div class="mb-2">
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-dark rounded-2 ">
+        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">
           View E-Book
         </a>
       </div>
