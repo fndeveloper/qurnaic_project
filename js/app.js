@@ -462,13 +462,21 @@ if (library_div && search_lib && media_type) {
 
 function renderMediaTypes() {
   setTimeout(() => {
+    // 🔹 Add "All" at the beginning
+    media_type.innerHTML = `
+      <option value="all">All</option>
+    `;
+
+    // 🔹 Then render the rest of the media types
     library_media.forEach((e) => {
-
-
-      media_type.innerHTML += `<option class="text-capitalize" value="${e}">${e === "pdf" ? "E-Book" : `${e}`} </option>`;
+      media_type.innerHTML += `
+        <option class="text-capitalize" value="${e}">
+          ${e === "pdf" ? "E-Book" : e}
+        </option>`;
     });
   }, 1000);
 }
+
 
 function libarayfuntion1(dataArray) {
   library_div.innerHTML = "";
@@ -572,10 +580,17 @@ if (media_type) {
   media_type.addEventListener("change", () => {
     const selectedType = media_type.value;
     currentPage = 1;
-    currentDataSet = library_data1.filter(item => item.media_type === selectedType);
+
+
+
+    currentDataSet = selectedType === "all"
+      ? library_data1 
+      : library_data1.filter(item => item.media_type === selectedType);
+
     libarayfuntion1(currentDataSet);
   });
 }
+
 
 if (search_lib) {
   search_lib.addEventListener("input", () => {
