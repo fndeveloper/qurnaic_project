@@ -162,13 +162,7 @@
         </div>
         <!-- =================================== TOP HEADER END =================================== -->
 
-        <!-- =================================== SCROL TO TOP BTN START =================================== -->
-        <a href="#" class="scroll_top_btn">
-          <button class="top_btn">
-            <i class="fa fa-arrow-up"></i>
-          </button>
-        </a>
-        <!-- =================================== SCROL TO TOP BTN END =================================== -->
+       
 
         <!-- =================================== SURAH OFFCANS END =================================== -->
 
@@ -180,7 +174,7 @@
   <div
     class="container-fluid  d-flex flex-column  justify-content-center align-items-center text-white m-0 p-0 home_banner">
     <div class="mt-5 text-center">
-      <h1 class="pt-5 mt-5">The Subjects of Al-Quran Al-Hakeem </h1>
+      <h1 class="pt-5 mt-5 fw-light">The Subjects of Al-Quran Al-Hakeem </h1>
       <h4>Sign-in </h4>
     </div>
   </div>
@@ -194,10 +188,10 @@
 
 
       <!-- Contact Form Section -->
-      <div class="col-lg-7 col-11 mx-auto Sign-in_singup_form bg-white py-3 my-3">
+      <div class="col-lg-7 col-12 mx-auto Sign-in_singup_form bg-white py-3 my-3">
 
         <!-- Horizontal Tabs -->
-        <ul class="nav nav-tabs px-2 mb-4 justify-content-center col-8 mx-auto" id="myTab" role="tablist">
+        <ul class="nav nav-tabs px-2 mb-4 justify-content-center col-lg-8  col-12 mx-auto" id="myTab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
               type="button" role="tab">Sign-in</button>
@@ -208,24 +202,24 @@
           </li>
         </ul>
 
-        <div class="form-card p-4 rounded">
+        <div class="form-card p-lg-4 rounded">
 
-          <div class="tab-content" id="nav-tabContent">
+          <div class="tab-content col-12" id="nav-tabContent">
             <!-- ============== Sign-in TAB START ====================== -->
-            <div class="tab-pane fade show active bg-white py-4" id="home-tab-pane" role="tabpanel"
+            <div class="tab-pane fade show active bg-white py-4 col-12" id="home-tab-pane" role="tabpanel"
               aria-labelledby="nav-home-tab" tabindex="0">
               <h3 class="text-center pb-3 text-muted">For personalized experience </h3>
-              <form action="" method="post" class="">
-                <div class="d-flex flex-column align-items-center gap-3  ">
-                  <div class="col-lg-9">
+              <form action="" method="post" class="col-12">
+                <div class="d-flex flex-column align-items-center gap-lg-3 col-12 ">
+                  <div class="col-lg-9 col-12 mb-2">
                     <input type="email" name="email" placeholder="Your Email" class="form-control" required>
                   </div>
 
-                  <div class="col-lg-9">
+                  <div class="col-lg-9 col-12 mb-2">
                     <input type="password" name="password" placeholder="Password" class="form-control" required>
                   </div>
 
-                  <div class="col-lg-9 d-grid">
+                  <div class="col-lg-9 col-12 d-grid">
                     <button type="submit" class="btn bg-light shadow-sm border col-lg-7 mx-auto">Sign-in</button>
                   </div>
                 </div>
@@ -235,21 +229,21 @@
             </div>
             <!-- ============== Sign-in TAB END ======================== -->
             <!-- ================ SIGNUP TAB START ==================== -->
-            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="nav-profile-tab"
+            <div class="tab-pane fade  bg-white py-4 col-12" id="profile-tab-pane" role="tabpanel" aria-labelledby="nav-profile-tab"
               tabindex="0">
               <h3 class="text-center pb-3 text-muted">For personalized experience </h3>
 
-           <form class="row g-3 p-4">
+           <form class="row g-lg-3 p-lg-4">
   
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
     <input type="text" id="username" name="username" class="form-control" placeholder="User Name" required>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
     <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
     <select id="account_type" name="account_type" class="form-select" required>
       <option disabled selected value="">Account Type</option>
       <option value="Individual">Individual</option>
@@ -257,7 +251,7 @@
     </select>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
     <select id="sub_type" name="sub_type" class="form-select" required>
       <option disabled selected value="">Sub-Type</option>
       <option value="Educational_Institution">Educational Institution</option>
@@ -274,7 +268,7 @@
     </select>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
      <select id="country" name="country" class="form-select">
                 <option value="ALL" selected disabled>Select Country</option>
 
@@ -525,7 +519,7 @@
             </select>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
     <select id="gender" name="gender" class="form-select" required>
       <option disabled selected value="">Gender</option>
       <option value="Male">Handsome (Male)</option>
@@ -535,7 +529,7 @@
     </select>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
     <select id="age_group" name="age_group" class="form-select" required>
       <option disabled selected value="">Age</option>
       <option value="Child_Under_12">Child (UNDER 12)</option>
@@ -544,7 +538,7 @@
     </select>
   </div>
 
-  <div class="col-md-6">
+  <div class="col-md-6 col-12 mb-2">
    <select id="roleSelect" class="form-select">
   <option value="ALL" selected disabled>Authorised By</option>
   <option value="TEAM LEAD">TEAM LEAD</option>
@@ -568,15 +562,15 @@
 </select>
   </div>
 
-  <div class="col-12">
+  <div class="col-12 mb-2">
     <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
   </div>
 
-  <div class="col-12">
+  <div class="col-12 mb-2">
     <input type="text" id="otp" name="otp" class="form-control" placeholder="Verification Code / OTP" required>
   </div>
 
-  <div class="col-12">
+  <div class="col-12 mb-2">
     <select id="account_id" name="account_id" class="form-select" required>
       <option disabled selected value="">Select Account ID</option>
       <option value="EDU-PAK-2025-0001">EDU-PAK-2025-0001</option>
@@ -590,7 +584,7 @@
     </select>
   </div>
 
-  <div class="col-12 text-center">
+  <div class="col-12 mb-2 text-center">
     <button type="submit" class="btn btn-primary px-5">Create Account</button>
   </div>
 </form>

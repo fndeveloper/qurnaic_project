@@ -19,7 +19,7 @@ body {
   margin: 0%;
   padding: 0%;
   font-family: var(--font_family_Figtree) !important;
-  /* font-family: var(--font-family-Noto); */
+color: #2b2b2b !important;
 }
 .gorgia_font{
   font-family: var(--font-family-cursive) !important;
@@ -46,11 +46,26 @@ body {
   .bis_text{
     font-size: 14px !important;
   }
+}
+
   @media (max-width:376px) {
+    .num_css{
+      font-size: 9px !important;
+    }
+      .bis_text{
+        margin-top: 6px !important;
+    font-size: 14px !important;
+  }
+  .font_naskh{
+    font-size: 14px !important;
+  }
+
+  .quran_translate{
+    font-size: 14px !important;
+  }
   .bis_text{
     font-size: 12px !important;
   }}
-}
 
 .aya_time {
   padding: 4px 10px;
@@ -199,6 +214,8 @@ body {
 }
 
 @media (min-width:992px) {
+  
+
   .tab_s {
     position: sticky !important;
     top: 1% !important;
@@ -221,10 +238,56 @@ background-color: #e7e7e7 !important;
   .top_1-e a ,.paper_book_header_text,.time_head {
     font-size: 13px;
   }
-  /* .gorgia_font{
-    font-size: 22px !important;
-  } */
+.fons_logo{
+  height: 70px !important;
+
+}
  
+  .gorgia_font{
+    font-size: 18px !important;
+
+  }
+}
+@media (max-width:360px) {
+  .top_1-e a ,.paper_book_header_text,.time_head {
+    font-size: 10px;
+  }
+  .fons_logo{
+  height: 60px !important;
+
+}
+  
+  .gorgia_font{
+    font-size: 14px !important;
+
+  }
+  .time_head{
+    font-size: 10px;
+
+  }
+  .paper_book_header_text{
+    font-size: 12px;
+  }
+
+ 
+}
+@media (max-width:272px) {
+  .top_1-e a ,.paper_book_header_text,.time_head {
+    font-size: 8px;
+  }
+    .fons_logo{
+  height: 40px !important;;
+  width: 15%;
+
+}
+  .gorgia_font{
+    font-size: 13px !important;
+
+  }
+    .time_head{
+    font-size: 8px;
+
+  }
 }
 .fons_logo{
   height: 120px;
@@ -239,6 +302,7 @@ background-color: #e7e7e7 !important;
   /* Normal tab color */
 }
 .single_subject_div_here{
+  padding: 2px !important;
   border: 2px solid #bd910f;
   /* height: 100vh !important; */
 }
@@ -325,7 +389,9 @@ background-color: #e7e7e7 !important;
 }
 
 @media (max-width:992px) {
-
+.home_banner {
+ height: 500px !important
+ ;}
   .slider_canvas {
     transition: 0.5s ease-in-out !important;
     width: 85vw;
@@ -344,7 +410,8 @@ background-color: #e7e7e7 !important;
 }
 
 .home_banner {
-  height: 80vh !important;
+ height: 80vh;
+ 
   background-size: cover !important;
   object-fit: cover;
   background-position: center;
@@ -413,6 +480,7 @@ footer{
 }
 
 .donate_card_main_img {
+  width: 100% !important;
   height: 250px !important;
 }
 

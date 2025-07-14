@@ -167,7 +167,7 @@ if (quran_tab_div && tabContent) {
     surahs.forEach((surah, index) => {
       quran_tab_div.innerHTML += `
             <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
-              <button class="nav-link nav_tab_name_Sura ${index === 0 ? "active" : ""}"
+              <button class="nav-link font_naskh nav_tab_name_Sura ${index === 0 ? "active" : ""}"
                 id="chaptertabs${surah.id}"
                 data-bs-toggle="tab"
                 data-bs-target="#surah${surah.id}"
@@ -212,8 +212,8 @@ if (quran_tab_div && tabContent) {
         const isTawbah = surahName.toLowerCase().includes("tawbah") || surahName.includes("التوبة");
         const bismillahSection = isTawbah ? '' : `
             <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
-              <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 mx-auto">
-              <h3 class="position-absolute start-50 translate-middle-x font_naskh  bis_text">
+              <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 col-12 mx-auto">
+              <h3 class="position-absolute start-50  translate-middle-x font_naskh  bis_text">
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
             </div>`;
@@ -232,19 +232,19 @@ if (quran_tab_div && tabContent) {
                   <i class="fa-solid fa-play"></i>
                 </button>
               </div>
-              <div class="col-lg-11 col-12 p-3 mb-lg-2">
-                <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-2 flex-wrap">
+              <div class="col-lg-11 col-12 p-lg-3 p-2 mb-lg-2">
+                <p class="text-end fs-4 my-2 font_naskh d-flex justify-content-end align-items-center gap-lg-2 flex-wrap">
                   <span class="font_naskh d-inline-flex align-items-center justify-content-end text-end" dir="rtl">
-                    <span class="me-2 font_naskh ">${v.ayah_text}</span>
+                    <span class="me-lg-2 font_naskh ">${v.ayah_text}</span>
                     <span class="position-relative d-inline-flex justify-content-center align-items-center" style="width: 46px; height: 46px;">
                       <img src="assets/images/image/qurnan_verse_icon.png" alt="Ayah Icon" class="img-fluid" style="width: 100%; height: auto;">
-                      <span class="position-absolute font_naskh" style="font-size: 18px;">
+                      <span class="position-absolute font_naskh" >
                         ${new Intl.NumberFormat('ar-SA').format(v.ayah_number)}
                       </span>
                     </span>
                   </span>
                 </p>
-                <p class="text-start fs-6 my-2">
+                <p class="text-start  quran_translate my-2">
                   ${v[`translation_${currentLanguage}`] || ""}
                 </p>
               </div>
@@ -661,10 +661,10 @@ if (list_of_subjects && pagin_bnt_of_subject) {
           
           <div class="accordion mb-2">
             <div class="accordion-item">
-            <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark">
+            <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark ">
               <h4 class="accordion-header">
    
-                <button class="accordion-button collapsed text-wrap text-break" type="button"
+                <button class="accordion-button collapsed text-wrap text-break quran_translate" type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse${element.id}"
                   aria-expanded="false"
@@ -682,7 +682,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 
         for (let i = 1; i <= datas.last_page; i++) {
           pagin_bnt_of_subject.innerHTML += `
-    <button class="btn m-1 btn_pagin ${i === page ? ' active' : ''}" onclick="pages(${i}, '${query}')">
+    <button class="btn  font_naskh m-1 btn_pagin ${i === page ? ' active' : ''}" onclick="pages(${i}, '${query}')">
       ${i}
     </button>`;
         }
@@ -727,7 +727,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
 
 
       read_subject_detail.addEventListener("click", () => {
-        window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`, '_blank');
+        window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`);
       })
       if (single_topic.data.length > 0) {
         const body_of_detail = single_topic.data.map((e, index) =>
@@ -736,7 +736,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
 
 
           `
-    <div class="d-flex col-12">
+    <div class="d-flex surah_ayah_num col-12 p-1">
     
 <p class="col-2 num_css">${e.surahcode} : </p>
 <p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
@@ -749,11 +749,11 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
         single_Detail_of_subject.innerHTML = `
 
         <!-- ======================= SUBJECT NAME START ====================== -->
-              <div class="col-lg-8 mx-auto col-12"> 
+              <div class="col-lg-8 mx-auto col-12 "> 
               
                 <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
               <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-9 mx-auto">
-              <h3 class="position-absolute start-50 translate-middle-x font_naskh  bis_text p-3">
+              <h3 class="position-absolute start-50 translate-middle-x font_naskh  bis_text p-lg-3">
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
             </div>
@@ -769,14 +769,14 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
 
 <!-- ======================= SUBJECT SERIAL START ====================== -->
 
-<div class="d-flex flex-row  col-12 ">
-  <p class="col-2 ">Srl : </p>
-  <p class="pe-2  "> ${single_topic.data[0].topiccode}</p>
+<div class="d-flex flex-row  col-12 quran_translate p-1">
+  <p class="col-2 num_css ">Srl : </p>
+  <p class="pe-2 num_css "> ${single_topic.data[0].topiccode}</p>
 </div>
 <!-- ======================= SUBJECT SERIAL START ====================== -->
- <div class="d-flex col-12">
-  <p class="col-2 ">Surah No:</p>
-  <p class="pe-2 ">Ayah No:</p>
+ <div class="d-flex col-12 quran_translate p-1">
+  <p class="col-2 num_css ">Surah No:</p>
+  <p class="pe-2 num_css">Ayah No:</p>
 
  </div>
 <!-- ======================= SUBJECT DETIAL LOOP START ====================== -->
@@ -852,14 +852,13 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
       });
 
       single_Detail_of_subject_read.innerHTML = `
-        <div class="col-lg-8 mx-auto col-12"> 
-          <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
-            <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-9 mx-auto">
-            <h3 class="position-absolute start-50 translate-middle-x font_naskh bis_text p-3">
-              بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
-            </h3>
-          </div>
-        </div>
+         <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
+              <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 col-12 mx-auto">
+              <h3 class="position-absolute start-50  translate-middle-x font_naskh  bis_text">
+   بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ
+
+              </h3>
+            </div>
 
         <h4 class="text-center fs-2  py-2 font_naskh">${topicAyahsWithSurah[0].topic}</h4>
         <div id="ayahContainer"></div>
@@ -890,7 +889,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
 
           ayahContainer.innerHTML += `
             <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
-              <div class="col-lg-1 col-12 p-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
+              <div class="col-lg-1 col-12 p-lg-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
                 <span class="fw-light mb-2">${verse.surah_number}:${verse.ayah_number}</span>
                 <button class="cp_bnt mb-2" onclick="Coopy('${verse.surah_name}', ${verse.ayah_number}, ${verse.surah_number}, '${verse.ayah_text}', '${verse[`translation_${currentLanguage_read}`]}')">
                   <i class="fa-regular fa-copy"></i>
@@ -914,7 +913,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
                     </span>
                   </span>
                 </p>
-                <p class="text-start fs-6 my-2">
+                <p class="text-start fs-6 my-2 quran_translate">
                   ${verse[`translation_${currentLanguage_read}`] || ""}
                 </p>
               </div>
