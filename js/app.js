@@ -1,4 +1,7 @@
 // ========== THIS CODE IS HERE FOR SHOW A TIME IN HEADER TOP LEFT START =========
+var base_url = "https://subjectsofalquran.com/api/";
+var token = "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2";
+
 var dt = document.getElementById("dt");
 if (dt) {
   var ti = new Date();
@@ -23,17 +26,6 @@ if (share) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // ============================== 📁 INDEX.HTML CODE START 📁 ==============================================================
 
 // ==========  HOME PAGE LIBRARY CODE START ==========
@@ -43,10 +35,10 @@ var search_lib = document.getElementById("search_lib");
 var library_data = [];
 
 if (library_home_div) {
-  fetch("https://subjectsofalquran.com/api/library", {
+  fetch(base_url + "library", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Authorization": "Bearer " + token, // 👈 Server ko token dikhaya
       "Content-Type": "application/json"
     }
   })
@@ -109,18 +101,6 @@ if (search_lib) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // ============================== 📁 QURAN.HTML CODE START  📁 ==============================================================
 
 const quran_tab_div = document.getElementById("quran_tab_div");
@@ -133,10 +113,10 @@ let currentLanguage = "en";
 const ayahLimit = 40;
 
 if (quran_tab_div && tabContent) {
-  fetch("https://subjectsofalquran.com/api/quran/languages", {
+  fetch(base_url + "quran/languages", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
@@ -196,10 +176,10 @@ if (quran_tab_div && tabContent) {
     const paginationDiv = document.getElementById(`ayahPagination${surahId}`);
     ayahContainer.innerHTML = `<p>Loading ayahs...</p>`;
 
-    fetch(`https://subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`, {
+    fetch(base_url + `quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`, {
       method: "GET",
       headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       }
     })
@@ -276,10 +256,10 @@ if (quran_tab_div && tabContent) {
 
 // ========== FETCH ALL SURAH CODE START =============
   function fetchSurahs() {
-    fetch("https://subjectsofalquran.com/api/surahs", {
+    fetch(base_url + "surahs", {
       method: "GET",
       headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       }
     })
@@ -316,10 +296,10 @@ if (quran_tab_div && tabContent) {
       if (query.length === 0) {
         fetchSurahs();
       } else {
-        fetch(`https://subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`, {
+        fetch(base_url + `surahs/search?q=${encodeURIComponent(query)}`, {
           method: "GET",
           headers: {
-            "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+            "Authorization": "Bearer " + token,
             "Content-Type": "application/json"
           }
         })
@@ -444,10 +424,10 @@ var itemsPerPage = 12;
 var currentDataSet = [];
 
 if (library_div && search_lib && media_type) {
-  fetch("https://subjectsofalquran.com/api/library", {
+  fetch(base_url + "library", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
@@ -495,7 +475,7 @@ function libarayfuntion1(dataArray) {
  <div class="col-lg-11 col-12 mx-auto library_div_und rounded-3">
     ${dt.media_type === 'video' ? `
       <video controls class="col-12" style="height: 194px; width:100%" >
-        <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="video/mp4">
+        <source src="${base_url}storage/${dt.file_path}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
         <hr class="col-11 mx-auto ">
@@ -505,7 +485,7 @@ function libarayfuntion1(dataArray) {
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
 
 
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">
+        <a href="${base_url}storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">
           View Video
         </a>
     ` : `
@@ -521,7 +501,7 @@ function libarayfuntion1(dataArray) {
     
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
  <audio controls class="audio-wrapper   col-11   text-decoration-none text-dark rounded-2  ">
-          <source src="https://subjectsofalquran.com/storage/${dt.file_path}" type="audio/mpeg">
+          <source src="${base_url}storage/${dt.file_path}" type="audio/mpeg">
 
         </audio>
 
@@ -534,7 +514,7 @@ function libarayfuntion1(dataArray) {
 
 
       <div class="mb-2">
-        <a href="https://subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">
+        <a href="${base_url}storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">
           View E-Book
         </a>
       </div>
@@ -604,11 +584,6 @@ if (search_lib) {
 }
 
 
-
-
-
-
-
 // ============================== 📁 LIBRARY.HTML CODE END  📁 ==============================================================
 
 
@@ -623,7 +598,7 @@ const search_subject_here = document.getElementById("search_subject_here");
 let page = 1;
 if (list_of_subjects && pagin_bnt_of_subject) {
   const headers = {
-    "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    "Authorization": "Bearer " + token,
     "Content-Type": "application/json",
   };
   // 🟡 Search button
@@ -636,12 +611,12 @@ if (list_of_subjects && pagin_bnt_of_subject) {
     const isSearching = query !== "";
 
     const apiUrl = isSearching
-      ? `https://subjectsofalquran.com/api/topics/search?q=${query}&page=${page}`
-      : `https://subjectsofalquran.com/api/topics?page=${page}`;
+      ? `${base_url}topics/search?q=${query}&page=${page}`
+      : `${base_url}topics?page=${page}`;
 
     fetch(apiUrl, {
       headers: {
-        Authorization: "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
     })
@@ -714,10 +689,10 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
   var read_subject_detail = document.getElementById("read_subject_detail");
 
   // Set languages
-  fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${location_of_page}`, {
+  fetch(`${base_url}topicdetails/topic/${location_of_page}`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
@@ -821,10 +796,10 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
   async function fetchAndRenderAyahs() {
     single_Detail_of_subject_read.innerHTML = `<p class="text-center text-muted">⏳ Loading Ayahs, please wait...</p>`;
 
-    const res = await fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${location_of_page_read}`, {
+    const res = await fetch(`${base_url}topicdetails/topic/${location_of_page_read}`, {
       method: "GET",
       headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       }
     });
@@ -868,13 +843,13 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
 
       for (const { surah, ayah } of topicAyahsWithSurah) {
         const cleanSurah = String(Number(surah));
-        const url = `https://subjectsofalquran.com/api/quran/surah/${cleanSurah}/ayah/${ayah}`;
+        const url = `${base_url}quran/surah/${cleanSurah}/ayah/${ayah}`;
 
         try {
           const res = await fetch(url, {
             method: "GET",
             headers: {
-              "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+              "Authorization": "Bearer " + token,
               "Content-Type": "application/json"
             }
           });
@@ -931,10 +906,10 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
   }
 
   // Fetch languages and populate dropdown
-  fetch("https://subjectsofalquran.com/api/quran/languages", {
+  fetch(`${base_url}quran/languages`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
