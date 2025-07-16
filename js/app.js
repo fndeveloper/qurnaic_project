@@ -654,7 +654,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 
 
         datas.data.forEach((element) => {
-          console.log(element);
+
           
           list_of_subjects.innerHTML += `
 
