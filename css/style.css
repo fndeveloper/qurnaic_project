@@ -650,3 +650,16 @@ object-fit: contain;
     border-radius: 10px;
     border: 2px solid #ecc56f;
   }
+
+/* =========== NEW ADD ======  */
+  .accordion-button::after {
+  display: none !important;
+}
+.plane_subject{
+  border: 1px solid #6d94bb;
+  border-radius: 50px;
+  font-size: 12x !important;
+  
+  color: #6d94bb;
+  padding: 5px !important;
+}

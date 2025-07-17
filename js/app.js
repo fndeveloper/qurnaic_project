@@ -664,15 +664,22 @@ if (list_of_subjects && pagin_bnt_of_subject) {
             <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark ">
               <h4 class="accordion-header">
    
-                <button class="accordion-button collapsed text-wrap text-break quran_translate" type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapse${element.id}"
-                  aria-expanded="false"
-                  aria-controls="flush-collapse${element.id}">
-              <span class="pe-3">${Number(element.topiccode)}</span>
-                  ${element.topicname}
-                </button>
-                  </a>
+              <button class="accordion-button collapsed d-flex justify-content-sm-between align-items-sm-center " type="button"
+  data-bs-toggle="collapse"
+  data-bs-target="#flush-collapse${element.id}"
+  aria-expanded="false"
+  aria-controls="flush-collapse${element.id}">
+
+  <div class="d-flex flex-column flex-md-row align-items-center col-md-11 col-12 ">
+    <span class="pe-lg-3 mb-md-0 mb-2">${Number(element.topiccode)}.</span>
+    <span class="mb-md-0 mb-2 text-md-start text-center">${element.topicname}</span>
+    <i class="fa-solid fa-paper-plane  d-flex plane_subject d-md-none  "></i>
+
+    </div>
+    <i class="fa-solid fa-paper-plane plane_subject d-none d-md-flex "></i>
+
+</button> 
+</a>
               </h4>
             </div>
           </div>
