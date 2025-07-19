@@ -1,4 +1,7 @@
 // ========== THIS CODE IS HERE FOR SHOW A TIME IN HEADER TOP LEFT START =========
+var base_url = "https://admin.subjectsofalquran.com";
+var token = "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2";
+
 var dt = document.getElementById("dt");
 if (dt) {
   var ti = new Date();
@@ -23,17 +26,6 @@ if (share) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // ============================== 📁 INDEX.HTML CODE START 📁 ==============================================================
 
 // ==========  HOME PAGE LIBRARY CODE START ==========
@@ -43,10 +35,10 @@ var search_lib = document.getElementById("search_lib");
 var library_data = [];
 
 if (library_home_div) {
-  fetch("https://admin.subjectsofalquran.com/api/library", {
+  fetch(base_url + "/api/library", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer " + "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2", // 👈 Server ko token dikhaya
+      "Authorization": "Bearer " + token, // 👈 Server ko token dikhaya
       "Content-Type": "application/json"
     }
   })
@@ -59,13 +51,8 @@ if (library_home_div) {
 //  =========== ALL DATA OF LIBRAY IS HERE START ===========
 function libarayfuntion(ty) {
 
-
   library_home_div.innerHTML = "";
   ty.forEach((dt, index) => {
-
-
-console.log(dt.thumbnail_url);
-
 
     library_home_div.innerHTML += `
         <div class="col-11 page_border_of_quran_page  col-md-3 mb-lg-5 col-lg-2 text-center book_div  library_div">
@@ -107,22 +94,7 @@ if (search_lib) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ============================== 📁 quran.html CODE START  📁 ==============================================================
+// ============================== 📁 quran.html CODE START  📁 =============================================================
 
 const quran_tab_div = document.getElementById("quran_tab_div");
 const tabContent = document.getElementById("v-pills-tabContent");
@@ -134,10 +106,10 @@ let currentLanguage = "en";
 const ayahLimit = 40;
 
 if (quran_tab_div && tabContent) {
-  fetch("https://admin.subjectsofalquran.com/api/quran/languages", {
+  fetch(base_url + "/api/quran/languages", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
@@ -197,10 +169,10 @@ if (quran_tab_div && tabContent) {
     const paginationDiv = document.getElementById(`ayahPagination${surahId}`);
     ayahContainer.innerHTML = `<p>Loading ayahs...</p>`;
 
-    fetch(`https://admin.subjectsofalquran.com/api/quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`, {
+    fetch(base_url + `/api/quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`, {
       method: "GET",
       headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       }
     })
@@ -277,10 +249,10 @@ if (quran_tab_div && tabContent) {
 
 // ========== FETCH ALL SURAH CODE START =============
   function fetchSurahs() {
-    fetch("https://admin.subjectsofalquran.com/api/surahs", {
+    fetch(base_url + "/api/surahs", {
       method: "GET",
       headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       }
     })
@@ -317,10 +289,10 @@ if (quran_tab_div && tabContent) {
       if (query.length === 0) {
         fetchSurahs();
       } else {
-        fetch(`https://admin.subjectsofalquran.com/api/surahs/search?q=${encodeURIComponent(query)}`, {
+        fetch(base_url + `/api/surahs/search?q=${encodeURIComponent(query)}`, {
           method: "GET",
           headers: {
-            "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+            "Authorization": "Bearer " + token,
             "Content-Type": "application/json"
           }
         })
@@ -379,9 +351,7 @@ function ShareAyah(a, b, c, d, e) {
     navigator.share(shareData)
       .then(() => console.log("Shared successfully"))
       .catch((error) => console.error("Sharing failed", error));
-  } else {
-    alert("Web Share API not supported in this browser.");
-  }
+  } 
 }
 // ======================= AUDIO CONTENT IS HERE =====================
 let currentAudio = null;
@@ -445,10 +415,10 @@ var itemsPerPage = 12;
 var currentDataSet = [];
 
 if (library_div && search_lib && media_type) {
-  fetch("https://admin.subjectsofalquran.com/api/library", {
+  fetch(base_url + "/api/library", {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
@@ -496,7 +466,7 @@ function libarayfuntion1(dataArray) {
  <div class="col-lg-11 col-12 mx-auto library_div_und rounded-3">
     ${dt.media_type === 'video' ? `
       <video controls class="col-12" style="height: 194px; width:100%" >
-        <source src="https://admin.subjectsofalquran.com/storage/${dt.file_path}" type="video/mp4">
+        <source src="${base_url}/storage/${dt.file_path}" type="video/mp4">
         Your browser does not support the video tag.
       </video>
         <hr class="col-11 mx-auto ">
@@ -506,7 +476,7 @@ function libarayfuntion1(dataArray) {
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
 
 
-        <a href="https://admin.subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">
+        <a href="${base_url}/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">
           View Video
         </a>
     ` : `
@@ -522,7 +492,7 @@ function libarayfuntion1(dataArray) {
     
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
  <audio controls class="audio-wrapper   col-11   text-decoration-none text-dark rounded-2  ">
-          <source src="https://admin.subjectsofalquran.com/storage/${dt.file_path}" type="audio/mpeg">
+          <source src="${base_url}/storage/${dt.file_path}" type="audio/mpeg">
 
         </audio>
 
@@ -535,7 +505,7 @@ function libarayfuntion1(dataArray) {
 
 
       <div class="mb-2">
-        <a href="https://admin.subjectsofalquran.com/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">
+        <a href="${base_url}/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">
           View E-Book
         </a>
       </div>
@@ -605,15 +575,10 @@ if (search_lib) {
 }
 
 
-
-
-
-
-
 // ============================== 📁 library.html CODE END  📁 ==============================================================
 
 
-// ============================== 📁 the_list_of_subjects.html CODE START  📁 ==============================================================
+// ============================== 📁 the_list_of_subjects.html CODE START  📁 ================================================
 
 // ===================  SUBJECT CODE START ===============
 
@@ -624,7 +589,7 @@ const search_subject_here = document.getElementById("search_subject_here");
 let page = 1;
 if (list_of_subjects && pagin_bnt_of_subject) {
   const headers = {
-    "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+    "Authorization": "Bearer " + token,
     "Content-Type": "application/json",
   };
   // 🟡 Search button
@@ -637,17 +602,18 @@ if (list_of_subjects && pagin_bnt_of_subject) {
     const isSearching = query !== "";
 
     const apiUrl = isSearching
-      ? `https://admin.subjectsofalquran.com/api/topics/search?q=${query}&page=${page}`
-      : `https://admin.subjectsofalquran.com/api/topics?page=${page}`;
+      ? `${base_url}/api/topics/search?q=${query}&page=${page}`
+      : `${base_url}/api/topics?page=${page}`;
 
     fetch(apiUrl, {
       headers: {
-        Authorization: "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        Authorization: "Bearer " + token,
         "Content-Type": "application/json",
       },
     })
       .then((res) => res.json())
       .then((datas) => {
+console.log(datas);
 
 
         list_of_subjects.innerHTML = "";
@@ -655,7 +621,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 
 
         datas.data.forEach((element) => {
-
+          
           
           list_of_subjects.innerHTML += `
 
@@ -665,22 +631,22 @@ if (list_of_subjects && pagin_bnt_of_subject) {
             <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark ">
               <h4 class="accordion-header">
    
-              <button class="accordion-button collapsed d-flex justify-content-sm-between align-items-sm-center " type="button"
+               <button class="accordion-button collapsed d-flex justify-content-sm-between align-items-sm-center " type="button"
   data-bs-toggle="collapse"
   data-bs-target="#flush-collapse${element.id}"
   aria-expanded="false"
   aria-controls="flush-collapse${element.id}">
 
   <div class="d-flex flex-column flex-md-row align-items-center col-md-11 col-12 ">
-    <span class="pe-lg-3 mb-md-0 mb-2">${Number(element.topiccode)}.</span>
+    <span class="pe-md-3 mb-md-0 mb-2 srl_num_of_subjects">${Number(element.topiccode)}.</span>
     <span class="mb-md-0 mb-2 text-md-start text-center">${element.topicname}</span>
-    <i class="fa-solid fa-paper-plane  d-flex plane_subject d-md-none  "></i>
 
-    </div>
-    <i class="fa-solid fa-paper-plane plane_subject d-none d-md-flex "></i>
+   </div>
+   
 
-</button> 
-</a>
+
+</button>
+                  </a>
               </h4>
             </div>
           </div>
@@ -703,6 +669,9 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 
 }
 
+
+
+
 // ============================== 📁 the_list_of_subjects.html CODE END  📁 ==============================================================
 
 
@@ -714,18 +683,18 @@ if (list_of_subjects && pagin_bnt_of_subject) {
 // ======================= GET SINGLE SURAH IN SUBJECT PAGE START ===========================
 var location_of_page = location.search.split("=")[1];
 
-
 if (location.href.includes("the_list_of_subjects_detail.html")) {
   let currentLanguage_detail = "en";
   var languageSelect_detail = document.getElementById("languageSelect_detail");
-  var single_Detail_of_subject = document.getElementById("single_Detail_of_subject");
+  var single_detail_of_subject = document.getElementById("single_detail_of_subject");
   var read_subject_detail = document.getElementById("read_subject_detail");
 
+  //alert(`${base_url}/api/topicdetails/topic/${location_of_page}`);
   // Set languages
-  fetch(`https://admin.subjectsofalquran.com/api/topicdetails/topic/${location_of_page}`, {
+  fetch(`${base_url}/api/topicdetails/topic/${location_of_page}`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })
@@ -741,20 +710,15 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
         const body_of_detail = single_topic.data.map((e, index) =>
 
 
-
-
-          `
-    <div class="d-flex surah_ayah_num col-12 p-1">
-    
-<p class="col-2 num_css">${e.surahcode} : </p>
-<p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
-
-
-</div>
+    `
+    <div class="d-flex surah_ayah_num col-12 p-1">   
+      <p class="col-2 num_css">${e.surahcode} : </p>
+      <p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
+    </div>
     `).join("");
 
 
-        single_Detail_of_subject.innerHTML = `
+        single_detail_of_subject.innerHTML = `
 
         <!-- ======================= SUBJECT NAME START ====================== -->
               <div class="col-lg-8 mx-auto col-12 "> 
@@ -797,7 +761,7 @@ ${body_of_detail
 
       }
       else {
-        single_Detail_of_subject.innerHTML = `
+        single_detail_of_subject.innerHTML = `
    This Subject are not Uploaded 
    `
       }
@@ -807,7 +771,7 @@ ${body_of_detail
 
     .catch((err) => {
       console.log(err);
-      single_Detail_of_subject.innerHTML = `Wait Your content is ready `
+      single_detail_of_subject.innerHTML = `Wait Your content is ready `
     });
 
 }
@@ -823,16 +787,16 @@ var location_of_page_read = location.search.split("=")[1];
 
 if (location.href.includes("the_list_of_subjects_read.html")) {
   const languageSelectElement = document.getElementById("languageSelect_read");
-  const single_Detail_of_subject_read = document.getElementById("single_Detail_of_subject_read");
+  const single_detail_of_subject_read = document.getElementById("single_detail_of_subject_read");
   let currentLanguage_read = "en";
 
   async function fetchAndRenderAyahs() {
-    single_Detail_of_subject_read.innerHTML = `<p class="text-center text-muted">⏳ Loading Ayahs, please wait...</p>`;
+    single_detail_of_subject_read.innerHTML = `<p class="text-center text-muted">⏳ Loading Ayahs, please wait...</p>`;
 
-    const res = await fetch(`https://admin.subjectsofalquran.com/api/topicdetails/topic/${location_of_page_read}`, {
+    const res = await fetch(`${base_url}/api/topicdetails/topic/${location_of_page_read}`, {
       method: "GET",
       headers: {
-        "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+        "Authorization": "Bearer " + token,
         "Content-Type": "application/json"
       }
     });
@@ -859,7 +823,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
         return Number(a.ayah) - Number(b.ayah);
       });
 
-      single_Detail_of_subject_read.innerHTML = `
+      single_detail_of_subject_read.innerHTML = `
          <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
               <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 col-12 mx-auto">
               <h3 class="position-absolute start-50  translate-middle-x font_naskh  bis_text">
@@ -876,13 +840,13 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
 
       for (const { surah, ayah } of topicAyahsWithSurah) {
         const cleanSurah = String(Number(surah));
-        const url = `https://admin.subjectsofalquran.com/api/quran/surah/${cleanSurah}/ayah/${ayah}`;
+        const url = `${base_url}/api/quran/surah/${cleanSurah}/ayah/${ayah}`;
 
         try {
           const res = await fetch(url, {
             method: "GET",
             headers: {
-              "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+              "Authorization": "Bearer " + token,
               "Content-Type": "application/json"
             }
           });
@@ -934,15 +898,15 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
         await new Promise(resolve => setTimeout(resolve, 300));
       }
     } else {
-      single_Detail_of_subject_read.innerHTML = `<div class="alert alert-info"> This subject is not uploaded yet.</div>`;
+      single_detail_of_subject_read.innerHTML = `<div class="alert alert-info"> This subject is not uploaded yet.</div>`;
     }
   }
 
   // Fetch languages and populate dropdown
-  fetch("https://admin.subjectsofalquran.com/api/quran/languages", {
+  fetch(`${base_url}/api/quran/languages`, {
     method: "GET",
     headers: {
-      "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
+      "Authorization": "Bearer " + token,
       "Content-Type": "application/json"
     }
   })

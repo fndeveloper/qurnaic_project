@@ -37,7 +37,7 @@ read_data.innerHTML=`
 <h1>Your Content is Loading</h1>
 `
 // ==================== THIS CODE IS FOR FETCH A LANGUAE API FILTER START ====================
-fetch("https://subjectsofalquran.com/api/quran/languages",{
+fetch("https://admin.subjectsofalquran.com/api/quran/languages",{
   headers:header_of_api,
 })
 .then((E)=>E.json())
@@ -55,7 +55,7 @@ api_lang.forEach(([a,b])=>{ read_page_option_language.innerHTML+=`<option value=
 read_page_option_language.addEventListener("change",(e)=>{ current_language_read_page=e.target.value})
   // ============ THIS CODE IS FOR CREATE FOR GET A VALUE OF READ LANGUAGE FILTER END ================
 
-fetch("https://subjectsofalquran.com/api/topicdetails/topic/1", {
+fetch("https://admin.subjectsofalquran.com/api/topicdetails/topic/1", {
   headers: header_of_api
 })
 .then(res => res.json())

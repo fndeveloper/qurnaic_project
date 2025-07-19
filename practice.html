@@ -20,7 +20,7 @@
    <div id="pagin_bnt_of_subject">
 
    </div>
-  <div id="single_Detail_of_subject"></div>
+  <div id="single_detail_of_subject"></div>
 </div>
 
 <script>
@@ -32,11 +32,11 @@ var location_of_page_read = location.search.split("=")[1];
 if (location.href.includes("practice.html")) {
   let currentLanguage_detail = "en";
   var languageSelect_detail_read = document.getElementById("languageSelect_detail_read");
-  // var single_Detail_of_subject_read = document.getElementById("single_Detail_of_subject_read");
+  // var single_detail_of_subject_read = document.getElementById("single_detail_of_subject_read");
 
 
   // Set languages
-  fetch(`https://subjectsofalquran.com/api/topicdetails/topic/${location_of_page_read}`, {
+  fetch(`https://admin.subjectsofalquran.com/api/topicdetails/topic/${location_of_page_read}`, {
     method: "GET",
     headers: {
       "Authorization": "Bearer b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2",
@@ -69,7 +69,7 @@ if(single_topic.data.length > 0){
     `).join("");
       
     
-        single_Detail_of_subject.innerHTML=`
+        single_detail_of_subject.innerHTML=`
 
         <!-- ======================= SUBJECT NAME START ====================== -->
               <div class="col-lg-8 mx-auto col-12"> 
@@ -111,7 +111,7 @@ body_of_detail
         
 }
 else{
-   single_Detail_of_subject.innerHTML=`
+   single_detail_of_subject.innerHTML=`
    This Subject are not Uploaded 
    `
 }
@@ -121,7 +121,7 @@ else{
     
     .catch((err) => {
       console.log(err);
-            single_Detail_of_subject.innerHTML=`Wait Your content is ready `
+            single_detail_of_subject.innerHTML=`Wait Your content is ready `
     });
 
   }

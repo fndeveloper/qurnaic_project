@@ -214,7 +214,7 @@ color: #2b2b2b !important;
 }
 
 @media (min-width:992px) {
-  
+
 
   .tab_s {
     position: sticky !important;
@@ -387,8 +387,11 @@ background-color: #e7e7e7 !important;
   transition: 0.5s ease-in-out !important;
   width: 15vw;
 }
-
 @media (max-width:992px) {
+  
+  .accordion-button::after {
+display: none;
+}
 .home_banner {
  height: 500px !important
  ;}
@@ -651,15 +654,8 @@ object-fit: contain;
     border: 2px solid #ecc56f;
   }
 
-/* =========== NEW ADD ======  */
-  .accordion-button::after {
-  display: none !important;
-}
-.plane_subject{
-  border: 1px solid #6d94bb;
-  border-radius: 50px;
-  font-size: 12x !important;
-  
-  color: #6d94bb;
-  padding: 5px !important;
-}
+
+
+  .srl_num_of_subjects{
+    font-size: 13px !important;
+  }
