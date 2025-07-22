@@ -638,8 +638,8 @@ console.log(datas);
   aria-controls="flush-collapse${element.id}">
 
   <div class="d-flex flex-column flex-md-row align-items-center col-md-11 col-12 ">
-    <span class="pe-md-3 mb-md-0 mb-2 srl_num_of_subjects">${Number(element.topiccode)}.</span>
-    <span class="mb-md-0 mb-2 text-md-start text-center">${element.topicname}</span>
+    <span class="pe-md-2 mb-md-0 mb-2 srl_num_of_subjects">${Number(element.topiccode)}.</span>
+    <span class="mb-md-0 mb-2 text-md-start text-center subject_topic_name">${element.topicname}</span>
 
    </div>
    
