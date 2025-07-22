@@ -670,3 +670,7 @@ object-fit: contain;
   .subject_topic_name{
     font-size: 14px !important;
   }
+
+  .accordion-button::after {
+  display: none !important;
+}
