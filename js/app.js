@@ -704,8 +704,11 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
 
 
       read_subject_detail.addEventListener("click", () => {
-        window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`);
+        // window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`);
+      window.location.href = `the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`;
+
       })
+
       if (single_topic.data.length > 0) {
         const body_of_detail = single_topic.data.map((e, index) =>
 
