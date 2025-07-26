@@ -139,8 +139,8 @@ if (quran_tab_div && tabContent) {
 
     surahs.forEach((surah, index) => {
       quran_tab_div.innerHTML += `
-            <li class="nav-item w-100 d-flex col-12 my-1" role="presentation">
-              <button class="nav-link font_naskh nav_tab_name_Sura ${index === 0 ? "active" : ""}"
+            <li class="nav-item w-100 d-flex col-12 my-1 " role="presentation">
+              <button class="nav-link font_nask bg-white nav_tab_name_Sura ${index === 0 ? "active" : ""}"
                 id="chaptertabs${surah.id}"
                 data-bs-toggle="tab"
                 data-bs-target="#surah${surah.id}"
@@ -349,8 +349,6 @@ function ShareAyah(a, b, c, d, e) {
   };
   if (navigator.share) {
     navigator.share(shareData)
-      .then(() => console.log("Shared successfully"))
-      .catch((error) => console.error("Sharing failed", error));
   } 
 }
 // ======================= AUDIO CONTENT IS HERE =====================
@@ -631,21 +629,16 @@ if (list_of_subjects && pagin_bnt_of_subject) {
             <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark ">
               <h4 class="accordion-header">
    
-               <button class="accordion-button collapsed d-flex justify-content-sm-between align-items-sm-center " type="button"
-  data-bs-toggle="collapse"
-  data-bs-target="#flush-collapse${element.id}"
-  aria-expanded="false"
-  aria-controls="flush-collapse${element.id}">
+               <button class="accordion-button collapsed d-flex justify-content-sm-between align-items-sm-center active" type="button"
+               data-bs-toggle="collapse"
+               data-bs-target="#flush-collapse${element.id}"
+               aria-expanded="false"
+               aria-controls="flush-collapse${element.id}">
 
-  <div class="d-flex flex-column flex-md-row align-items-center col-md-11 col-12 ">
-    <span class="pe-md-2 mb-md-0 mb-2 srl_num_of_subjects">${Number(element.topiccode)}.</span>
-    <span class="mb-md-0 mb-2 text-md-start text-center subject_topic_name">${element.topicname}</span>
-
-   </div>
-   
-
-
-</button>
+              <div class="d-flex flex-column flex-md-row align-items-center col-md-11 col-12 ">
+              <span class="pe-md-2 mb-md-0 mb-2 srl_num_of_subjects">${Number(element.topiccode)}.</span>
+    <span class="mb-md-0 mb-2 text-md-start text-center subject_topic_name">${element.topicname}</span></div> 
+               </button>
                   </a>
               </h4>
             </div>
@@ -662,7 +655,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
         }
 
       })
-      .catch((err) => console.log("API ERROR:", err));
+      // .catch((err) => console.log("API ERROR:", err));
   }
 
   pages();
@@ -712,7 +705,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
 var lenght_of_index="";
 for (let index = 1; index <= single_topic.last_page; index++) {
   let activeClass = index === num_of_index_of_index ? 'active' : '';
-  lenght_of_index += `<button class="mx-2 btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
+  lenght_of_index += `<button class="mx-1 btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
 }
 index_pagination.innerHTML=lenght_of_index
 
@@ -757,8 +750,8 @@ ${body_of_detail}
         `
       }
       else { single_detail_of_subject.innerHTML = `This Subject are not Uploaded ` }    })
-      .catch((err) => { console.log(err);
-      });
+      // .catch((err) => { console.log(err);
+      // });
     }
     // =============== FUNCTION END =================
 }
@@ -788,7 +781,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
       }
     });
     const single_topic = await res.json();
-console.log(single_topic.data);
+// console.log(single_topic.data);
 
     if (single_topic.data.length > 0) {
       const topicAyahsWithSurah = single_topic.data.flatMap(item => {
@@ -840,7 +833,7 @@ console.log(single_topic.data);
           });
 
           if (!res.ok) {
-            console.error(` Could not load Ayah ${ayah} of Surah ${cleanSurah}`);
+            // console.error(` Could not load Ayah ${ayah} of Surah ${cleanSurah}`);
             ayahContainer.innerHTML += `<div class="alert alert-warning"> Could not load Ayah ${ayah} of Surah ${cleanSurah}</div>`;
             continue;
           }
@@ -919,3 +912,40 @@ console.log(single_topic.data);
 
 // ============================== 📁 the_list_of_subjects_read.html CODE END  📁 ==============================================================
  
+
+ // ================== PAGGE CHANGE TRANSITION START ==========================
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.body.classList.add("fade-in");
+});document.querySelectorAll("nav-link").forEach(link => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      document.body.classList.remove("fade-in");
+      document.body.classList.add("fade-out");
+
+      setTimeout(() => {
+        window.location.href = this.href;
+      }, 1000); 
+    });
+  });
+    // ================== PAGGE CHANGE TRANSITION END ==========================
+
+
+
+    
+     // ================== PAGGE CHANGE TRANSITION START ==========================
+document.addEventListener("DOMContentLoaded", () => {
+
+  document.body.classList.add("fade-in");
+});document.querySelectorAll("nav-link").forEach(link => {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      document.body.classList.remove("fade-in");
+      document.body.classList.add("fade-out");
+
+      setTimeout(() => {
+        window.location.href = this.href;
+      }, 1500); 
+    });
+  });
+    // ================== PAGGE CHANGE TRANSITION END ==========================
