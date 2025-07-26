@@ -712,7 +712,7 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
 var lenght_of_index="";
 for (let index = 1; index <= single_topic.last_page; index++) {
   let activeClass = index === num_of_index_of_index ? 'active' : '';
-  lenght_of_index += `<button class="btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
+  lenght_of_index += `<button class="mx-2 btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
 }
 index_pagination.innerHTML=lenght_of_index
 
