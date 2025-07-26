@@ -707,11 +707,11 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
   })
     .then(res => res.json())
     .then((single_topic) => {
-console.log(single_topic);
+
 
 var lenght_of_index="";
 for (let index = 1; index <= single_topic.last_page; index++) {
-  let activeClass = index === 1 ? 'active' : '';
+  let activeClass = index === num_of_index_of_index ? 'active' : '';
   lenght_of_index += `<button class="btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
 }
 index_pagination.innerHTML=lenght_of_index
