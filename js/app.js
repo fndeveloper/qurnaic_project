@@ -613,7 +613,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
     })
       .then((res) => res.json())
       .then((datas) => {
-console.log(datas);
+// console.log(datas);
 
 
         list_of_subjects.innerHTML = "";
@@ -682,16 +682,23 @@ console.log(datas);
 
 // ======================= GET SINGLE SURAH IN SUBJECT PAGE START ===========================
 var location_of_page = location.search.split("=")[1];
-
 if (location.href.includes("the_list_of_subjects_detail.html")) {
   let currentLanguage_detail = "en";
   var languageSelect_detail = document.getElementById("languageSelect_detail");
   var single_detail_of_subject = document.getElementById("single_detail_of_subject");
   var read_subject_detail = document.getElementById("read_subject_detail");
-
-  //alert(`${base_url}/api/topicdetails/topic/${location_of_page}`);
-  // Set languages
-  fetch(`${base_url}/api/topicdetails/topic/${location_of_page}`, {
+  var index_pagination=document.getElementById("index_pagination");
+  var num_of_index_of_index=1
+  function ter(e){
+    num_of_index_of_index=e
+    indexfn()
+  }
+  indexfn()
+  // =============== FUNCTION START =================
+  function indexfn(){
+ 
+  
+  fetch(`${base_url}/api/topicdetails/topic/${location_of_page}?page=${num_of_index_of_index}`, {
     method: "GET",
     headers: {
       "Authorization": "Bearer " + token,
@@ -700,27 +707,25 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
   })
     .then(res => res.json())
     .then((single_topic) => {
+console.log(single_topic);
 
-
+var lenght_of_index="";
+for (let index = 1; index <= single_topic.last_page; index++) {
+  let activeClass = index === 1 ? 'active' : '';
+  lenght_of_index += `<button class="btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
+}
+index_pagination.innerHTML=lenght_of_index
 
       read_subject_detail.addEventListener("click", () => {
-        // window.open(`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`);
       window.location.href = `the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`;
-
       })
-
       if (single_topic.data.length > 0) {
-        const body_of_detail = single_topic.data.map((e, index) =>
-
-
-    `
+        const body_of_detail = single_topic.data.map((e, index) =>    `
     <div class="d-flex surah_ayah_num col-12 p-1">   
       <p class="col-2 num_css">${e.surahcode} : </p>
       <p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
     </div>
     `).join("");
-
-
         single_detail_of_subject.innerHTML = `
 
         <!-- ======================= SUBJECT NAME START ====================== -->
@@ -736,10 +741,6 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
     ${single_topic.data[0].topic.topicname}
               </h3>
               </div>
-
-
-
- 
 <!-- ======================= SUBJECT NAME END ====================== -->
 
 <!-- ======================= SUBJECT SERIAL START ====================== -->
@@ -749,34 +750,17 @@ if (location.href.includes("the_list_of_subjects_detail.html")) {
   <p class="pe-2 num_css "> ${single_topic.data[0].topiccode}</p>
 </div>
 <!-- ======================= SUBJECT SERIAL START ====================== -->
- <div class="d-flex col-12 quran_translate p-1">
-  <p class="col-2 num_css ">Surah No:</p>
-  <p class="pe-2 num_css">Ayah No:</p>
-
- </div>
+ <div class="d-flex col-12 quran_translate p-1"><p class="col-2 num_css ">Surah No:</p><p class="pe-2 num_css">Ayah No:</p></div>
 <!-- ======================= SUBJECT DETIAL LOOP START ====================== -->
-
-${body_of_detail
-
-          }
+${body_of_detail}
 <!-- ======================= SUBJECT DETIAL LOOP END ====================== -->
         `
-
       }
-      else {
-        single_detail_of_subject.innerHTML = `
-   This Subject are not Uploaded 
-   `
-      }
-
-
-    })
-
-    .catch((err) => {
-      console.log(err);
-      single_detail_of_subject.innerHTML = `Wait Your content is ready `
-    });
-
+      else { single_detail_of_subject.innerHTML = `This Subject are not Uploaded ` }    })
+      .catch((err) => { console.log(err);
+      });
+    }
+    // =============== FUNCTION END =================
 }
 
 
@@ -804,6 +788,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
       }
     });
     const single_topic = await res.json();
+console.log(single_topic.data);
 
     if (single_topic.data.length > 0) {
       const topicAyahsWithSurah = single_topic.data.flatMap(item => {

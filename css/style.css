@@ -674,3 +674,11 @@ object-fit: contain;
   .accordion-button::after {
   display: none !important;
 }
+.list_of_subject_scroll{
+  height: 85vh !important;
+  overflow-y: scroll !important;
+}
+.btn_of_index_actic.active{
+  color: white;
+  background-color: #6d94bb !important;
+}
