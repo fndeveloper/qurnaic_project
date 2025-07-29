@@ -1,66 +1,9 @@
-// ========== THIS CODE IS HERE FOR SHOW A TIME IN HEADER TOP LEFT START =========
-var base_url = "https://admin.subjectsofalquran.com";
-var token = "b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2";
-
-var dt = document.getElementById("dt");
-if (dt) {
-  var ti = new Date();
-  dt.innerHTML = ti.toDateString().split("  ");
-}
-// ========== THIS CODE IS HERE FOR SHOW A TIME IN HEADER TOP LEFT END =========
-
-
-// ========== THIS CODE IS HERE FOR SHARE BUTTON IN EACH PAGE START ========
-var share = document.getElementById("share");
-if (share) {
-  share.addEventListener("click", () => {
-    navigator.share({
-      url: window.location.href
-    })
-  })
-}
-
-// ========== THIS CODE IS HERE FOR SHARE BUTTON IN EACH PAGE END ========
-
-
-// ===================== THIS CODE FOR FOOTER CURRENT YEAR ========================
-var current_math=document.getElementById("current_math");
-if(current_math){
-  current_math.innerHTML=new Date().getFullYear()
-}
-// ===================== THIS CODE FOR FOOTER CONTENT END =========================
-
-
-// ============================== 📁 INDEX.HTML CODE START 📁 ==============================================================
-
-// ==========  HOME PAGE LIBRARY CODE START ==========
-
-var library_home_div = document.getElementById("library_home_div")
-var search_lib = document.getElementById("search_lib");
-var library_data = [];
-
-if (library_home_div) {
-  fetch(base_url + "/api/library", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token, // 👈 Server ko token dikhaya
-      "Content-Type": "application/json"
-    }
-  })
-    .then((e) => e.json())
-    .then((data) => {
-      library_data = data.data.slice(0, 4);
-      libarayfuntion(library_data)
-    })
-}
-//  =========== ALL DATA OF LIBRAY IS HERE START ===========
-function libarayfuntion(ty) {
-  
-  library_home_div.innerHTML = "";
-  ty.forEach((dt, index) => {
-    // console.log(ty.length < 0);
-
-    library_home_div.innerHTML += `
+var base_url="https://admin.subjectsofalquran.com";var token="b1e2f3a4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2";var dt=document.getElementById("dt");if(dt){var ti=new Date();dt.innerHTML=ti.toDateString().split("  ")}
+var share=document.getElementById("share");if(share){share.addEventListener("click",()=>{navigator.share({url:window.location.href})})}
+var current_math=document.getElementById("current_math");if(current_math){current_math.innerHTML=new Date().getFullYear()}
+var library_home_div=document.getElementById("library_home_div")
+var search_lib=document.getElementById("search_lib");var library_data=[];if(library_home_div){fetch(base_url+"/api/library",{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then((e)=>e.json()).then((data)=>{library_data=data.data.slice(0,4);libarayfuntion(library_data)})}
+function libarayfuntion(ty){library_home_div.innerHTML="";ty.forEach((dt,index)=>{library_home_div.innerHTML+=`
         <div class="col-11 page_border_of_quran_page  col-md-3 mb-lg-5 col-lg-2 text-center book_div  library_div">
         <span class="my-3">${dt.title.split(" ").slice(0, 3).join(" ")}..</span>
           <a href="library.html" class="text-decoration-none text-dark  ">
@@ -69,90 +12,11 @@ function libarayfuntion(ty) {
          
         </div>
         
-      `
-
-  })
-
-
-}
-//   ========== ALL DATA OF LIBRAY IS HERE END  ==========
-
-//   ========== HOME SEARCH LIBRAY IS HERE START ========== 
-
-if (search_lib) {
-  search_lib.addEventListener("input", () => {
-    var st = search_lib.value.toLowerCase();
-
-    const filtered = library_data.filter((e) =>
-      e.title.toLowerCase().includes(st)
-    );
-
-
-   if (filtered.length > 0) {
-  libarayfuntion(filtered);
-} else {
-  library_home_div.innerHTML = `
+      `})}
+if(search_lib){search_lib.addEventListener("input",()=>{var st=search_lib.value.toLowerCase();const filtered=library_data.filter((e)=>e.title.toLowerCase().includes(st));if(filtered.length>0){libarayfuntion(filtered)}else{library_home_div.innerHTML=`
   <h5 class=" text-center fw-normal">No matches found . Try different keywords.</h5>
-  `;
-}
-
-  });
-
-}
-//   ========== HOME SEARCH LIBRAY IS HERE END ========== 
-
-
-// ========== HOME PAGE LIBRARY CODE END   ==========
-
-// ============================== 📁 INDEX.HTML CODE END  📁 ==============================================================
-
-
-
-// ============================== 📁 quran.html CODE START  📁 =============================================================
-
-const quran_tab_div = document.getElementById("quran_tab_div");
-const tabContent = document.getElementById("v-pills-tabContent");
-const searchInput = document.getElementById("surah_name");
-const erase_btn = document.getElementById("erase_btn");
-const languageSelect = document.querySelectorAll(".languageSelect");
-
-let currentLanguage = "en";
-const ayahLimit = 40;
-
-if (quran_tab_div && tabContent) {
-  fetch(base_url + "/api/quran/languages", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token,
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-
-      const langs = data.available_languages || {};
-      
-      let optionsHtml = "";
-      Object.entries(langs).forEach(([code, name]) => {
-        const selected = code === "en" ? "selected" : "";
-        optionsHtml += `<option value="${code}" ${selected}>${name}</option>`;
-      });
-      languageSelect.forEach(e => e.innerHTML = optionsHtml);
-    });
-
-  languageSelect.forEach(es => {
-    es.addEventListener("change", () => {
-      currentLanguage = es.value;
-      fetchSurahs();
-    });
-  });
-
-  function loadSurahTabs(surahs) {
-    quran_tab_div.innerHTML = "";
-    tabContent.innerHTML = "";
-
-    surahs.forEach((surah, index) => {
-      quran_tab_div.innerHTML += `
+  `}})}
+const quran_tab_div=document.getElementById("quran_tab_div");const tabContent=document.getElementById("v-pills-tabContent");const searchInput=document.getElementById("surah_name");const erase_btn=document.getElementById("erase_btn");const languageSelect=document.querySelectorAll(".languageSelect");let currentLanguage="en";const ayahLimit=40;if(quran_tab_div&&tabContent){fetch(base_url+"/api/quran/languages",{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then(res=>res.json()).then(data=>{const langs=data.available_languages||{};let optionsHtml="";Object.entries(langs).forEach(([code,name])=>{const selected=code==="en"?"selected":"";optionsHtml+=`<option value="${code}" ${selected}>${name}</option>`});languageSelect.forEach(e=>e.innerHTML=optionsHtml)});languageSelect.forEach(es=>{es.addEventListener("change",()=>{currentLanguage=es.value;fetchSurahs()})});function loadSurahTabs(surahs){quran_tab_div.innerHTML="";tabContent.innerHTML="";surahs.forEach((surah,index)=>{quran_tab_div.innerHTML+=`
             <li class="nav-item w-100 d-flex col-12 my-1 " role="presentation">
               <button class="nav-link font_nask bg-white nav_tab_name_Sura ${index === 0 ? "active" : ""}"
                 id="chaptertabs${surah.id}"
@@ -162,50 +26,20 @@ if (quran_tab_div && tabContent) {
                 type="button" role="tab">
                 ${surah.id}. ${surah.surahname}
               </button>
-            </li>`;
-
-      tabContent.innerHTML += `
+            </li>`;tabContent.innerHTML+=`
             <div class="tab-pane fade ${index === 0 ? "show active" : ""}"
               id="surah${surah.id}" role="tabpanel"
               aria-labelledby="chaptertabs${surah.id}">
               <div id="ayahContent${surah.id}"></div>
               <div id="ayahPagination${surah.id}" class="mt-3"></div>
-            </div>`;
-    });
-
-    if (surahs.length > 0) {
-      loadSurahContent(surahs[0].id, 1);
-    }
-  }
-
-  function loadSurahContent(surahId, page = 1) {
-    const ayahContainer = document.getElementById(`ayahContent${surahId}`);
-    const paginationDiv = document.getElementById(`ayahPagination${surahId}`);
-    ayahContainer.innerHTML = `<p>Loading ayahs...</p>`;
-
-    fetch(base_url + `/api/quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      
-      .then(data => {
-        const verses = data.data || [];
-        const surahName = verses[0]?.surah_name || "";
-
-        const isTawbah = surahName.toLowerCase().includes("tawbah") || surahName.includes("التوبة");
-        const bismillahSection = isTawbah ? '' : `
+            </div>`});if(surahs.length>0){loadSurahContent(surahs[0].id,1)}}
+function loadSurahContent(surahId,page=1){const ayahContainer=document.getElementById(`ayahContent${surahId}`);const paginationDiv=document.getElementById(`ayahPagination${surahId}`);ayahContainer.innerHTML=`<p>Loading ayahs...</p>`;fetch(base_url+`/api/quran/surah/${surahId}?lang=${currentLanguage}&page=${page}&limit=${ayahLimit}`,{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then(res=>res.json()).then(data=>{const verses=data.data||[];const surahName=verses[0]?.surah_name||"";const isTawbah=surahName.toLowerCase().includes("tawbah")||surahName.includes("التوبة");const bismillahSection=isTawbah?'':`
             <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
               <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 col-12 mx-auto">
               <h3 class="position-absolute start-50  translate-middle-x font_naskh  bis_text">
                 بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
               </h3>
-            </div>`;
-
-        const versesHtml = verses.map(v => `
+            </div>`;const versesHtml=verses.map(v=>`
             <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
               <div class="col-lg-1 col-12 p-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
                 <span class="fw-light mb-2">${v.surah_number}:${v.ayah_number}</span>
@@ -235,420 +69,49 @@ if (quran_tab_div && tabContent) {
                   ${v[`translation_${currentLanguage}`] || ""}
                 </p>
               </div>
-            </div>`).join("");
-
-        ayahContainer.innerHTML = `<h2  class='text-center mb-3 font_naskh '>سُورَة ${surahName}</h2>  ${bismillahSection}${versesHtml}`;
-        renderAyahPagination(surahId, data.last_page, page);
-      })
-      .catch(err => {
-        ayahContainer.innerHTML = `<p class='text-danger'>Error loading ayahs. Please try again later.</p>`;
-      });
-  }
-  // ========== PAGINATION CODE START =============
-
-  function renderAyahPagination(surahId, lastPage, currentPage) {
-    const paginationDiv = document.getElementById(`ayahPagination${surahId}`);
-    let paginationHTML = `<nav><ul class="pagination justify-content-center">`;
-    for (let i = 1; i <= lastPage; i++) {
-      paginationHTML += `
+            </div>`).join("");ayahContainer.innerHTML=`<h2  class='text-center mb-3 font_naskh '>سُورَة ${surahName}</h2>  ${bismillahSection}${versesHtml}`;renderAyahPagination(surahId,data.last_page,page)}).catch(err=>{ayahContainer.innerHTML=`<p class='text-danger'>Error loading ayahs. Please try again later.</p>`})}
+function renderAyahPagination(surahId,lastPage,currentPage){const paginationDiv=document.getElementById(`ayahPagination${surahId}`);let paginationHTML=`<nav><ul class="pagination justify-content-center">`;for(let i=1;i<=lastPage;i++){paginationHTML+=`
             <li class="page-item ${i === currentPage ? "active" : ""}">
               <button class="page-link" onclick="loadSurahContent(${surahId}, ${i})">${i}</button>
-            </li>`;
-    }
-    paginationHTML += `</ul></nav>`;
-    paginationDiv.innerHTML = paginationHTML;
-  }
-  // ========== PAGINATION CODE END =============
-
-
-// ========== FETCH ALL SURAH CODE START =============
-  function fetchSurahs() {
-    fetch(base_url + "/api/surahs", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .then(loadSurahTabs);
-  }
-// ========== FETCH ALL SURAH CODE END =============
-
-// =========== WHEN CLICK ON A SURAH IT'S OPEN FROM A TOP CODE START ===============
-
-  document.addEventListener("click", function (e) {
-    if (e.target && e.target.classList.contains("nav_tab_name_Sura")) {
-      const button = e.target;
-      const surahId = button.getAttribute("data-surahid");
-      loadSurahContent(surahId, 1);
-      setTimeout(() => {
-        const pane = document.getElementById(`surah${surahId}`);
-        if (pane) {
-          const yOffset = -50;
-          const y = pane.getBoundingClientRect().top + window.pageYOffset + yOffset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-      }, 200);
-    }
-  });
-
-// =========== WHEN CLICK ON A SURAH IT'S OPEN FROM A TOP CODE END ===============
-
-// =========== SEARCH SURAH CODE START ===============
-
-  if (searchInput) {
-    searchInput.addEventListener("input", function () {
-      const query = this.value.trim();
-      if (query.length === 0) {
-        fetchSurahs();
-      } else {
-        fetch(base_url + `/api/surahs/search?q=${encodeURIComponent(query)}`, {
-          method: "GET",
-          headers: {
-            "Authorization": "Bearer " + token,
-            "Content-Type": "application/json"
-          }
-        })
-          .then(res => res.json())
-          .then(surahs => {
-            loadSurahTabs(surahs);
-            if (surahs.length > 0) {
-              loadSurahContent(surahs[0].id, 1);
-            }
-          })
-          .catch(err => {
-            quran_tab_div.innerHTML = `<p class="text-danger px-2">No results found.</p>`;
-            tabContent.innerHTML = "";
-          });
-      }
-    });
-  }
-
-// =========== SEARCH SURAH CODE END ===============
-
-// =========== ERASE BUTTON CODE START ===============
-
-  if (erase_btn) {
-    erase_btn.addEventListener("click", () => {
-      location.reload();
-    });
-  }
-// =========== ERASE BUTTON CODE START ===============
-
-  fetchSurahs();
-}
-
-function Coopy(a, b, c, d, e) {
-  const textToCopy = `Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\n\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`;
-
-  navigator.clipboard.writeText(textToCopy)
-    .then(() => {
-      Swal.fire({
-        title: "Verse has been copied to the clipboard!",
-        timer: 2000,
-        showConfirmButton: false,
-        timerProgressBar: true
-      });
-    })
-    .catch(err => {
-      console.error("Failed to copy: ", err);
-    });
-}
-
-function ShareAyah(a, b, c, d, e) {
-  const shareData = {
-    title: `Surah ${a} - Ayah ${b}`,
-    text: `Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`
-  };
-  if (navigator.share) {
-    navigator.share(shareData)
-  } 
-}
-// ======================= AUDIO CONTENT IS HERE =====================
-let currentAudio = null;
-let currentButton = null;
-
-function ReadAyah(id, button) {
-  const audioURL = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;
-
-  // If same button clicked again → toggle pause
-  if (currentAudio && !currentAudio.paused && currentButton === button) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    button.innerHTML = `<i class="fa-solid fa-play"></i>`;
-    return;
-  }
-
-  // Stop previous audio and reset previous button icon
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    if (currentButton) {
-      currentButton.innerHTML = `<i class="fa-solid fa-play"></i>`;
-    }
-  }
-
-  // Play new audio
-  currentAudio = new Audio(audioURL);
-  currentButton = button;
-
-  currentAudio.play().then(() => {
-    button.innerHTML = `<i class="fa-solid fa-pause"></i>`;
-  }).catch(error => {
-    alert("Error playing audio: " + error.message);
-  });
-
-  // When audio ends → reset play icon
-  currentAudio.onended = function () {
-    button.innerHTML = `<i class="fa-solid fa-play"></i>`;
-  };
-}
-
-// ======================= AUDIO CONTENT IS END ======================
-
-// ============================== 📁 quran.html CODE END  📁 ==============================================================
-
-
-// ============================== 📁 library.html CODE START  📁 ==============================================================
-
-
-
-var library_div = document.getElementById("library_div");
-var search_lib = document.getElementById("search_lib");
-var media_type = document.getElementById("media_type");
-var paginationNumbers = document.getElementById("paginationNumbers");
-var lenght_page = document.getElementById("lenght_page");
-var lib_po_oi =document.getElementById("lib_po_oi")
-var library_data1 = [];
-var library_media = [];
-var currentPage = 1;
-var itemsPerPage = 12;
-var currentDataSet = [];
-
-if (library_div && search_lib && media_type && lib_po_oi) {
-  fetch(base_url + "/api/library", {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token,
-      "Content-Type": "application/json"
-    }
-  })
-    .then((e) => e.json())
-    .then((data) => {
-      library_data1 = data.data;
-      currentDataSet = [...library_data1];
-      libarayfuntion1(currentDataSet);
-      renderMediaTypes();
-    });
-}
-
-function renderMediaTypes() {
-  setTimeout(() => {
-    // 🔹 Add "All" at the beginning
-    media_type.innerHTML = `
+            </li>`}
+paginationHTML+=`</ul></nav>`;paginationDiv.innerHTML=paginationHTML}
+function fetchSurahs(){fetch(base_url+"/api/surahs",{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then(res=>res.json()).then(loadSurahTabs)}
+document.addEventListener("click",function(e){if(e.target&&e.target.classList.contains("nav_tab_name_Sura")){const button=e.target;const surahId=button.getAttribute("data-surahid");loadSurahContent(surahId,1);setTimeout(()=>{const pane=document.getElementById(`surah${surahId}`);if(pane){const yOffset=-50;const y=pane.getBoundingClientRect().top+window.pageYOffset+yOffset;window.scrollTo({top:y,behavior:'smooth'})}},200)}});if(searchInput){searchInput.addEventListener("input",function(){const query=this.value.trim();if(query.length===0){fetchSurahs()}else{fetch(base_url+`/api/surahs/search?q=${encodeURIComponent(query)}`,{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then(res=>res.json()).then(surahs=>{loadSurahTabs(surahs);if(surahs.length>0){loadSurahContent(surahs[0].id,1)}}).catch(err=>{quran_tab_div.innerHTML=`<p class="text-danger px-2">No results found.</p>`;tabContent.innerHTML=""})}})}
+if(erase_btn){erase_btn.addEventListener("click",()=>{location.reload()})}
+fetchSurahs()}
+function Coopy(a,b,c,d,e){const textToCopy=`Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\n\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`;navigator.clipboard.writeText(textToCopy).then(()=>{Swal.fire({title:"Verse has been copied to the clipboard!",timer:2000,showConfirmButton:!1,timerProgressBar:!0})}).catch(err=>{console.error("Failed to copy: ",err)})}
+function ShareAyah(a,b,c,d,e){const shareData={title:`Surah ${a} - Ayah ${b}`,text:`Surah Name: ${a}\nAyah Number: ${b}\nSurah Number: ${c}\nAyah Text: ${d}\nTranslation: ${e}\nWebsite : https://subjectsofalquran.com/\nPublish By : Fons Vitae Publications,  Inc.`};if(navigator.share){navigator.share(shareData)}}
+let currentAudio=null;let currentButton=null;function ReadAyah(id,button){const audioURL=`https://cdn.islamic.network/quran/audio/128/ar.alafasy/${id}.mp3`;if(currentAudio&&!currentAudio.paused&&currentButton===button){currentAudio.pause();currentAudio.currentTime=0;button.innerHTML=`<i class="fa-solid fa-play"></i>`;return}
+if(currentAudio){currentAudio.pause();currentAudio.currentTime=0;if(currentButton){currentButton.innerHTML=`<i class="fa-solid fa-play"></i>`}}
+currentAudio=new Audio(audioURL);currentButton=button;currentAudio.play().then(()=>{button.innerHTML=`<i class="fa-solid fa-pause"></i>`}).catch(error=>{alert("Error playing audio: "+error.message)});currentAudio.onended=function(){button.innerHTML=`<i class="fa-solid fa-play"></i>`}}
+var library_div=document.getElementById("library_div");var search_lib=document.getElementById("search_lib");var media_type=document.getElementById("media_type");var paginationNumbers=document.getElementById("paginationNumbers");var lenght_page=document.getElementById("lenght_page");var lib_po_oi=document.getElementById("lib_po_oi")
+var library_data1=[];var library_media=[];var currentPage=1;var itemsPerPage=12;var currentDataSet=[];if(library_div&&search_lib&&media_type&&lib_po_oi){fetch(base_url+"/api/library",{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then((e)=>e.json()).then((data)=>{library_data1=data.data;currentDataSet=[...library_data1];libarayfuntion1(currentDataSet);renderMediaTypes()})}
+function renderMediaTypes(){setTimeout(()=>{media_type.innerHTML=`
       <option value="all">All</option>
-    `;
-
-    // 🔹 Then render the rest of the media types
-    library_media.forEach((e) => {
-      media_type.innerHTML += `
+    `;library_media.forEach((e)=>{media_type.innerHTML+=`
         <option class="text-capitalize" value="${e}">
           ${e === "pdf" ? "E-Book" : e}
-        </option>`;
-    });
-  }, 1000);
-}
-
-
-function libarayfuntion1(dataArray) {
-  library_div.innerHTML = "";
-  const start = (currentPage - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  const pageItems = dataArray.slice(start, end);
-
-  pageItems.forEach((dt) => {
-    if (!library_media.includes(dt.media_type)) {
-      library_media.push(dt.media_type);
-    }
-
-    library_div.innerHTML += `
+        </option>`})},1000)}
+function libarayfuntion1(dataArray){library_div.innerHTML="";const start=(currentPage-1)*itemsPerPage;const end=start+itemsPerPage;const pageItems=dataArray.slice(start,end);pageItems.forEach((dt)=>{if(!library_media.includes(dt.media_type)){library_media.push(dt.media_type)}
+library_div.innerHTML+=`
   <div class="col-12 col-lg-4 text-start my-2 book_di library_div position-relative">
 
  <div class="col-lg-11 col-12 mx-auto library_div_und rounded-3">
-    ${dt.media_type === 'video' ? `
-      <video controls class="col-12" style="height: 194px; width:100%" >
-        <source src="${base_url}/storage/${dt.file_path}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-        <hr class="col-11 mx-auto ">
-     <div class="p-2">
-      <h6 class="fw-light">Title : ${dt.title}</h6>
-    
-      <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
-
-
-        <a href="${base_url}/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">
-          View Video
-        </a>
-    ` : `
-      <img src="${encodeURI(dt.thumbnail_url)}" alt="${encodeURI(dt.thumbnail_url)}" class="img-fluid home_lib_image z-2">
-    `}
+    ${dt.media_type === 'video' ? `<video controls class="col-12" style="height: 194px; width:100%"><source src="${base_url}/storage/${dt.file_path}" type="video/mp4">Your browser does not support the video tag.</video><hr class="col-11 mx-auto "><div class="p-2"><h6 class="fw-light">Title:${dt.title}</h6><h6 class="fw-light">Media Type:${dt.media_type}</h6><a href="${base_url}/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2 mt-2 col-11 fs-6 mb-2 text-decoration-none text-white rounded-2 ">View Video</a>` : `<img src="${encodeURI(dt.thumbnail_url)}" alt="${encodeURI(dt.thumbnail_url)}" class="img-fluid home_lib_image z-2">`}
 
     <div class="position-relative">
-      ${dt.media_type === 'audio' ? `
-       
-          <hr class="col-11 mx-auto ">
-     <div class="p-2">
-      <h6 class="fw-light">Title : ${dt.title}</h6>
-    
-      <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
- <audio controls class="audio-wrapper   col-11   text-decoration-none text-dark   rounded-2  ">
-          <source src="${base_url}/storage/${dt.file_path}" type="audio/mpeg">
-
-        </audio>
-
-      ` : dt.media_type === 'pdf' ? `
-      <hr class="col-11 mx-auto ">
-     <div class="p-2">
-      <h6 class="fw-light">Title : ${dt.title}</h6>
-    
-      <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
-
-
-      <div class="mb-2">
-        <a href="${base_url}/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">
-          View E-Book
-        </a>
-      </div>
-     </div>
-      ` : dt.media_type === 'video' ? `` : `
-        <p class="text-muted">Unsupported Media Type</p>
-      `}
+      ${dt.media_type === 'audio' ? `<hr class="col-11 mx-auto "><div class="p-2"><h6 class="fw-light">Title:${dt.title}</h6><h6 class="fw-light">Media Type:${dt.media_type}</h6><audio controls class="audio-wrapper   col-11   text-decoration-none text-dark   rounded-2  "><source src="${base_url}/storage/${dt.file_path}" type="audio/mpeg"></audio>` : dt.media_type === 'pdf' ? `<hr class="col-11 mx-auto "><div class="p-2"><h6 class="fw-light">Title:${dt.title}</h6><h6 class="fw-light">Media Type:${dt.media_type}</h6><div class="mb-2"><a href="${base_url}/storage/${dt.file_path}" target="_blank" class="bg p-1 px-2  col-11 fs-6  text-decoration-none text-white rounded-2 ">View E-Book</a></div></div>` : dt.media_type === 'video' ? `` : `<p class="text-muted">Unsupported Media Type</p>`}
     </div>
 </div>
   </div>
-`;
-
-  });
-  renderPaginationNumbers(dataArray);
-  updatePageInfo(dataArray);
-}
-
-function renderPaginationNumbers(dataArray) {
-  paginationNumbers.innerHTML = "";
-  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
-
-  for (let i = 1; i <= totalPages; i++) {
-    const btn = document.createElement("button");
-    btn.className = "btn btn_of_pagin_lib page-btn";
-    btn.textContent = i;
-    if (i === currentPage) btn.classList.add("active");
-
-    btn.addEventListener("click", () => {
-      currentPage = i;
-      libarayfuntion1(currentDataSet);
-    });
-
-    paginationNumbers.appendChild(btn);
-  }
-}
-
-function updatePageInfo(dataArray) {
-  const totalPages = Math.ceil(dataArray.length / itemsPerPage);
-  lenght_page.innerHTML = `Page: ${currentPage}/${totalPages}`;
-}
-
-if (media_type) {
-  media_type.addEventListener("change", () => {
-    const selectedType = media_type.value;
-    currentPage = 1;
-
-
-
-    currentDataSet = selectedType === "all"
-      ? library_data1 
-      : library_data1.filter(item => item.media_type === selectedType);
-
-    libarayfuntion1(currentDataSet);
-  });
-}
-
-
-if (search_lib) {
-  search_lib.addEventListener("input", () => {
-    const st = search_lib.value.toLowerCase();
-    currentPage = 1;
-    currentDataSet = library_data1.filter(item =>
-      item.title.toLowerCase().includes(st)
-    );
- 
-    
-if (currentDataSet.length > 0) {
-  libarayfuntion1(currentDataSet);
-
-} else {
-  library_div.innerHTML = `
-    <h5 class=" text-center fw-normal">No matches found . Try different keywords.</h5>`;
-}
-  });
-}
-
-
-// ============================== 📁 library.html CODE END  📁 ==============================================================
-
-
-// ============================== 📁 the_list_of_subjects_detail.html?subject=1 CODE START  📁 ================================================
-
-// ===================  SUBJECT CODE START ===============
-var reload_subject=document.getElementById("reload_subject");
-if(reload_subject){
-reload_subject.addEventListener("click",()=>{
-    location.reload()
-})
-}
-const list_of_subjects = document.getElementById("list_of_subjects");
-const pagin_bnt_of_subject = document.getElementById("pagin_bnt_of_subject");
-const search_subject_here = document.getElementById("search_subject_here");
-let page = 1;
-if (list_of_subjects && pagin_bnt_of_subject) {
-  const headers = {
-    "Authorization": "Bearer " + token,
-    "Content-Type": "application/json",
-  };
-  // 🟡 Search button
-  document.getElementById("searchbtn_subje").addEventListener("click", () => {
-    const query = searchBox.value.trim();
-    pages(1, query);
-  });
-  function pages(params = 1, query = "") {
-    page = params;
-    const isSearching = query !== "";
-
-
-    const apiUrl = isSearching
-      ? `${base_url}/api/topics/search?q=${query}&page=${page}`
-      : `${base_url}/api/topics?page=${page}`;
-
-    fetch(apiUrl, {
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((datas) => {
-// console.log(datas);
-
-
-        list_of_subjects.innerHTML = "";
-        pagin_bnt_of_subject.innerHTML = "";
-
-
-        datas.data.forEach((element) => {
-          
-          
-          list_of_subjects.innerHTML += `
+`});renderPaginationNumbers(dataArray);updatePageInfo(dataArray)}
+function renderPaginationNumbers(dataArray){paginationNumbers.innerHTML="";const totalPages=Math.ceil(dataArray.length/itemsPerPage);for(let i=1;i<=totalPages;i++){const btn=document.createElement("button");btn.className="btn btn_of_pagin_lib page-btn";btn.textContent=i;if(i===currentPage)btn.classList.add("active");btn.addEventListener("click",()=>{currentPage=i;libarayfuntion1(currentDataSet)});paginationNumbers.appendChild(btn)}}
+function updatePageInfo(dataArray){const totalPages=Math.ceil(dataArray.length/itemsPerPage);lenght_page.innerHTML=`Page: ${currentPage}/${totalPages}`}
+if(media_type){media_type.addEventListener("change",()=>{const selectedType=media_type.value;currentPage=1;currentDataSet=selectedType==="all"?library_data1:library_data1.filter(item=>item.media_type===selectedType);libarayfuntion1(currentDataSet)})}
+if(search_lib){search_lib.addEventListener("input",()=>{const st=search_lib.value.toLowerCase();currentPage=1;currentDataSet=library_data1.filter(item=>item.title.toLowerCase().includes(st));if(currentDataSet.length>0){libarayfuntion1(currentDataSet)}else{library_div.innerHTML=`
+    <h5 class=" text-center fw-normal">No matches found . Try different keywords.</h5>`}})}
+var reload_subject=document.getElementById("reload_subject");if(reload_subject){reload_subject.addEventListener("click",()=>{location.reload()})}
+const list_of_subjects=document.getElementById("list_of_subjects");const pagin_bnt_of_subject=document.getElementById("pagin_bnt_of_subject");const search_subject_here=document.getElementById("search_subject_here");let page=1;if(list_of_subjects&&pagin_bnt_of_subject){const headers={"Authorization":"Bearer "+token,"Content-Type":"application/json",};document.getElementById("searchbtn_subje").addEventListener("click",()=>{const query=searchBox.value.trim();pages(1,query)});function pages(params=1,query=""){page=params;const isSearching=query!=="";const apiUrl=isSearching?`${base_url}/api/topics/search?q=${query}&page=${page}`:`${base_url}/api/topics?page=${page}`;fetch(apiUrl,{headers:{Authorization:"Bearer "+token,"Content-Type":"application/json",},}).then((res)=>res.json()).then((datas)=>{list_of_subjects.innerHTML="";pagin_bnt_of_subject.innerHTML="";datas.data.forEach((element)=>{list_of_subjects.innerHTML+=`
 
           
           <div class="accordion mb-2">
@@ -670,83 +133,24 @@ if (list_of_subjects && pagin_bnt_of_subject) {
               </h4>
             </div>
           </div>
-        `;
-        });
-
-
-        for (let i = 1; i <= datas.last_page; i++) {
-          pagin_bnt_of_subject.innerHTML += `
+        `});for(let i=1;i<=datas.last_page;i++){pagin_bnt_of_subject.innerHTML+=`
     <button class="btn  font_naskh m-1 btn_pagin ${i === page ? ' active' : ''}" onclick="pages(${i}, '${query}')">
       ${i}
-    </button>`;
-        }
-
-      })
-      // .catch((err) => console.log("API ERROR:", err));
-  }
-
-  pages();
-
-}
-
-
-
-
-// ============================== 📁 the_list_of_subjects_detail.html?subject=1 CODE END  📁 ==============================================================
-
-
-
-// ============================== 📁 the_list_of_subjects_detail.html? CODE START  📁 ==============================================================
-
-
-
-// ======================= GET SINGLE SURAH IN SUBJECT PAGE START ===========================
-var location_of_page = location.search.split("=")[1];
-if (location.href.includes("the_list_of_subjects_detail.html")) {
-  let currentLanguage_detail = "en";
-  var languageSelect_detail = document.getElementById("languageSelect_detail");
-  var single_detail_of_subject = document.getElementById("single_detail_of_subject");
-  var read_subject_detail = document.getElementById("read_subject_detail");
-  var index_pagination=document.getElementById("index_pagination");
-  var num_of_index_of_index=1
-  function ter(e){
-    num_of_index_of_index=e
-    indexfn()
-  }
-  indexfn()
-  // =============== FUNCTION START =================
-  function indexfn(){
- 
-  
-  fetch(`${base_url}/api/topicdetails/topic/${location_of_page}?page=${num_of_index_of_index}`, {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token,
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then((single_topic) => {
-
-
-var lenght_of_index="";
-for (let index = 1; index <= single_topic.last_page; index++) {
-  let activeClass = index === num_of_index_of_index ? 'active' : '';
-  lenght_of_index += `<button class="mx-1 btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`;
-}
+    </button>`}})}
+pages()}
+var location_of_page=location.search.split("=")[1];if(location.href.includes("the_list_of_subjects_detail.html")){let currentLanguage_detail="en";var languageSelect_detail=document.getElementById("languageSelect_detail");var single_detail_of_subject=document.getElementById("single_detail_of_subject");var read_subject_detail=document.getElementById("read_subject_detail");var index_pagination=document.getElementById("index_pagination");var num_of_index_of_index=1
+function ter(e){num_of_index_of_index=e
+indexfn()}
+indexfn()
+function indexfn(){fetch(`${base_url}/api/topicdetails/topic/${location_of_page}?page=${num_of_index_of_index}`,{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then(res=>res.json()).then((single_topic)=>{var lenght_of_index="";for(let index=1;index<=single_topic.last_page;index++){let activeClass=index===num_of_index_of_index?'active':'';lenght_of_index+=`<button class="mx-1 btn btn_of_index_actic ${activeClass}" onclick="ter(${index}, this)">${index}</button>`}
 index_pagination.innerHTML=lenght_of_index
-
-      read_subject_detail.addEventListener("click", () => {
-      window.location.href = `the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`;
-      })
-      if (single_topic.data.length > 0) {
-        const body_of_detail = single_topic.data.map((e, index) =>    `
+read_subject_detail.addEventListener("click",()=>{window.location.href=`the_list_of_subjects_read.html?read=${single_topic.data[0].topic_id}`})
+if(single_topic.data.length>0){const body_of_detail=single_topic.data.map((e,index)=>`
     <div class="d-flex surah_ayah_num col-12 p-1">   
       <p class="col-2 num_css">${e.surahcode} : </p>
       <p class="num_css "> ${e.topicdetail} <span class=""> </span> </p>
     </div>
-    `).join("");
-        single_detail_of_subject.innerHTML = `
+    `).join("");single_detail_of_subject.innerHTML=`
 
         <!-- ======================= SUBJECT NAME START ====================== -->
               <div class="col-lg-8 mx-auto col-12 "> 
@@ -774,65 +178,8 @@ index_pagination.innerHTML=lenght_of_index
 <!-- ======================= SUBJECT DETIAL LOOP START ====================== -->
 ${body_of_detail}
 <!-- ======================= SUBJECT DETIAL LOOP END ====================== -->
-        `
-      }
-      else { single_detail_of_subject.innerHTML = `This Subject are not Uploaded ` }    })
-      // .catch((err) => { console.log(err);
-      // });
-    }
-    // =============== FUNCTION END =================
-}
-
-
-// ============================== 📁 the_list_of_subjects_detail.html? CODE END  📁 ==============================================================
-
-
-
-// ============================== 📁 the_list_of_subjects_read.html CODE START 📁 ==============================================================
-
-var location_of_page_read = location.search.split("=")[1];
-
-if (location.href.includes("the_list_of_subjects_read.html")) {
-  const languageSelectElement = document.getElementById("languageSelect_read");
-  const single_detail_of_subject_read = document.getElementById("single_detail_of_subject_read");
-  let currentLanguage_read = "en";
-
-  async function fetchAndRenderAyahs() {
-    single_detail_of_subject_read.innerHTML = `<p class="text-center text-muted">⏳ Loading Ayahs, please wait...</p>`;
-
-    const res = await fetch(`${base_url}/api/topicdetails/topic/${location_of_page_read}`, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
-      }
-    });
-    const single_topic = await res.json();
-// console.log(single_topic.data);
-
-    if (single_topic.data.length > 0) {
-      const topicAyahsWithSurah = single_topic.data.flatMap(item => {
-        const ayahList = item.topicdetail
-          .split(/[\s,]+/)
-          .filter(Boolean)
-          .map(num => String(Number(num)));
-
-        return ayahList.map(ayah => ({
-          ayah,
-          surah: item.surahcode || "001",
-          topic: item.topic.topicname
-        }));
-      });
-console.log(topicAyahsWithSurah);
-
-      topicAyahsWithSurah.sort((a, b) => {
-        const surahA = Number(a.surah);
-        const surahB = Number(b.surah);
-        if (surahA !== surahB) return surahA - surahB;
-        return Number(a.ayah) - Number(b.ayah);
-      });
-
-      single_detail_of_subject_read.innerHTML = `
+        `}else{single_detail_of_subject.innerHTML=`This Subject are not Uploaded `}})}}
+var location_of_page_read=location.search.split("=")[1];if(location.href.includes("the_list_of_subjects_read.html")){const languageSelectElement=document.getElementById("languageSelect_read");const single_detail_of_subject_read=document.getElementById("single_detail_of_subject_read");let currentLanguage_read="en";async function fetchAndRenderAyahs(){single_detail_of_subject_read.innerHTML=`<p class="text-center text-muted">⏳ Loading Ayahs, please wait...</p>`;const res=await fetch(`${base_url}/api/topicdetails/topic/${location_of_page_read}`,{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}});const single_topic=await res.json();if(single_topic.data.length>0){const topicAyahsWithSurah=single_topic.data.flatMap(item=>{const ayahList=item.topicdetail.split(/[\s,]+/).filter(Boolean).map(num=>String(Number(num)));return ayahList.map(ayah=>({ayah,surah:item.surahcode||"001",topic:item.topic.topicname}))});console.log(topicAyahsWithSurah);topicAyahsWithSurah.sort((a,b)=>{const surahA=Number(a.surah);const surahB=Number(b.surah);if(surahA!==surahB)return surahA-surahB;return Number(a.ayah)-Number(b.ayah)});single_detail_of_subject_read.innerHTML=`
          <div class="position-relative text-center d-flex flex-row justify-content-center align-items-center">
               <img src="assets/images/image/img1.png" alt="Background" class="img-fluid col-lg-7 col-12 mx-auto">
               <h3 class="position-absolute start-50  translate-middle-x font_naskh  bis_text">
@@ -843,33 +190,8 @@ console.log(topicAyahsWithSurah);
 
         <h4 class="text-center fs-2  py-2 font_naskh">${topicAyahsWithSurah[0].topic}</h4>
         <div id="ayahContainer"></div>
-      `;
-
-      const ayahContainer = document.getElementById("ayahContainer");
-
-      for (const { surah, ayah } of topicAyahsWithSurah) {
-        const cleanSurah = String(Number(surah));
-        const url = `${base_url}/api/quran/surah/${cleanSurah}/ayah/${ayah}`;
-
-        try {
-          const res = await fetch(url, {
-            method: "GET",
-            headers: {
-              "Authorization": "Bearer " + token,
-              "Content-Type": "application/json"
-            }
-          });
-
-          if (!res.ok) {
-            // console.error(` Could not load Ayah ${ayah} of Surah ${cleanSurah}`);
-            ayahContainer.innerHTML += `<div class="alert alert-warning"> Could not load Ayah ${ayah} of Surah ${cleanSurah}</div>`;
-            continue;
-          }
-
-          const verse = await res.json();
-
-
-          ayahContainer.innerHTML += `
+      `;const ayahContainer=document.getElementById("ayahContainer");for(const{surah,ayah}of topicAyahsWithSurah){const cleanSurah=String(Number(surah));const url=`${base_url}/api/quran/surah/${cleanSurah}/ayah/${ayah}`;try{const res=await fetch(url,{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}});if(!res.ok){ayahContainer.innerHTML+=`<div class="alert alert-warning"> Could not load Ayah ${ayah} of Surah ${cleanSurah}</div>`;continue}
+const verse=await res.json();ayahContainer.innerHTML+=`
             <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
               <div class="col-lg-1 col-12 p-lg-3 mb-lg-2 d-flex flex-lg-column justify-content-lg-center justify-content-around">
                 <span class="fw-light mb-2">${verse.surah_number}:${verse.ayah_number}</span>
@@ -900,81 +222,7 @@ console.log(topicAyahsWithSurah);
                 </p>
               </div>
             </div>
-          `;
-        } catch (err) {
-          console.error(` Error fetching Surah ${cleanSurah} Ayah ${ayah}:`, err);
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 300));
-      }
-    } else {
-      single_detail_of_subject_read.innerHTML = `<div class="alert alert-info"> This subject is not uploaded yet.</div>`;
-    }
-  }
-
-  // Fetch languages and populate dropdown
-  fetch(`${base_url}/api/quran/languages`, {
-    method: "GET",
-    headers: {
-      "Authorization": "Bearer " + token,
-      "Content-Type": "application/json"
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      const langug = Object.entries(data.available_languages);
-      langug.forEach(element => {
-        const selected = element[0] === "en" ? "selected" : "";
-        languageSelectElement.innerHTML += `<option value="${element[0]}" ${selected}>${element[1]}</option>`;
-      });
-    });
-
-  // Handle language change
-  languageSelectElement.addEventListener("change", (e) => {
-    currentLanguage_read = e.target.value;
-    fetchAndRenderAyahs(); // ✅ re-fetch on language change
-  });
-
-  // First load
-  fetchAndRenderAyahs();
-}
-
-// ============================== 📁 the_list_of_subjects_read.html CODE END  📁 ==============================================================
- 
-
- // ================== PAGGE CHANGE TRANSITION START ==========================
-document.addEventListener("DOMContentLoaded", () => {
-
-  document.body.classList.add("fade-in");
-});document.querySelectorAll("nav-link").forEach(link => {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      document.body.classList.remove("fade-in");
-      document.body.classList.add("fade-out");
-
-      setTimeout(() => {
-        window.location.href = this.href;
-      }, 1000); 
-    });
-  });
-    // ================== PAGGE CHANGE TRANSITION END ==========================
-
-
-
-    
-     // ================== PAGGE CHANGE TRANSITION START ==========================
-document.addEventListener("DOMContentLoaded", () => {
-
-  document.body.classList.add("fade-in");
-});document.querySelectorAll("nav-link").forEach(link => {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      document.body.classList.remove("fade-in");
-      document.body.classList.add("fade-out");
-
-      setTimeout(() => {
-        window.location.href = this.href;
-      }, 1500); 
-    });
-  });
-    // ================== PAGGE CHANGE TRANSITION END ==========================
+          `}catch(err){console.error(` Error fetching Surah ${cleanSurah} Ayah ${ayah}:`,err)}
+await new Promise(resolve=>setTimeout(resolve,300))}}else{single_detail_of_subject_read.innerHTML=`<div class="alert alert-info"> This subject is not uploaded yet.</div>`}}
+fetch(`${base_url}/api/quran/languages`,{method:"GET",headers:{"Authorization":"Bearer "+token,"Content-Type":"application/json"}}).then(res=>res.json()).then(data=>{const langug=Object.entries(data.available_languages);langug.forEach(element=>{const selected=element[0]==="en"?"selected":"";languageSelectElement.innerHTML+=`<option value="${element[0]}" ${selected}>${element[1]}</option>`})});languageSelectElement.addEventListener("change",(e)=>{currentLanguage_read=e.target.value;fetchAndRenderAyahs()});fetchAndRenderAyahs()}
+document.addEventListener("DOMContentLoaded",()=>{document.body.classList.add("fade-in")});document.querySelectorAll("nav-link").forEach(link=>{link.addEventListener("click",function(e){e.preventDefault();document.body.classList.remove("fade-in");document.body.classList.add("fade-out");setTimeout(()=>{window.location.href=this.href},1000)})});document.addEventListener("DOMContentLoaded",()=>{document.body.classList.add("fade-in")});document.querySelectorAll("nav-link").forEach(link=>{link.addEventListener("click",function(e){e.preventDefault();document.body.classList.remove("fade-in");document.body.classList.add("fade-out");setTimeout(()=>{window.location.href=this.href},1500)})})
