@@ -23,7 +23,12 @@ if (share) {
 // ========== THIS CODE IS HERE FOR SHARE BUTTON IN EACH PAGE END ========
 
 
-
+// ===================== THIS CODE FOR FOOTER CURRENT YEAR ========================
+var current_math=document.getElementById("current_math");
+if(current_math){
+  current_math.innerHTML=new Date().getFullYear()
+}
+// ===================== THIS CODE FOR FOOTER CONTENT END =========================
 
 
 // ============================== 📁 INDEX.HTML CODE START 📁 ==============================================================
@@ -50,14 +55,15 @@ if (library_home_div) {
 }
 //  =========== ALL DATA OF LIBRAY IS HERE START ===========
 function libarayfuntion(ty) {
-
+  
   library_home_div.innerHTML = "";
   ty.forEach((dt, index) => {
+    // console.log(ty.length < 0);
 
     library_home_div.innerHTML += `
         <div class="col-11 page_border_of_quran_page  col-md-3 mb-lg-5 col-lg-2 text-center book_div  library_div">
         <span class="my-3">${dt.title.split(" ").slice(0, 3).join(" ")}..</span>
-          <a href="library.html" class="text-decoration-none text-dark">
+          <a href="library.html" class="text-decoration-none text-dark  ">
             <img src="${encodeURI(dt.thumbnail_url)}" alt="" class="mt-3 img-fluid home_lib_image">
           </a>
          
@@ -81,7 +87,15 @@ if (search_lib) {
       e.title.toLowerCase().includes(st)
     );
 
-    libarayfuntion(filtered);
+
+   if (filtered.length > 0) {
+  libarayfuntion(filtered);
+} else {
+  library_home_div.innerHTML = `
+  <h5 class=" text-center fw-normal">No matches found . Try different keywords.</h5>
+  `;
+}
+
   });
 
 }
@@ -405,14 +419,14 @@ var search_lib = document.getElementById("search_lib");
 var media_type = document.getElementById("media_type");
 var paginationNumbers = document.getElementById("paginationNumbers");
 var lenght_page = document.getElementById("lenght_page");
-
+var lib_po_oi =document.getElementById("lib_po_oi")
 var library_data1 = [];
 var library_media = [];
 var currentPage = 1;
 var itemsPerPage = 12;
 var currentDataSet = [];
 
-if (library_div && search_lib && media_type) {
+if (library_div && search_lib && media_type && lib_po_oi) {
   fetch(base_url + "/api/library", {
     method: "GET",
     headers: {
@@ -489,7 +503,7 @@ function libarayfuntion1(dataArray) {
       <h6 class="fw-light">Title : ${dt.title}</h6>
     
       <h6 class="fw-light">Media Type : ${dt.media_type}</h6>
- <audio controls class="audio-wrapper   col-11   text-decoration-none text-dark rounded-2  ">
+ <audio controls class="audio-wrapper   col-11   text-decoration-none text-dark   rounded-2  ">
           <source src="${base_url}/storage/${dt.file_path}" type="audio/mpeg">
 
         </audio>
@@ -568,7 +582,15 @@ if (search_lib) {
     currentDataSet = library_data1.filter(item =>
       item.title.toLowerCase().includes(st)
     );
-    libarayfuntion1(currentDataSet);
+ 
+    
+if (currentDataSet.length > 0) {
+  libarayfuntion1(currentDataSet);
+
+} else {
+  library_div.innerHTML = `
+    <h5 class=" text-center fw-normal">No matches found . Try different keywords.</h5>`;
+}
   });
 }
 
@@ -579,10 +601,14 @@ if (search_lib) {
 // ============================== 📁 the_list_of_subjects_detail.html?subject=1 CODE START  📁 ================================================
 
 // ===================  SUBJECT CODE START ===============
-
+var reload_subject=document.getElementById("reload_subject");
+if(reload_subject){
+reload_subject.addEventListener("click",()=>{
+    location.reload()
+})
+}
 const list_of_subjects = document.getElementById("list_of_subjects");
 const pagin_bnt_of_subject = document.getElementById("pagin_bnt_of_subject");
-
 const search_subject_here = document.getElementById("search_subject_here");
 let page = 1;
 if (list_of_subjects && pagin_bnt_of_subject) {
@@ -598,6 +624,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
   function pages(params = 1, query = "") {
     page = params;
     const isSearching = query !== "";
+
 
     const apiUrl = isSearching
       ? `${base_url}/api/topics/search?q=${query}&page=${page}`
@@ -626,7 +653,7 @@ if (list_of_subjects && pagin_bnt_of_subject) {
           
           <div class="accordion mb-2">
             <div class="accordion-item">
-            <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark ">
+            <a href="the_list_of_subjects_detail.html?subject=${element.id}"   class="text-decoration-none text-dark   ">
               <h4 class="accordion-header">
    
                <button class="accordion-button collapsed d-flex justify-content-sm-between align-items-sm-center active" type="button"
@@ -796,6 +823,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
           topic: item.topic.topicname
         }));
       });
+console.log(topicAyahsWithSurah);
 
       topicAyahsWithSurah.sort((a, b) => {
         const surahA = Number(a.surah);
@@ -839,6 +867,7 @@ if (location.href.includes("the_list_of_subjects_read.html")) {
           }
 
           const verse = await res.json();
+
 
           ayahContainer.innerHTML += `
             <div class="d-flex mb-2 flex-lg-row flex-column justify-content-between surah-max-div">
