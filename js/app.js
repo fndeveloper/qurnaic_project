@@ -64,7 +64,7 @@ function libarayfuntion(ty) {
         <div class="col-11 page_border_of_quran_page  col-md-3 mb-lg-5 col-lg-2 text-center book_div  library_div">
         <span class="my-3">${dt.title.split(" ").slice(0, 3).join(" ")}..</span>
           <a href="library.html" class="text-decoration-none text-dark  ">
-            <img src="${encodeURI(dt.thumbnail_url)}" alt="" class="mt-3 img-fluid home_lib_image">
+            <img src="${encodeURI(dt.thumbnail_url)}" alt="${encodeURI(dt.thumbnail_url)}" class="mt-3 img-fluid home_lib_image">
           </a>
          
         </div>
@@ -492,7 +492,7 @@ function libarayfuntion1(dataArray) {
           View Video
         </a>
     ` : `
-      <img src="${encodeURI(dt.thumbnail_url)}" alt="Thumbnail" class="img-fluid home_lib_image z-2">
+      <img src="${encodeURI(dt.thumbnail_url)}" alt="${encodeURI(dt.thumbnail_url)}" class="img-fluid home_lib_image z-2">
     `}
 
     <div class="position-relative">
